@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace fullstack_library.Entity
 {
-    public class Admin
+    public class Admin : Staff
     {
         
     }
