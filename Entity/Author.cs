@@ -7,9 +7,11 @@ namespace fullstack_library.Entity
 {
     public class Author : User
     {
+        public static int bookWritten;
+        public static float experience;
         public void writeBook()
         {
-            //sitem üzerinden
+            //sistem ï¿½zerinden
         }
         public void uploadBook()
         {
