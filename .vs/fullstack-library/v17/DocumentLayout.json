@@ -11,6 +11,10 @@
       "RelativeMoniker": "D:0:0:{92D6C792-DA17-496E-BB91-74EB24B73F40}|fullstack-library.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{92D6C792-DA17-496E-BB91-74EB24B73F40}|fullstack-library.csproj|c:\\users\\user\\desktop\\fullstack-library\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{92D6C792-DA17-496E-BB91-74EB24B73F40}|fullstack-library.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{92D6C792-DA17-496E-BB91-74EB24B73F40}|fullstack-library.csproj|c:\\users\\user\\desktop\\fullstack-library\\entity\\staff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{92D6C792-DA17-496E-BB91-74EB24B73F40}|fullstack-library.csproj|solutionrelative:entity\\staff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -30,8 +34,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\fullstack-library\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\User\\Desktop\\fullstack-library\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-07-29T20:23:10.328Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -40,14 +57,14 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\User\\Desktop\\fullstack-library\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-29T17:38:58.762Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\fullstack-library\\Entity\\User.cs",
               "RelativeDocumentMoniker": "Entity\\User.cs",
@@ -55,12 +72,11 @@
               "RelativeToolTip": "Entity\\User.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-29T17:39:05.991Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-29T17:39:05.991Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Staff.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\fullstack-library\\Entity\\Staff.cs",
               "RelativeDocumentMoniker": "Entity\\Staff.cs",
@@ -68,8 +84,7 @@
               "RelativeToolTip": "Entity\\Staff.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-29T17:39:05.528Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-29T17:39:05.528Z"
             },
             {
               "$type": "Document",
@@ -79,14 +94,14 @@
               "RelativeDocumentMoniker": "Entity\\Author.cs",
               "ToolTip": "C:\\Users\\User\\Desktop\\fullstack-library\\Entity\\Author.cs",
               "RelativeToolTip": "Entity\\Author.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAbAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-29T17:39:05.089Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Admin.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\fullstack-library\\Entity\\Admin.cs",
               "RelativeDocumentMoniker": "Entity\\Admin.cs",
@@ -94,8 +109,7 @@
               "RelativeToolTip": "Entity\\Admin.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-29T17:39:04.587Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-29T17:39:04.587Z"
             }
           ]
         }
