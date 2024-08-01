@@ -7,8 +7,9 @@ namespace fullstack_library.Entity
 {
     public class Author : User
     {
-        public static int bookWritten;
-        public static float experience;
+        public int Id { get; set; }
+        public  int bookWritten { get; set; }
+        public  float experience { get; set; }
         public void writeBook()
         {
             //sistem �zerinden
