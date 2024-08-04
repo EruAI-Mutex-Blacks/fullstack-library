@@ -1,8 +1,8 @@
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Home() {
     return (
-        <h1>Homepage</h1>
+        <h1 className = "badge text-bg-primary">Homepage</h1>
     )
 }
 
