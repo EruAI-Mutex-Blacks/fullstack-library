@@ -1,0 +1,30 @@
+:root{
+    --custom-primary:#F8EDE3;
+    --custom-secondary:#8D493A;
+    --custom-third:#60342a;
+}
+
+.bg-custom-primary{
+    background-color: var(--custom-primary);
+}
+
+.bg-custom-secondary{
+    background-color: var(--custom-secondary);
+}
+
+.bg-custom-third{
+    background-color: var(--custom-third);
+}
+
+.fs-7{
+    font-size: 0.95rem;
+}
+
+.fs-8
+{
+    font-size: 0.85rem;
+}
+
+.fs-9{
+    font-size: 0.75rem;
+}

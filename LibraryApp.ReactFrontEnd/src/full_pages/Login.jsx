@@ -2,7 +2,7 @@
 
 function Login() {
     return (
-        <div className="bg-info flex-fill d-flex justify-content-center align-items-center">
+        <div className="text-black flex-fill d-flex justify-content-center align-items-center">
             <div className="w-25">
                 <form action="">
                     <div className="mb-3">
@@ -14,7 +14,7 @@ function Login() {
                         <label className="form-label" htmlFor="password">Password</label>
                         <input id="password" className="form-control" type="password" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" className="text-white btn bg-custom-secondary">Login</button>
                 </form>
             </div>
         </div>
