@@ -2,6 +2,7 @@
     --custom-primary:#F8EDE3;
     --custom-secondary:#8D493A;
     --custom-third:#60342a;
+    --custom-secondary-hover: #a55e4d;
 }
 
 .bg-custom-primary{
@@ -15,6 +16,11 @@
 .bg-custom-third{
     background-color: var(--custom-third);
 }
+
+button.bg-custom-secondary:hover{
+    background-color: var(--custom-secondary-hover);
+}
+
 
 .fs-7{
     font-size: 0.95rem;
