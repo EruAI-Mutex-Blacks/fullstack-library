@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 
 function Login() {
     return (
-        <div className="text-black flex-fill d-flex justify-content-center align-items-center">
-            <div className="w-25">
+        <div className="text-black flex-fill d-flex justify-content-center align-items-center my-5">
+            <div className="w-25 bg-custom-fourth p-3 rounded">
                 <form action="">
                     <div className="mb-3">
                         <label className="form-label" htmlFor="username">Username</label>
@@ -15,7 +15,7 @@ function Login() {
                         <input id="password" className="form-control" type="password" />
                     </div>
                     <div className="mb-3 px-1">
-                        <p className="fs-8">Are you not signed up? <Link className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" to="/Register">Create an account</Link></p>
+                        <p className="fs-9">Are you not signed up? <Link className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" to="/Register">Create an account</Link></p>
                     </div>
                     <button type="submit" className="text-white btn bg-custom-secondary">Login</button>
                 </form>
