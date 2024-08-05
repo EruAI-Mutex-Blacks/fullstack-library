@@ -1,8 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import BookOperations from '../BookOperations.jsx';
 
 function Home() {
     return (
-        <h1 className = "">Homepage</h1>
+        <div className='container'>
+            <div className="row">
+                <div className="col-4">
+                    <BookOperations></BookOperations>
+                </div>
+            </div>
+        </div>
     )
 }
 
