@@ -2,6 +2,7 @@
     --custom-primary:#F8EDE3;
     --custom-secondary:#8D493A;
     --custom-third:#60342a;
+    --custom-fourth: #eccaab;
     --custom-secondary-hover: #a55e4d;
 }
 
@@ -15,6 +16,10 @@
 
 .bg-custom-third{
     background-color: var(--custom-third);
+}
+
+.bg-custom-fourth{
+    background-color: var(--custom-fourth);
 }
 
 button.bg-custom-secondary:hover{

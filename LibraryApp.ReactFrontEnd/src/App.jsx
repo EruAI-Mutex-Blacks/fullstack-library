@@ -7,6 +7,7 @@ import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './full_pages/Login.jsx'
+import Register from './full_pages/Register.jsx'
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
         <main className="flex-fill d-flex bg-custom-primary">
           <Routes>
             <Route exact path="/" element={<Home />}></Route>
-            <Route exact path="/login" element={<Login />}></Route>
+            <Route exact path="/Login" element={<Login />}></Route>
+            <Route exact path="/Register" element={<Register />}></Route>
           </Routes>
         </main>
         <footer className="mt-auto">
