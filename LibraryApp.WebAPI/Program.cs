@@ -15,7 +15,7 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
     var connStr = builder.Configuration["ConnectionStrings:DefaultConnection"];
     options.UseNpgsql(connStr, b => b.MigrationsAssembly("fullstack-library"));
 });
-
+//TODO add repository pattern to app and maybe learn generic repository
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
