@@ -1,3 +1,6 @@
+using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+{
+    var connStr = builder.Configuration["ConnectionStrings:DefaultConnection"];
+    options.UseNpgsql(connStr);
+});
 
 var app = builder.Build();
 
