@@ -3,6 +3,7 @@ import BookOperations from '../BookOperations.jsx';
 import MessageOperations from '../MessageOperations.jsx';
 import MemberOperations from '../MemberOperations.jsx';
 import StaffOperations from '../StaffOperations.jsx';
+import AuthorOperations from '../AuthorOperations.jsx';
 
 function Home() {
     return (
@@ -19,6 +20,9 @@ function Home() {
                 </div>
                 <div className="col-4">
                     <StaffOperations/>
+                </div>
+                <div className="col-4">
+                    <AuthorOperations/>
                 </div>
             </div>
         </div>
