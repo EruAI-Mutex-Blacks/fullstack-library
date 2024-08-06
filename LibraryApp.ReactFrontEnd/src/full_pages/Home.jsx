@@ -8,7 +8,7 @@ import AuthorOperations from '../AuthorOperations.jsx';
 function Home() {
     return (
         <div className='container'>
-            <div className="row">
+            <div className="row d-flex flex-row justify-content-around">
                 <div className="col-4">
                     <BookOperations/>
                 </div>
