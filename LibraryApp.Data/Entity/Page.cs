@@ -5,7 +5,7 @@ namespace LibraryApp.Data.Entity
         public int Id { get; set; }
         public int BookId { get; set; }
         public string Content { get; set; }= string.Empty;
-    
+
         public Book Book { get; set; } = null!;
     }
 }

@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<LibraryDbContext>(options =>
 {
     var connStr = builder.Configuration["ConnectionStrings:DefaultConnection"];
-    options.UseNpgsql(connStr);
+    options.UseNpgsql(connStr, b => b.MigrationsAssembly("fullstack-library"));
 });
 
 var app = builder.Build();
