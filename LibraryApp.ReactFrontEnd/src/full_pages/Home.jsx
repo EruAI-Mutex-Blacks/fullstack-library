@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BookOperations from '../BookOperations.jsx';
 import MessageOperations from '../MessageOperations.jsx';
 import MemberOperations from '../MemberOperations.jsx';
+import StaffOperations from '../StaffOperations.jsx';
 
 function Home() {
     return (
@@ -15,6 +16,9 @@ function Home() {
                 </div>
                 <div className="col-4">
                     <MemberOperations/>
+                </div>
+                <div className="col-4">
+                    <StaffOperations/>
                 </div>
             </div>
         </div>
