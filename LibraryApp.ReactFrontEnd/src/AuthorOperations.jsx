@@ -3,9 +3,11 @@ import OperationsCard from "./OperationsCard"
 function AuthorOperations() {
 
     const items = (
-        <li className="">
-            <button className="btn bg-custom-primary" href="#">See pending book creation requests</button>
-        </li>
+        <>
+            <li className="">
+                <button className="btn bg-custom-primary" href="#">See pending book creation requests</button>
+            </li>
+        </>
     );
 
     return (
