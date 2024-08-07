@@ -1,6 +1,6 @@
-import OperationsCard from "./OperationsCard"
+import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
-function AuthorOperations() {
+function AuthorOperationsCard() {
 
     const items = (
         <>
@@ -12,9 +12,9 @@ function AuthorOperations() {
 
     return (
         <>
-            <OperationsCard title="Author operations" items={items} />
+            <HomeGeneralOperationsCard title="Author operations" items={items} />
         </>
     )
 }
 
-export default AuthorOperations
+export default AuthorOperationsCard

@@ -1,28 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BookOperations from '../BookOperations.jsx';
-import MessageOperations from '../MessageOperations.jsx';
-import MemberOperations from '../MemberOperations.jsx';
-import StaffOperations from '../StaffOperations.jsx';
-import AuthorOperations from '../AuthorOperations.jsx';
+import BookOperationsCard from '../BookOperationsCard.jsx';
+import MessageOperationsCard from '../MessageOperationsCard.jsx';
+import MemberOperationsCard from '../MemberOperationsCard.jsx';
+import StaffOperationsCard from '../StaffOperationsCard.jsx';
+import AuthorOperationsCard from '../AuthorOperationsCard.jsx';
 
 function Home() {
     return (
         <div className='container'>
             <div className="row d-flex flex-row justify-content-around">
                 <div className="col-4">
-                    <BookOperations/>
+                    <BookOperationsCard/>
                 </div>
                 <div className="col-4">
-                    <MessageOperations/>
+                    <MessageOperationsCard/>
                 </div>
                 <div className="col-4">
-                    <MemberOperations/>
+                    <MemberOperationsCard/>
                 </div>
                 <div className="col-4">
-                    <StaffOperations/>
+                    <StaffOperationsCard/>
                 </div>
                 <div className="col-4">
-                    <AuthorOperations/>
+                    <AuthorOperationsCard/>
                 </div>
             </div>
         </div>

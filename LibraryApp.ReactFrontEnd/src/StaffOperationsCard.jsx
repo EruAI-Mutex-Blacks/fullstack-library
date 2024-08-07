@@ -1,6 +1,6 @@
-import OperationsCard from "./OperationsCard"
+import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
-function StaffOperations() {
+function StaffOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
@@ -13,8 +13,8 @@ function StaffOperations() {
     )
 
     return (
-        <OperationsCard title="Staff Operations" items={items} />
+        <HomeGeneralOperationsCard title="Staff Operations" items={items} />
     )
 }
 
-export default StaffOperations
+export default StaffOperationsCard

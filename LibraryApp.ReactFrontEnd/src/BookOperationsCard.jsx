@@ -1,7 +1,7 @@
-import OperationsCard from "./OperationsCard"
+import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 //TODO operations diye parent component oluştur ve ona mousedown eventi ekleyip position ayarla animasyon olarak. aynı zamanda solda tüm sayfayı kaplayabilir 100 vh şeklinde. alttaki componentlarda ise buton clicklerini handlelarsın.
-function BookOperations() {
+function BookOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
@@ -17,8 +17,8 @@ function BookOperations() {
     );
 
     return (
-        <OperationsCard title="Book Operations" items={items} />
+        <HomeGeneralOperationsCard title="Book Operations" items={items} />
     )
 }
 
-export default BookOperations
+export default BookOperationsCard

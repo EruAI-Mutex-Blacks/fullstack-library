@@ -1,7 +1,7 @@
-import OperationsCard from "./OperationsCard"
+import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 
-function MessageOperations() {
+function MessageOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
@@ -13,8 +13,8 @@ function MessageOperations() {
         </>)
 
     return (
-        <OperationsCard title="Message Operations" items={items} />
+        <HomeGeneralOperationsCard title="Message Operations" items={items} />
     )
 }
 
-export default MessageOperations
+export default MessageOperationsCard
