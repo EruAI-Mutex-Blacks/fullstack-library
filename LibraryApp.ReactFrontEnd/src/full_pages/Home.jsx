@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BookOperationsCard from '../BookOperationsCard.jsx';
-import MessageOperationsCard from '../MessageOperationsCard.jsx';
-import MemberOperationsCard from '../MemberOperationsCard.jsx';
-import StaffOperationsCard from '../StaffOperationsCard.jsx';
-import AuthorOperationsCard from '../AuthorOperationsCard.jsx';
+import BookOperationsCard from '../Components/BookOperationsCard.jsx';
+import MessageOperationsCard from '../Components/MessageOperationsCard.jsx';
+import MemberOperationsCard from '../Components/MemberOperationsCard.jsx';
+import StaffOperationsCard from '../Components/StaffOperationsCard.jsx';
+import AuthorOperationsCard from '../Components/AuthorOperationsCard.jsx';
 
 function Home() {
     return (
