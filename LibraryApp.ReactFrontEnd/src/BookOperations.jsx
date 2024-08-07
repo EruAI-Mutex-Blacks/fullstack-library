@@ -1,5 +1,5 @@
 
-
+//TODO operations diye parent component oluştur ve ona mousedown eventi ekleyip position ayarla animasyon olarak. aynı zamanda solda tüm sayfayı kaplayabilir 100 vh şeklinde. alttaki componentlarda ise buton clicklerini handlelarsın.
 function BookOperations() {
     return (
         <div className="text-center d-flex flex-column bg-custom-secondary rounded p-4 mt-5">
@@ -16,7 +16,7 @@ function BookOperations() {
                         </div>
                     </li>
                     <li className="">
-                            <button className="btn bg-custom-primary" href="#">View borrowed books</button>
+                        <button className="btn bg-custom-primary" href="#">View borrowed books</button>
                     </li>
                 </ul>
             </div>
