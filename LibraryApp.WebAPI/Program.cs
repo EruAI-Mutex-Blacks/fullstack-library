@@ -1,4 +1,6 @@
 using LibraryApp.Data.Entity;
+using LibraryApp.Data.Abstract;
+using LibraryApp.Data.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +17,14 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
     var connStr = builder.Configuration["ConnectionStrings:DefaultConnection"];
     options.UseNpgsql(connStr, b => b.MigrationsAssembly("fullstack-library"));
 });
-//TODO add repository pattern to app and maybe learn generic repository
+
+builder.Services.AddScoped<IBookAuthorRepository, EfBookAuthorRepository>();
+builder.Services.AddScoped<IBookBorrowActivityRepository, EfBookBorrowActivityRepository>();
+builder.Services.AddScoped<IBookRepository, EfBookRepository>();
+builder.Services.AddScoped<IPageRepository, EfPageRepository >();
+builder.Services.AddScoped<IRoleRepository, EfRoleRepository>();
+builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
