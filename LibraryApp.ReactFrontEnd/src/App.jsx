@@ -8,27 +8,29 @@ import Footer from './Footer.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './full_pages/Login.jsx'
 import Register from './full_pages/Register.jsx'
-import GeneralOperationsPage from './full_pages/GeneralOperationsPage.jsx'
+import GeneralOperationsPage from './full_pages/OperationsPages/GeneralOperationsPage.jsx'
+import SearchBookOP from './full_pages/OperationsPages/SearchBookOP.jsx'
 
 function App() {
   return (
-      <BrowserRouter>
-        <div className="d-flex flex-column min-vh-100">
-          <header>
-            <Navbar />
-          </header>
-          <main className="flex-fill d-flex bg-custom-primary">
-            <Routes>
-              <Route exact path="/" element={<GeneralOperationsPage />}></Route>
-              <Route exact path="/Login" element={<Login />}></Route>
-              <Route exact path="/Register" element={<Register />}></Route>
-            </Routes>
-          </main>
-          <footer className="mt-auto">
-            <Footer />
-          </footer>
-        </div>
-      </BrowserRouter>
+    <BrowserRouter>
+      <div className="d-flex flex-column min-vh-100">
+        <header>
+          <Navbar />
+        </header>
+        <main className="flex-fill d-flex bg-custom-primary">
+          <Routes>
+            <Route exact path="/" element={<Home />}></Route>
+            <Route exact path="/Login" element={<Login />}></Route>
+            <Route exact path="/Register" element={<Register />}></Route>
+            <Route exact path="/SearchBook" element={<SearchBookOP />}></Route>
+          </Routes>
+        </main>
+        <footer className="mt-auto">
+          <Footer />
+        </footer>
+      </div>
+    </BrowserRouter>
   )
 }
 

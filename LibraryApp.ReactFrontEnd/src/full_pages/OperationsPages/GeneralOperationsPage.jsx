@@ -1,4 +1,4 @@
-import HomeGeneralOperationsCard from "../Components/HomeGeneralOperationsCard"
+import HomeGeneralOperationsCard from "../../Components/HomeGeneralOperationsCard"
 
 
 function GeneralOperationsPage(props) {
@@ -6,7 +6,7 @@ function GeneralOperationsPage(props) {
         //TODO burası component drilling oluyor sanırım bunu ilerde düzeltebilirim.
         <div className="d-flex flex-fill flex-row justify-content-between">
             <div className="w-25 text-break">
-                <HomeGeneralOperationsCard title={props.title + "qwdqwdqwdqwdqwdqwdqwdqd"} items={props.items} />
+                {props.leftPanel}
             </div>
             <div className=" flex-fill m-5 p-4 border border-dark rounded">
                 {props.rightPanel}
