@@ -8,6 +8,7 @@ import Footer from './Footer.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './full_pages/Login.jsx'
 import Register from './full_pages/Register.jsx'
+import GeneralOperationsPage from './full_pages/GeneralOperationsPage.jsx'
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           </header>
           <main className="flex-fill d-flex bg-custom-primary">
             <Routes>
-              <Route exact path="/" element={<Home />}></Route>
+              <Route exact path="/" element={<GeneralOperationsPage />}></Route>
               <Route exact path="/Login" element={<Login />}></Route>
               <Route exact path="/Register" element={<Register />}></Route>
             </Routes>
