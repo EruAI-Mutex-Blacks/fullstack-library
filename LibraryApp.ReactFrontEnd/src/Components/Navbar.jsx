@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Navbar() {
     return (
@@ -12,17 +12,17 @@ function Navbar() {
                 <div className="collapse navbar-collapse " id="navbarNav">
                     <ul className="navbar-nav w-100 d-flex flex-row justify-content-between">
                         <li className="nav-item d-flex flex-row justify-content-evenly">
-                            <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-                            </li>
+                            <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
-                        <li className="nav-item d-flex flex-row justify-content-evenly">
-                            <li>
-                                <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
-                            </li>
-                            <li>
-                                <Link className="nav-link active" aria-current="page" to="/Register">Register</Link>
-                            </li>
+                        <li>
+                            <ul className='nav-item d-flex flex-row justify-content-evenly'>
+                                <li>
+                                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
+                                </li>
+                                <li>
+                                    <Link className="nav-link active" aria-current="page" to="/Register">Register</Link>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
