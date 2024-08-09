@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom"
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 function StaffOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <button className="btn bg-custom-primary" href="#">Change role of someone</button>
+                <Link className="btn bg-custom-primary" to="/ChangeRoles">Change role of someone</Link>
             </li>
             <li className="">
-                <button className="btn bg-custom-primary" href="#">Punish a staff</button>
+                <Link className="btn bg-custom-primary" to="/PunishStaff">Punish a staff</Link>
             </li>
         </>
     )

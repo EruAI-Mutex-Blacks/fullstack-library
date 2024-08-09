@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 
@@ -5,10 +6,10 @@ function MessageOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <button className="btn bg-custom-primary" href="#">Send message</button>
+                <Link className="btn bg-custom-primary" to="/SendMessage">Send message</Link>
             </li>
             <li className="">
-                <button className="btn bg-custom-primary" href="#">View inbox</button>
+                <Link className="btn bg-custom-primary" to="/ViewInbox">View inbox</Link>
             </li>
         </>)
 

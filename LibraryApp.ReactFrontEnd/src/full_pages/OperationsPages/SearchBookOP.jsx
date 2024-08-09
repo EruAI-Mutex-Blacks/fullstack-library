@@ -6,6 +6,9 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 function SearchBookOP() {
     const location = useLocation();
     const bookQuery = new URLSearchParams(location.search).get('book');
+
+    const rightPanel = "";
+
     return (<GeneralOperationsPage leftPanel={(<BookOperationsCard />)} rightPanel={bookQuery} />)
 }
 

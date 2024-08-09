@@ -1,17 +1,19 @@
+import { Link } from "react-router-dom";
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 
 function MemberOperationsCard() {
+
     const items = (
         <>
             <li className="mb-4">
-                <button className="btn bg-custom-primary" href="#">See pending borrow requests</button>
+                <Link className="btn bg-custom-primary" to="/BorrowRequets">See pending borrow requests</Link>
             </li>
             <li className="mb-4">
-                <button className="btn bg-custom-primary" href="#">Approve member registiration</button>
+                <Link className="btn bg-custom-primary" to="/MemberRegistirations">Approve member registiration</Link>
             </li>
             <li className="">
-                <button className="btn bg-custom-primary" href="#">Punish a member</button>
+                <Link className="btn bg-custom-primary" to="/PunishMember">Punish a member</Link>
             </li>
         </>
     )
