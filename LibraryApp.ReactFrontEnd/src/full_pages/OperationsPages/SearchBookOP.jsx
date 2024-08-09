@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import BookOperationsCard from "../../Components/BookOperationsCard"
+import BookOperationsCard from "../../Components/OperationsCards/BookOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 
 

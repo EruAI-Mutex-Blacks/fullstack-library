@@ -1,4 +1,4 @@
-import HomeGeneralOperationsCard from "../../Components/HomeGeneralOperationsCard"
+import HomeGeneralOperationsCard from "../../Components/OperationsCards/HomeGeneralOperationsCard"
 
 
 function GeneralOperationsPage(props) {
