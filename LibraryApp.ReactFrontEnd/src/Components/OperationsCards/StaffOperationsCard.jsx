@@ -5,7 +5,7 @@ function StaffOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <Link className="btn bg-custom-primary" to="/ChangeRoles">Change role of someone</Link>
+                <Link className="btn bg-custom-primary" to="/ChangeRole">Change role of someone</Link>
             </li>
             <li className="">
                 <Link className="btn bg-custom-primary" to="/PunishStaff">Punish a staff</Link>
