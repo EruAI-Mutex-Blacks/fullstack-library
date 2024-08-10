@@ -10,6 +10,10 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<Book> Books { get; }
 
+        void GetBooks();
+        void GetBookById(int id);
         void CreateBook(Book book);
+        void UpdateBook(Book book);
+        void DeleteBook(Book book);
     }
 }

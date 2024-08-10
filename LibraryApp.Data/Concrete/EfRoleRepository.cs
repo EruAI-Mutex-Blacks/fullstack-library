@@ -21,5 +21,25 @@ namespace LibraryApp.Data.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public void GetRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetRoleById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRole(Role role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteRole(Role role)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

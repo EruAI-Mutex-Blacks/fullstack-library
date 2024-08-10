@@ -21,5 +21,25 @@ namespace LibraryApp.Data.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public void GetBookBorrowActivities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetBookBorrowActivityById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

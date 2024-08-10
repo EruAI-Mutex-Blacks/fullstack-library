@@ -10,6 +10,10 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<Role> Roles { get; }
 
+        void GetRoles();
+        void GetRoleById(int id);
         void CreateRole(Role role);
+        void UpdateRole(Role role);
+        void DeleteRole(Role role);
     }
 }

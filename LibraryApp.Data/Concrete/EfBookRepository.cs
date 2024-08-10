@@ -21,5 +21,25 @@ namespace LibraryApp.Data.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public void GetBooks()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetBookById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

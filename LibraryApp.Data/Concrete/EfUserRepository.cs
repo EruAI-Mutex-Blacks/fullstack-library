@@ -21,5 +21,25 @@ namespace LibraryApp.Data.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public void GetUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteUser(User user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -21,5 +21,25 @@ namespace LibraryApp.Data.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public void GetPages()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetPageById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePage(Page page)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeletePage(Page page)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
