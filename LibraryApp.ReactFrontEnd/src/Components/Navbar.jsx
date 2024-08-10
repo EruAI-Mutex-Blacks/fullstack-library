@@ -15,7 +15,7 @@ function Navbar() {
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         <li>
-                            <ul className='nav-item d-flex flex-row justify-content-evenly'>
+                            <ul className='list-inline nav-item d-flex flex-row justify-content-evenly'>
                                 <li>
                                     <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
                                 </li>
