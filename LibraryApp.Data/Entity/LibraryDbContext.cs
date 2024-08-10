@@ -25,9 +25,9 @@ namespace LibraryApp.Data.Entity
             .IsUnique();
 
             modelBuilder.Entity<Book>().HasData(
-                new Book { Id = 1, Title = "Book 1", PublishDate = DateTime.UtcNow.AddDays(-130), IsAvailable = true },
-                new Book { Id = 2, Title = "Book 2", PublishDate = DateTime.UtcNow.AddDays(-13), IsAvailable = true },
-                new Book { Id = 3, Title = "Book 3", PublishDate = DateTime.UtcNow.AddDays(-159), IsAvailable = true }
+                new Book { Id = 1, Title = "Book 1", PublishDate = DateTime.UtcNow.AddDays(-130), IsBorrowed = false, IsPublished = true },
+                new Book { Id = 2, Title = "Book 2", PublishDate = DateTime.UtcNow.AddDays(-13), IsBorrowed = false, IsPublished = true },
+                new Book { Id = 3, Title = "Book 3", PublishDate = DateTime.UtcNow.AddDays(-159), IsBorrowed = false, IsPublished = true }
             );
 
             modelBuilder.Entity<BookAuthor>().HasData(

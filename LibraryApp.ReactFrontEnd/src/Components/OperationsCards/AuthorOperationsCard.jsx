@@ -3,8 +3,6 @@ import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
 function AuthorOperationsCard() {
 
-    //TODO new table required for book creations
-
     const items = (
         <>
             <li className="">
