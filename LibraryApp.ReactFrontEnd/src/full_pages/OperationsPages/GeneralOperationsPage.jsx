@@ -8,7 +8,7 @@ function GeneralOperationsPage(props) {
             <div className="w-25 text-break">
                 {props.leftPanel}
             </div>
-            <div className=" flex-fill m-5 rounded">
+            <div className="d-flex flex-fill m-5 rounded">
                 {props.rightPanel}
             </div>
         </div>

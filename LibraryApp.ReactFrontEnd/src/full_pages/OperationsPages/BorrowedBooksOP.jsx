@@ -25,7 +25,7 @@ function BorrowedBooksOP() {
     }
 
     const rightPanel = (
-        <table className="table table-light table-striped table-hover">
+        <table className="table table-light table-striped table-hover flex-fill">
             <thead>
                 <tr>
                     <th>Id</th>
