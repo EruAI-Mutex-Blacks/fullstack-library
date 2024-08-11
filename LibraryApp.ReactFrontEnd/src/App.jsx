@@ -20,6 +20,7 @@ import PunishStaffOP from './full_pages/OperationsPages/PunishStaffOP.jsx'
 import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
 
 function App() {
+  //TODO need to allow some roles only can go to some routes
   return (
     <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">

@@ -14,6 +14,8 @@ function SearchBookOP() {
         isBorrowed: false
     }
 
+    //TODO need reading page for books
+
     const seedBooks = [];
     seedBooks.push(seedBook);
     seedBooks.push(seedBook);
@@ -30,7 +32,7 @@ function SearchBookOP() {
             window.alert("can be borrowed");
         }
     }
-
+    
     const rightPanel = (
         <table className="table table-light table-striped table-hover">
             <thead>
@@ -50,15 +52,14 @@ function SearchBookOP() {
                         <td>{b.publishDate}</td>
                         <td>{b.isBorrowed ? "Yes" : "No"}</td>
                         <td>
-                            <ul className="list-inline d-flex justify-content-around">
-                                <li><Link onClick={() => {handleBorrowClick(b)}} className="btn btn-success">Borrow</Link></li>
-                                <li><Link onClick={() => {handleBorrowClick(b)}} className="btn btn-success">Borrow</Link></li>
+                            <ul className="list-inline d-flex justify-content-start">
+                                <li className="me-2"><Link onClick={() => { handleBorrowClick(b) }} className={`py-1 px-2 btn btn-success ${b.isBorrowed ? "disabled" : ""}`}>Borrow</Link></li>
                             </ul>
                         </td>
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </table >
     )
 
     return (<GeneralOperationsPage leftPanel={(<BookOperationsCard />)} rightPanel={rightPanel} />)
