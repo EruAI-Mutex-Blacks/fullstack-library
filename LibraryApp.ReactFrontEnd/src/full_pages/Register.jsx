@@ -39,8 +39,8 @@ function Register() {
                             <label className="form-label" htmlFor="gender">Gender</label>
                             <select id="gender" class="form-select" aria-label="Gender selection">
                                 <option selected>Select</option>
-                                <option value="M">Man</option>
-                                <option value="W">Woman</option>
+                                <option value="M">Male</option>
+                                <option value="W">Female</option>
                             </select>
                         </div>
                     </div>
