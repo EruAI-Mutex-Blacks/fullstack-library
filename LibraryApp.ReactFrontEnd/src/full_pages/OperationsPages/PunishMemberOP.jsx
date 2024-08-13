@@ -7,7 +7,7 @@ function PunishMemberOP() {
 
     //onchange of select setvalue and send id of selected
 
-    //punishing a member who has lower role
+    //punishing a member
     const handlePunishClick = function (id) {
     }
 
@@ -22,9 +22,19 @@ function PunishMemberOP() {
                     <option value="3">Aslı bım - Member</option>
                 </select>
             </div>
-            <div className="mb-3">
-                <label className="form-label" htmlFor="punishmentDuration">Punishment duration</label>
-                <input className="form-control" type="number" id="punishmentDuration" name="punishmentDuration" min="1" max="365" />
+            <div className="mb-3 d-flex justify-content-between">
+                <div className="me-5 flex-fill">
+                    <p>Delayed days</p>
+                    <p>{6} </p>
+                </div>
+                <div className="me-5 flex-fill">
+                    <label className="form-label" htmlFor="finePerDay">Fine amount per day</label>
+                    <input id="finePerDay" className="form-control d-inline" type="number" min={0.1} step={0.1} />
+                </div>
+                <div className="flex-fill">
+                    <p>Total fine</p>
+                    <p>{"15$"}</p>
+                </div>
             </div>
             <div className="mb-3">
                 <label htmlFor="message" className="form-label">Cause & details of punishment</label>
