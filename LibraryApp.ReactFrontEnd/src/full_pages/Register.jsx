@@ -40,7 +40,7 @@ function Register() {
                             <select id="gender" class="form-select" aria-label="Gender selection">
                                 <option selected>Select</option>
                                 <option value="M">Male</option>
-                                <option value="W">Female</option>
+                                <option value="F">Female</option>
                             </select>
                         </div>
                     </div>
