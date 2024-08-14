@@ -4,7 +4,6 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 
 function BookCreateReqOP() {
     //Book creation requests that has sent to logged in manager
-    //TODO need to do reading page for books
     const seedBook = {
         id: 1,
         title: "Book 1",

@@ -11,6 +11,8 @@ function PunishStaffOP() {
     const handlePunishClick = function (id) {
     }
 
+    //TODO maybe merge here with punish member, make conditional return statement which is dependent on the role
+
     const rightPanel = (
         <form className="flex-fill">
             <div className="mb-3">

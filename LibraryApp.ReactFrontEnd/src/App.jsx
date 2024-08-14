@@ -21,7 +21,7 @@ import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
 import BookReadingPage from './full_pages/BookReadingPage.jsx'
 
 function App() {
-  //TODO need to allow some roles only can go to some routes
+  //TODO need to implement authorization
   return (
     <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">

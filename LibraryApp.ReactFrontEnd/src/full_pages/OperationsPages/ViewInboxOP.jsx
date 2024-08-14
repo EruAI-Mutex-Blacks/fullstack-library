@@ -5,8 +5,8 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 
 function ViewInboxOP() {
     //TODO need messages table for database need read or unread column
-    //TODO maybe do message card jsx component for left panel
-    //TODO forgot to add topic of message
+    //TODO maybe do message card jsx component for left panel to not repeat same codes
+    //TODO add topic of message
 
     const [username, setUsername] = useState("iniital?");
     const [avatar, setAvatar] = useState("initial?");
