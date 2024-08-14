@@ -46,6 +46,7 @@ function BookCreateReqOP() {
                         <td>{new Date().getFullYear()}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
+                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Read the book</Link></li>
                                 <li className="me-2"><Link onClick={() => { handleApproveClick(b) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
                                 <li className="me-2"><Link onClick={() => { handleRejectClick(b) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
                             </ul>

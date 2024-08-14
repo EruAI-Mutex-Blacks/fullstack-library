@@ -18,6 +18,7 @@ import PunishMemberOP from './full_pages/OperationsPages/PunishMemberOP.jsx'
 import ChangeRoleOP from './full_pages/OperationsPages/ChangeRoleOP.jsx'
 import PunishStaffOP from './full_pages/OperationsPages/PunishStaffOP.jsx'
 import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
+import BookReadingPage from './full_pages/BookReadingPage.jsx'
 
 function App() {
   //TODO need to allow some roles only can go to some routes
@@ -42,6 +43,7 @@ function App() {
             <Route exact path="/ChangeRole" element={<ChangeRoleOP />}></Route>
             <Route exact path="/PunishStaff" element={<PunishStaffOP />}></Route>
             <Route exact path="/BookCreateRequests" element={<BookCreateReqOP />}></Route>
+            <Route exact path="/ReadBook" element={<BookReadingPage />}></Route>
           </Routes>
         </main>
         <footer className="mt-auto">

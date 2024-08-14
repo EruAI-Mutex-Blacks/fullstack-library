@@ -13,7 +13,6 @@ function BookOperationsCard() {
 
     const searchBookLink = "/SearchBook?book=" + bookQuery;
 
-
     const items = (
         <>
             <li className="mb-4">
