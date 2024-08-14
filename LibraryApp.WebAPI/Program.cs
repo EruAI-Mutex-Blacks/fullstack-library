@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer();         
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
@@ -24,6 +24,7 @@ builder.Services.AddScoped<IBookRepository, EfBookRepository>();
 builder.Services.AddScoped<IPageRepository, EfPageRepository >();
 builder.Services.AddScoped<IRoleRepository, EfRoleRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+builder.Services.AddScoped<IMessageRepository, EfMessageRepository>();
 
 var app = builder.Build();
 

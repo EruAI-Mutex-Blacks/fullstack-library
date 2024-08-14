@@ -10,6 +10,7 @@ namespace LibraryApp.Data.Entity
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Message> Messages => Set<Message>();
 
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
@@ -58,6 +59,14 @@ namespace LibraryApp.Data.Entity
                 new User { Id = 1, Name = "User 1", Surname = "surname1", Username = "sr1", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-11344), Gender = 'M', RoleId = 1 },
                 new User { Id = 2, Name = "User 2", Surname = "surname2", Username = "sr12", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14341), Gender = 'W', RoleId = 2 },
                 new User { Id = 3, Name = "User 3", Surname = "surname3", Username = "sr123", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14665), Gender = 'W', RoleId = 3 }
+            );
+
+            modelBuilder.Entity<Message>().HasData(
+                new Message {Id = 1, SenderId = 1, ReceiverId = 2, Content = "Selam, nasılsın? Bir konu hakkında soru soracaktım"},
+                new Message {Id = 2, SenderId = 1, ReceiverId = 3, Content = "iş nasıl gidiyor"},
+                new Message {Id = 3, SenderId = 2, ReceiverId = 1, Content = "yeni tshirt aldım"},
+                new Message {Id = 4, SenderId = 2, ReceiverId = 3, Content = "çalışın ulan! anca dedikodu"},
+                new Message {Id = 5, SenderId = 3, ReceiverId = 2, Content = "Sakin ol patron"}
             );
         }
     }
