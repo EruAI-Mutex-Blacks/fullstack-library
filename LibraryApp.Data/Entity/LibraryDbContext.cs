@@ -62,11 +62,11 @@ namespace LibraryApp.Data.Entity
             );
 
             modelBuilder.Entity<Message>().HasData(
-                new Message {Id = 1, SenderId = 1, ReceiverId = 2, Content = "Selam, nasılsın? Bir konu hakkında soru soracaktım"},
-                new Message {Id = 2, SenderId = 1, ReceiverId = 3, Content = "iş nasıl gidiyor"},
-                new Message {Id = 3, SenderId = 2, ReceiverId = 1, Content = "yeni tshirt aldım"},
-                new Message {Id = 4, SenderId = 2, ReceiverId = 3, Content = "çalışın ulan! anca dedikodu"},
-                new Message {Id = 5, SenderId = 3, ReceiverId = 2, Content = "Sakin ol patron"}
+                new Message {Id = 1, SenderId = 1, ReceiverId = 2, Title = "Title test 1", Details = "Selam, nasılsın? Bir konu hakkında soru soracaktım", IsReceiverRead = false},
+                new Message {Id = 2, SenderId = 1, ReceiverId = 3, Title = "Title test 2", Details = "iş nasıl gidiyor", IsReceiverRead = false},
+                new Message {Id = 3, SenderId = 2, ReceiverId = 1, Title = "Title test 3", Details = "yeni tshirt aldım", IsReceiverRead = false},
+                new Message {Id = 4, SenderId = 2, ReceiverId = 3, Title = "Title test 4", Details = "çalışın ulan! anca dedikodu", IsReceiverRead = false},
+                new Message {Id = 5, SenderId = 3, ReceiverId = 2, Title = "Title test 5", Details = "Sakin ol patron", IsReceiverRead = false}
             );
         }
     }
