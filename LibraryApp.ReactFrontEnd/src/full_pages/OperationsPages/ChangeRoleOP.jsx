@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import StaffOperationsCard from "../../Components/OperationsCards/StaffOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 
@@ -24,7 +25,7 @@ function ChangeRoleOP() {
                 </select>
             </div>
             <div className="mb-3 d-flex justify-content-end">
-                <button className="btn btn-success">Update</button>
+                <Link className="btn btn-success">Update</Link>
             </div>
 
 
