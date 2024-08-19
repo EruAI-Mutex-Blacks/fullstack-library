@@ -66,7 +66,6 @@ namespace fullstack_library.Controllers
         [HttpPost("SendMessage")]
         public IActionResult SendMessage(MessageDTO msg)
         {
-            //TODO use DTO instead of entity itself
             var sender = _userRepo.GetUserById(msg.SenderId);
             if(sender == null) return NotFound("Sender user not found");
             var receiver = _userRepo.GetUserById(msg.ReceiverId);
@@ -78,7 +77,7 @@ namespace fullstack_library.Controllers
                 Title = msg.Title,
                 Details = msg.Details,
                 });
-                
+
             return Ok("Message has sent");
         }
     }

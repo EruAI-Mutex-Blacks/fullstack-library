@@ -12,12 +12,10 @@ namespace fullstack_library.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepo;
-        private readonly IUserRepository _userRepo;
 
-        public BookController(IBookRepository bookRepo, IUserRepository userRepo)
+        public BookController(IBookRepository bookRepo)
         {
             _bookRepo = bookRepo;
-            _userRepo = userRepo;
         }
 
         [HttpPut("ApprovePublishing/{bookId}")]
