@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,14 +64,21 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("SendMessage")]
-        public IActionResult SendMessage(Message msg)
+        public IActionResult SendMessage(MessageDTO msg)
         {
             //TODO use DTO instead of entity itself
             var sender = _userRepo.GetUserById(msg.SenderId);
             if(sender == null) return NotFound("Sender user not found");
             var receiver = _userRepo.GetUserById(msg.ReceiverId);
             if(receiver == null) return NotFound("Receiver user not found");
-            _msgRepo.CreateMessage(msg);
+
+            _msgRepo.CreateMessage(new Message{
+                SenderId = msg.SenderId,
+                ReceiverId = msg.ReceiverId,
+                Title = msg.Title,
+                Details = msg.Details,
+                });
+                
             return Ok("Message has sent");
         }
     }
