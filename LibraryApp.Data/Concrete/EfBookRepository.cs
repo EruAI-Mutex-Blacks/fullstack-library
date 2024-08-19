@@ -27,9 +27,9 @@ namespace LibraryApp.Data.Concrete
             throw new NotImplementedException();
         }
 
-        public void GetBookById(int id)
+        public Book? GetBookById(int id)
         {
-            throw new NotImplementedException();
+            return Books.FirstOrDefault(b => b.Id == id);
         }
 
         public void UpdateBook(Book book)

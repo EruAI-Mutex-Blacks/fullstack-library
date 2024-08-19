@@ -10,6 +10,8 @@ namespace LibraryApp.Data.Entity
         public string Password { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
+        public bool IsPunished { get; set; }
+        public int FineAmount { get; set; }
 
         public Role Role { get; set; } = null!;
         public List<BookAuthor> BookAuthors { get; set; } = new();

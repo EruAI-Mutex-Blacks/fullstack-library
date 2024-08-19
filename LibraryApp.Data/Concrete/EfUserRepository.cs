@@ -27,9 +27,9 @@ namespace LibraryApp.Data.Concrete
             throw new NotImplementedException();
         }
 
-        public void GetUserById(int id)
+        public User? GetUserById(int id)
         {
-            throw new NotImplementedException();
+            return Users.FirstOrDefault(u => u.Id == id);
         }
 
         public void UpdateUser(User user)

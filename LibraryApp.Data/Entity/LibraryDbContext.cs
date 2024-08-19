@@ -56,17 +56,17 @@ namespace LibraryApp.Data.Entity
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Name = "User 1", Surname = "surname1", Username = "sr1", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-11344), Gender = 'M', RoleId = 1 },
-                new User { Id = 2, Name = "User 2", Surname = "surname2", Username = "sr12", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14341), Gender = 'W', RoleId = 2 },
-                new User { Id = 3, Name = "User 3", Surname = "surname3", Username = "sr123", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14665), Gender = 'W', RoleId = 3 }
+                new User { Id = 1, Name = "User 1", Surname = "surname1", Username = "sr1", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-11344), Gender = 'M', RoleId = 1, IsPunished = false, FineAmount = 0 },
+                new User { Id = 2, Name = "User 2", Surname = "surname2", Username = "sr12", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14341), Gender = 'W', RoleId = 2, IsPunished = false, FineAmount = 0 },
+                new User { Id = 3, Name = "User 3", Surname = "surname3", Username = "sr123", Password = "123", BirthDate = DateTime.UtcNow.AddDays(-14665), Gender = 'W', RoleId = 3, IsPunished = false, FineAmount = 0 }
             );
 
             modelBuilder.Entity<Message>().HasData(
-                new Message {Id = 1, SenderId = 1, ReceiverId = 2, Title = "Title test 1", Details = "Selam, nasılsın? Bir konu hakkında soru soracaktım", IsReceiverRead = false},
-                new Message {Id = 2, SenderId = 1, ReceiverId = 3, Title = "Title test 2", Details = "iş nasıl gidiyor", IsReceiverRead = false},
-                new Message {Id = 3, SenderId = 2, ReceiverId = 1, Title = "Title test 3", Details = "yeni tshirt aldım", IsReceiverRead = false},
-                new Message {Id = 4, SenderId = 2, ReceiverId = 3, Title = "Title test 4", Details = "çalışın ulan! anca dedikodu", IsReceiverRead = false},
-                new Message {Id = 5, SenderId = 3, ReceiverId = 2, Title = "Title test 5", Details = "Sakin ol patron", IsReceiverRead = false}
+                new Message { Id = 1, SenderId = 1, ReceiverId = 2, Title = "Title test 1", Details = "Selam, nasılsın? Bir konu hakkında soru soracaktım", IsReceiverRead = false },
+                new Message { Id = 2, SenderId = 1, ReceiverId = 3, Title = "Title test 2", Details = "iş nasıl gidiyor", IsReceiverRead = false },
+                new Message { Id = 3, SenderId = 2, ReceiverId = 1, Title = "Title test 3", Details = "yeni tshirt aldım", IsReceiverRead = false },
+                new Message { Id = 4, SenderId = 2, ReceiverId = 3, Title = "Title test 4", Details = "çalışın ulan! anca dedikodu", IsReceiverRead = false },
+                new Message { Id = 5, SenderId = 3, ReceiverId = 2, Title = "Title test 5", Details = "Sakin ol patron", IsReceiverRead = false }
             );
         }
     }

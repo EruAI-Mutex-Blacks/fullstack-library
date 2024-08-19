@@ -3,6 +3,7 @@ using System;
 using LibraryApp.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace fullstack_library.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240819145227_AddIspunishedAndAmountColumnUserTable")]
+    partial class AddIspunishedAndAmountColumnUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace fullstack_library.Migrations
                             Id = 1,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 4, 11, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2596),
+                            PublishDate = new DateTime(2024, 4, 11, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(837),
                             Title = "Book 1"
                         },
                         new
@@ -61,7 +64,7 @@ namespace fullstack_library.Migrations
                             Id = 2,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 8, 6, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2605),
+                            PublishDate = new DateTime(2024, 8, 6, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(845),
                             Title = "Book 2"
                         },
                         new
@@ -69,7 +72,7 @@ namespace fullstack_library.Migrations
                             Id = 3,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 3, 13, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2606),
+                            PublishDate = new DateTime(2024, 3, 13, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(846),
                             Title = "Book 3"
                         });
                 });
@@ -150,24 +153,24 @@ namespace fullstack_library.Migrations
                         {
                             Id = 1,
                             BookId = 1,
-                            BorrowDate = new DateTime(2024, 8, 12, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2730),
-                            ReturnDate = new DateTime(2024, 8, 18, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2730),
+                            BorrowDate = new DateTime(2024, 8, 12, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(940),
+                            ReturnDate = new DateTime(2024, 8, 18, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(941),
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             BookId = 2,
-                            BorrowDate = new DateTime(2024, 8, 5, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2732),
-                            ReturnDate = new DateTime(2024, 8, 12, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2732),
+                            BorrowDate = new DateTime(2024, 8, 5, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(942),
+                            ReturnDate = new DateTime(2024, 8, 12, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(943),
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
                             BookId = 3,
-                            BorrowDate = new DateTime(2024, 7, 29, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2733),
-                            ReturnDate = new DateTime(2024, 8, 5, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2734),
+                            BorrowDate = new DateTime(2024, 7, 29, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(944),
+                            ReturnDate = new DateTime(2024, 8, 5, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(944),
                             UserId = 3
                         });
                 });
@@ -340,9 +343,6 @@ namespace fullstack_library.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("FineAmount")
-                        .HasColumnType("integer");
-
                     b.Property<char>("Gender")
                         .HasColumnType("character(1)");
 
@@ -356,6 +356,9 @@ namespace fullstack_library.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("PenaltyAmount")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
@@ -381,12 +384,12 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(1993, 7, 29, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2838),
-                            FineAmount = 0,
+                            BirthDate = new DateTime(1993, 7, 29, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(1006),
                             Gender = 'M',
                             IsPunished = false,
                             Name = "User 1",
                             Password = "123",
+                            PenaltyAmount = 0,
                             RoleId = 1,
                             Surname = "surname1",
                             Username = "sr1"
@@ -394,12 +397,12 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateTime(1985, 5, 15, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2842),
-                            FineAmount = 0,
+                            BirthDate = new DateTime(1985, 5, 15, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(1008),
                             Gender = 'W',
                             IsPunished = false,
                             Name = "User 2",
                             Password = "123",
+                            PenaltyAmount = 0,
                             RoleId = 2,
                             Surname = "surname2",
                             Username = "sr12"
@@ -407,12 +410,12 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 3,
-                            BirthDate = new DateTime(1984, 6, 25, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2844),
-                            FineAmount = 0,
+                            BirthDate = new DateTime(1984, 6, 25, 14, 52, 27, 40, DateTimeKind.Utc).AddTicks(1010),
                             Gender = 'W',
                             IsPunished = false,
                             Name = "User 3",
                             Password = "123",
+                            PenaltyAmount = 0,
                             RoleId = 3,
                             Surname = "surname3",
                             Username = "sr123"
