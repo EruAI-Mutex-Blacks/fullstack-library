@@ -24,7 +24,7 @@ namespace LibraryApp.Data.Concrete
 
         public IQueryable<Book> GetBooks()
         {
-            throw new NotImplementedException();
+            return Books;
         }
 
         public Book? GetBookById(int id)

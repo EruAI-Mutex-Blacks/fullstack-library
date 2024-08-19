@@ -19,7 +19,7 @@ namespace LibraryApp.Data.Concrete
 
         public void CreateMessage(Message msg)
         {
-            throw new NotImplementedException();
+            _context.Messages.Add(msg);
         }
 
         public void GetMessagesByReceiverId(int receiverId)
