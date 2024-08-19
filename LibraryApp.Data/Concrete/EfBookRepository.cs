@@ -22,7 +22,7 @@ namespace LibraryApp.Data.Concrete
             throw new NotImplementedException();
         }
 
-        public void GetBooks()
+        public IQueryable<Book> GetBooks()
         {
             throw new NotImplementedException();
         }
