@@ -42,5 +42,14 @@ namespace fullstack_library.Controllers
             _bookRepo.DeleteBook(book);
             return Ok("Book has been rejected");
         }
+
+        [HttpGet("SearchBook")]
+        public IActionResult SearchBook([FromQuery] string bookName)
+        {
+            if(string.IsNullOrEmpty(bookName)) return BadRequest("Invalid book name");
+            
+            var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName));
+            return Ok(books);
+        }
     }
 }
