@@ -19,7 +19,8 @@ namespace LibraryApp.Data.Concrete
 
         public void CreateUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         public IQueryable<User> GetUsers()

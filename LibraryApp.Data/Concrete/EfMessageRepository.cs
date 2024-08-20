@@ -20,6 +20,7 @@ namespace LibraryApp.Data.Concrete
         public void CreateMessage(Message msg)
         {
             _context.Messages.Add(msg);
+            _context.SaveChanges();
         }
 
         public void GetMessagesByReceiverId(int receiverId)
