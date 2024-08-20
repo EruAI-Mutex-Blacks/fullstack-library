@@ -22,12 +22,12 @@ namespace fullstack_library.Controllers
         public IActionResult ApprovePublishingBook(int? bookId)
         {
             //TODO check role if not manager than return unauthorized
-            if (bookId == null) return BadRequest("Invalid book id");
+            if (bookId == null) return BadRequest(new { message = "Invalid book id" });
             var book = _bookRepo.GetBookById(bookId.Value);
-            if (book == null) return NotFound("Book could not found"); //return notfound status code
+            if (book == null) return NotFound(new { message = "Book could not found" }); //return notfound status code
             book.IsPublished = true;
             _bookRepo.UpdateBook(book);
-            return Ok("Book has been approved");
+            return Ok(new { message = "Book has been approved" });
         }
 
 
@@ -36,18 +36,18 @@ namespace fullstack_library.Controllers
         public IActionResult RejectPublishingBook(int? bookId)
         {
             //TODO check role if not manager than return unauthorized
-            if (bookId == null) return BadRequest("Invalid book id");
+            if (bookId == null) return BadRequest(new { message = "Invalid book id"});
             var book = _bookRepo.GetBookById(bookId.Value);
-            if (book == null) return NotFound("Book could not found"); //return notfound status code
+            if (book == null) return NotFound(new { message = "Book could not found"}); //return notfound status code
             _bookRepo.DeleteBook(book);
-            return Ok("Book has been rejected");
+            return Ok(new { message = "Book has been rejected"});
         }
 
         [HttpGet("SearchBook")]
         public IActionResult SearchBook([FromQuery] string bookName)
         {
-            if(string.IsNullOrEmpty(bookName)) return BadRequest("Invalid book name");
-            
+            if (string.IsNullOrEmpty(bookName)) return BadRequest(new { message = "Invalid book name"});
+
             var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName));
             return Ok(books);
         }

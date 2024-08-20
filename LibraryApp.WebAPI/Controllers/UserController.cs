@@ -26,27 +26,27 @@ namespace fullstack_library.Controllers
         public IActionResult ApproveRegistiration(int? userId)
         {
             //TODO to approve registiration use role table make a role which is like newUser or no role at all and when we approve change role to like default user or like give selection to user to make him select which role he wants and we can see it if we approve make it that role. And again only staffs can access to this method
-            if (userId == null) return BadRequest("Invalid user id");
+            if (userId == null) return BadRequest(new { message = "Invalid user id"});
             var user = _userRepo.GetUserById(userId.Value);
-            if (user == null) return NotFound("User not found");
+            if (user == null) return NotFound(new { message = "User not found"});
 
             user.RoleId = 1; //make it like default role
             _userRepo.UpdateUser(user);
 
-            return Ok("User approved");
+            return Ok(new { message = "User approved"});
         }
 
         [HttpDelete("DeleteRegistiration/{userId}")]
         public IActionResult DeleteRegistiration(int? userId)
         {
             //TODO instead of deletion think another thing
-            if (userId == null) return BadRequest("Invalid user id");
+            if (userId == null) return BadRequest(new { message = "Invalid user id"});
             var user = _userRepo.GetUserById(userId.Value);
-            if (user == null) return NotFound("User not found");
+            if (user == null) return NotFound(new { message = "User not found"});
 
             _userRepo.DeleteUser(user);
 
-            return Ok("User rejected");
+            return Ok(new { message = "User rejected"});
         }
 
         [HttpPut("set-punishment/{userId}")]
@@ -54,22 +54,22 @@ namespace fullstack_library.Controllers
         {
             //TODO can be used for both staff and users like if it is punished cannot login to system and later on we can change ispunished to false and maybe use punishmentDTO for the parameters
 
-            if (userId == null) return BadRequest("Invalid user id");
+            if (userId == null) return BadRequest(new { message = "Invalid user id"});
             var user = _userRepo.GetUserById(userId.Value);
-            if (user == null) return NotFound("User not found");
+            if (user == null) return NotFound(new { message = "User not found"});
             user.IsPunished = isPunished;
             user.FineAmount = fineAmount;
             _userRepo.UpdateUser(user);
-            return Ok("Punishment status updated");
+            return Ok(new { message = "Punishment status updated"});
         }
 
         [HttpPost("SendMessage")]
         public IActionResult SendMessage(MessageDTO msg)
         {
             var sender = _userRepo.GetUserById(msg.SenderId);
-            if (sender == null) return NotFound("Sender user not found");
+            if (sender == null) return NotFound(new { message = "Sender user not found"});
             var receiver = _userRepo.GetUserById(msg.ReceiverId);
-            if (receiver == null) return NotFound("Receiver user not found");
+            if (receiver == null) return NotFound(new { message = "Receiver user not found"});
 
             var entity = new Message
             {

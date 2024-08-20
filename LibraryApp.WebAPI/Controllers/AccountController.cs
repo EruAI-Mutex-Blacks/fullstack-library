@@ -26,10 +26,11 @@ namespace fullstack_library.Controllers
         public IActionResult Login(LoginDTO loginDTO)
         {
             var user = _userRepo.GetUsers().FirstOrDefault(u => u.Username == loginDTO.Username);
-            if (user == null) return NotFound("Username not found");
-            if (user.Password != loginDTO.Password) return StatusCode(401, "Password is incorrect");
+            if (user == null) return NotFound(new { message = "Username not found" });
+            if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
 
             //TODO return with jwt
+            //TODO do not return entity directly return dto instead
             return Ok(user);
         }
 
@@ -46,7 +47,7 @@ namespace fullstack_library.Controllers
                 BirthDate = registerDTO.BirthDate,
                 Gender = registerDTO.Gender,
             });
-            return Ok("User registered");
+            return Ok(new { message = "User registered" });
         }
     }
 }
