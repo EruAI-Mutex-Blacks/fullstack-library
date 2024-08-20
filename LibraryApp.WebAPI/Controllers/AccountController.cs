@@ -30,7 +30,7 @@ namespace fullstack_library.Controllers
             if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
 
             //TODO return with jwt
-            //TODO do not return entity directly return dto instead
+            //TODO do not return entity directly return dto instead with only id and username enough
             return Ok(user);
         }
 

@@ -19,6 +19,8 @@ import ChangeRoleOP from './full_pages/OperationsPages/ChangeRoleOP.jsx'
 import PunishStaffOP from './full_pages/OperationsPages/PunishStaffOP.jsx'
 import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
 import BookReadingPage from './full_pages/BookReadingPage.jsx'
+import { UserProvider } from './AccountOperations/UserContext.jsx'
+import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 
 function App() {
   //TODO need to implement authorization
@@ -29,28 +31,46 @@ function App() {
           <Navbar />
         </header>
         <main className="flex-fill d-flex bg-custom-primary">
-          <Routes>
-            <Route exact path="/" element={<Home />}></Route>
-            <Route exact path="/Login" element={<Login />}></Route>
-            <Route exact path="/Register" element={<Register />}></Route>
-            <Route exact path="/SearchBook" element={<SearchBookOP />}></Route>
-            <Route exact path="/BorrowedBooks" element={<BorrowedBooksOP />}></Route>
-            <Route exact path="/SendMessage" element={<SendMessageOP />}></Route>
-            <Route exact path="/ViewInbox" element={<ViewInboxOP />}></Route>
-            <Route exact path="/BorrowRequests" element={<BorrowRequestsOP />}></Route>
-            <Route exact path="/MemberRegistirations" element={<MemberRegistirationsOP />}></Route>
-            <Route exact path="/PunishMember" element={<PunishMemberOP />}></Route>
-            <Route exact path="/ChangeRole" element={<ChangeRoleOP />}></Route>
-            <Route exact path="/PunishStaff" element={<PunishStaffOP />}></Route>
-            <Route exact path="/BookCreateRequests" element={<BookCreateReqOP />}></Route>
-            <Route exact path="/ReadBook" element={<BookReadingPage />}></Route>
+          <UserProvider>
+            <Routes>
+              <Route exact path="/" element={<Home />}></Route>
+              <Route exact path="/Login" element={<Login />}></Route>
+              <Route exact path="/Register" element={<Register />}></Route>
+
+              <Route exact path="/SearchBook" element={
+                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                  <SearchBookOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/BorrowedBooks" element={
+                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                  <SearchBookOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/SendMessage" element={
+                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                  <SearchBookOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/ViewInbox" element={
+                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                  <SearchBookOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/ReadBook" element={
+                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                  <SearchBookOP />
+                </ProtectedRoute>}>
+              </Route>
+            
           </Routes>
-        </main>
-        <footer className="mt-auto">
-          <Footer />
-        </footer>
-      </div>
-    </BrowserRouter>
+        </UserProvider>
+      </main>
+      <footer className="mt-auto">
+        <Footer />
+      </footer>
+    </div>
+    </BrowserRouter >
   )
 }
 
