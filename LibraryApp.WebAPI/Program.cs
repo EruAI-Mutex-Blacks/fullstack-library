@@ -10,6 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();         
 builder.Services.AddSwaggerGen();
 
+// Add CORS services to the container
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("TestOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") // Replace with your frontend domain
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
@@ -27,6 +39,8 @@ builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IMessageRepository, EfMessageRepository>();
 
 var app = builder.Build();
+app.UseRouting();
+app.UseCors("TestOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,7 +50,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
