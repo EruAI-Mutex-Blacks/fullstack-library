@@ -22,9 +22,9 @@ namespace LibraryApp.Data.Concrete
             throw new NotImplementedException();
         }
 
-        public void GetUsers()
+        public IQueryable<User> GetUsers()
         {
-            throw new NotImplementedException();
+            return Users;
         }
 
         public User? GetUserById(int id)

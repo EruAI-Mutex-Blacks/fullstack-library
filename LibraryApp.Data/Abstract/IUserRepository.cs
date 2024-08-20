@@ -10,7 +10,7 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<User> Users { get; }
 
-        void GetUsers();
+        IQueryable<User> GetUsers();
         User? GetUserById(int id);
         void CreateUser(User user);
         void UpdateUser(User user);
