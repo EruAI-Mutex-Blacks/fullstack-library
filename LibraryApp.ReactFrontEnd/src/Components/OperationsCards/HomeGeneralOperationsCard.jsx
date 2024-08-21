@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom"
 
 function HomeGeneralOperationsCard(props) {
     //TODO animasyon eklemeyi falan sonra düşünürüm.
-    //burdan hepsine operations page ini açtıracak bir method eklerim event olarak 
-    //daha sonra her birinden özel olarak her butonun ne yapacağını da eklerim event olarak.
 
     return (
         <div className="text-center d-flex flex-column bg-custom-secondary rounded p-4 my-5">
