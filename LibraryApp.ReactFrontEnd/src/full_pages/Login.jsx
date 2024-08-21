@@ -1,24 +1,28 @@
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { useUser } from '../AccountOperations/UserContext'
-import { useNavigate } from 'react-router-dom'
 
 function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { setUser } = useUser();
+    const { user, setUser } = useUser();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (user) navigate("/");
+    }, [user, navigate])
+    //TODO change links to buttons link being used for navigation
+
     const loginDTO = {
-        username : username,
-        password : password
+        username: username,
+        password: password
     }
 
     const handleLoginClick = async function () {
         const response = await fetch("http://localhost:5109/api/Account/Login", {
-            method : "POST",
-            headers: {"Content-Type": "application/json"},
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(loginDTO)
         });
         const userDTO = await response.json();

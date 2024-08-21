@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Home from './full_pages/Home.jsx'
 import Navbar from './Components/Navbar.jsx'
 import Footer from './Components/Footer.jsx'
@@ -21,6 +21,7 @@ import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
 import BookReadingPage from './full_pages/BookReadingPage.jsx'
 import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
+import PublicRoute from './AccountOperations/PublicRoute.jsx'
 
 function App() {
   //TODO need to implement authorization
@@ -34,9 +35,12 @@ function App() {
           <UserProvider>
             <Routes>
               <Route exact path="/" element={<Home />}></Route>
-              <Route exact path="/Login" element={<Login />}></Route>
-              <Route exact path="/Register" element={<Register />}></Route>
-
+              <Route exact path="/Login" element={
+                <PublicRoute ><Login /></PublicRoute>
+              }></Route>
+              <Route exact path="/Register" element={
+                 <PublicRoute ><Register /></PublicRoute>
+                }></Route>
               <Route exact path="/SearchBook" element={
                 <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <SearchBookOP />

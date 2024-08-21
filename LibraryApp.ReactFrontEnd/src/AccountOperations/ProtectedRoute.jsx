@@ -13,7 +13,6 @@ const ProtectedRoute = ({ roles, children }) => {
         return <Navigate to="/unauthorized" />;
     }
 
-    // Kullanıcı yetkilendirildiyse bileşeni render et
     return children;
 };
 
