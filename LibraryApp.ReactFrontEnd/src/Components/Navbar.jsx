@@ -1,7 +1,40 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
+import { useUser } from '../AccountOperations/UserContext.jsx';
 
 function Navbar() {
+    const { user } = useUser();
+
+    const handleLogoutClick = function () {
+        user = null;
+        <Navigate to="/" />
+    }
+
+    let topRightLinks = "";
+
+    if (!user) {
+        topRightLinks = (
+            <>
+                <li>
+                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
+                </li>
+                <li>
+                    <Link className="nav-link active" aria-current="page" to="/Register">Register</Link>
+                </li>
+            </>);
+    } else {
+        topRightLinks = (
+            <>
+                <li>
+                    <Link className='nav-link active' aria-current="page" to={"/Profile?userId=" + user.id}>{user.name + " " + user.surname}</Link>
+                </li>
+                <li>
+                    <Link className='nav-link active' aria-current="page" onClick={handleLogoutClick}>Logout</Link>
+                </li>
+            </>
+        )
+    }
+
     return (
         <nav className="navbar navbar-expand-lg  navbar-dark bg-custom-secondary">
             <div className="container-fluid">
@@ -16,12 +49,7 @@ function Navbar() {
                         </li>
                         <li>
                             <ul className='list-inline nav-item d-flex flex-row justify-content-evenly'>
-                                <li>
-                                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
-                                </li>
-                                <li>
-                                    <Link className="nav-link active" aria-current="page" to="/Register">Register</Link>
-                                </li>
+                                {topRightLinks}
                             </ul>
                         </li>
                     </ul>

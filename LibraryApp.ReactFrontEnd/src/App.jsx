@@ -26,20 +26,20 @@ import PublicRoute from './AccountOperations/PublicRoute.jsx'
 function App() {
   return (
     <BrowserRouter>
-      <div className="d-flex flex-column min-vh-100">
-        <header>
-          <Navbar />
-        </header>
-        <main className="flex-fill d-flex bg-custom-primary">
-          <UserProvider>
+      <UserProvider>
+        <div className="d-flex flex-column min-vh-100">
+          <header>
+            <Navbar />
+          </header>
+          <main className="flex-fill d-flex bg-custom-primary">
             <Routes>
               <Route exact path="/" element={<Home />}></Route>
               <Route exact path="/Login" element={
                 <PublicRoute ><Login /></PublicRoute>
               }></Route>
               <Route exact path="/Register" element={
-                 <PublicRoute ><Register /></PublicRoute>
-                }></Route>
+                <PublicRoute ><Register /></PublicRoute>
+              }></Route>
               <Route exact path="/SearchBook" element={
                 <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <SearchBookOP />
@@ -99,12 +99,12 @@ function App() {
               </Route>
 
             </Routes>
-          </UserProvider>
-        </main>
-        <footer className="mt-auto">
-          <Footer />
-        </footer>
-      </div>
+          </main>
+          <footer className="mt-auto">
+            <Footer />
+          </footer>
+        </div>
+      </UserProvider>
     </BrowserRouter >
   )
 }
