@@ -6,6 +6,7 @@ using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace fullstack_library.Controllers
 {
@@ -25,13 +26,24 @@ namespace fullstack_library.Controllers
         [HttpPost("Login")]
         public IActionResult Login(LoginDTO loginDTO)
         {
-            var user = _userRepo.GetUsers().FirstOrDefault(u => u.Username == loginDTO.Username);
+            var user = _userRepo.Users.Include(u => u.Role).FirstOrDefault(u => u.Username == loginDTO.Username);
             if (user == null) return NotFound(new { message = "Username not found" });
             if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
 
             //TODO return with jwt
-            //TODO do not return entity directly return dto instead with only id and username enough
-            return Ok(user);
+            UserDTO userDTO = new UserDTO
+            {
+                Id = user.Id,
+                RoleName = user.Role.Name,
+                Name = user.Name,
+                Surname = user.Surname,
+                Gender = user.Gender,
+                BirthDate = user.BirthDate,
+                FineAmount = user.FineAmount,
+                IsPunished = user.IsPunished,
+                Username = user.Username,
+            };
+            return Ok(userDTO);
         }
 
         [HttpPost("Register")]
