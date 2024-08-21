@@ -1,35 +1,37 @@
 import { useLocation, Link } from "react-router-dom";
 import BookOperationsCard from "../../Components/OperationsCards/BookOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
+import { useEffect, useState } from "react";
 
-
+//TODO en son güvenlik modu kapatılabilir 2 kere çağrılıyor sayfalar
 function SearchBookOP() {
+    const [books, setBooks] = useState([]);
     const location = useLocation();
-    const bookQuery = new URLSearchParams(location.search).get('book');
+    const bookName = new URLSearchParams(location.search).get("book");
 
-    const seedBook = {
-        Cover: "bookId.jpg",
-        id: 1,
-        title: "Book 1",
-        publishDate: `${new Date().getDate()}-${new Date().getUTCMonth()}-${new Date().getFullYear()}`,
-        isBorrowed: false
-    }
+    const onSearch = async function (bookQuery) {
+        try {
+            const response = await fetch("http://localhost:5109/api/Book/SearchBook?bookName=" + encodeURIComponent(bookQuery), {
+                method: "GET",
+            });
 
-    const seedBooks = [];
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
+            if (!response.ok) return;
+
+            const bookDTOS = await response.json();
+            console.log(bookDTOS);
+            setBooks(bookDTOS);
+
+        } catch (error) {
+            console.log("there was an error in fetching", error);
+        }
+    };
+
+    useEffect(() => {
+        onSearch(bookName);
+    }, [])
 
     function handleBorrowClick(book) {
-        if (book.isBorrowed) {
-            window.alert("already borrowed");
-        }
-        else {
-            window.alert("can be borrowed");
-        }
+
     }
 
     const rightPanel = (
@@ -44,7 +46,7 @@ function SearchBookOP() {
                 </tr>
             </thead>
             <tbody>
-                {seedBooks.map(b => (
+                {books.map(b => (
                     <tr>
                         <td>{b.Cover}</td>
                         <td>{b.title}</td>
@@ -58,12 +60,13 @@ function SearchBookOP() {
                             </ul>
                         </td>
                     </tr>
-                ))}
+                ))
+                }
             </tbody>
         </table >
     )
 
-    return (<GeneralOperationsPage leftPanel={(<BookOperationsCard />)} rightPanel={rightPanel} />)
+    return (<GeneralOperationsPage leftPanel={(<BookOperationsCard onSearch={onSearch} />)} rightPanel={rightPanel} />)
 }
 
 export default SearchBookOP

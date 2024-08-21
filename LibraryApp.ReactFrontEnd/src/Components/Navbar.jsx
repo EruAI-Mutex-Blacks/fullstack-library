@@ -11,6 +11,7 @@ function Navbar() {
     }
 
     let topRightLinks = "";
+    //TODO Usestate instead of this?
 
     if (!user) {
         topRightLinks = (

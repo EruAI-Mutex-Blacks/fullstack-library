@@ -8,7 +8,6 @@ import { useUser } from '../AccountOperations/UserContext.jsx';
 
 function Home() {
     const { user } = useUser();
-
     return (
         !user ? (
             <div className='flex-fill align-self-center text-center'>

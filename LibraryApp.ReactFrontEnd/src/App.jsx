@@ -23,6 +23,7 @@ import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
 
+//TODO profile page
 function App() {
   return (
     <BrowserRouter>
@@ -97,7 +98,6 @@ function App() {
                   < BookCreateReqOP />
                 </ProtectedRoute>}>
               </Route>
-
             </Routes>
           </main>
           <footer className="mt-auto">

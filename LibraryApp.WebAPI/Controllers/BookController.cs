@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace fullstack_library.Controllers
 {
@@ -36,19 +38,23 @@ namespace fullstack_library.Controllers
         public IActionResult RejectPublishingBook(int? bookId)
         {
             //TODO check role if not manager than return unauthorized
-            if (bookId == null) return BadRequest(new { message = "Invalid book id"});
+            if (bookId == null) return BadRequest(new { message = "Invalid book id" });
             var book = _bookRepo.GetBookById(bookId.Value);
-            if (book == null) return NotFound(new { message = "Book could not found"}); //return notfound status code
+            if (book == null) return NotFound(new { message = "Book could not found" }); //return notfound status code
             _bookRepo.DeleteBook(book);
-            return Ok(new { message = "Book has been rejected"});
+            return Ok(new { message = "Book has been rejected" });
         }
 
         [HttpGet("SearchBook")]
-        public IActionResult SearchBook([FromQuery] string bookName)
+        public IActionResult SearchBook([FromQuery] string? bookName)
         {
-            if (string.IsNullOrEmpty(bookName)) return BadRequest(new { message = "Invalid book name"});
-
-            var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName));
+            var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO
+            {
+                Title = b.Title,
+                IsBorrowed = b.IsBorrowed,
+                Authors = b.BookAuthors.Select(ba => ba.User.Name).ToList(),
+                PublishDate = b.PublishDate,
+            });
             return Ok(books);
         }
     }
