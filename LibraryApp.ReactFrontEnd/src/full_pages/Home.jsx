@@ -14,7 +14,7 @@ function Home() {
             <div className='flex-fill align-self-center text-center'>
                 <div>
                     <h1>Welcome to the library</h1>
-                    <p>Please login or register to our library from the <b>top right corner</b> to do any kind of operations</p>
+                    <p>Please <b>login or register</b> to our library from the <b>top right corner</b> to be able to do any kind of operations.</p>
                 </div>
             </div>
         )

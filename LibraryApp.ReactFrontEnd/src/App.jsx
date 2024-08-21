@@ -24,7 +24,6 @@ import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
 
 function App() {
-  //TODO need to implement authorization
   return (
     <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">

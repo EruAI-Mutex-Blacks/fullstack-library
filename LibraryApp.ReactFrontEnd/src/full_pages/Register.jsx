@@ -37,8 +37,8 @@ function Register() {
                         </div>
                         <div className="ms-1">
                             <label className="form-label" htmlFor="gender">Gender</label>
-                            <select id="gender" class="form-select" aria-label="Gender selection">
-                                <option selected>Select</option>
+                            <select id="gender" className="form-select" aria-label="Gender selection">
+                                <option value="">Select</option>
                                 <option value="M">Male</option>
                                 <option value="F">Female</option>
                             </select>
