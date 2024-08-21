@@ -12,7 +12,7 @@ function Home() {
     return (
         <div className='container'>
             <div className="row d-flex flex-row justify-content-around">
-                {(["default", "staff", "manager"].includes(user.role)) && (
+                {(["member", "staff", "manager"].includes(user.roleName)) && (
                     <>
                         <div className="col-4">
                             <BookOperationsCard />
@@ -23,13 +23,13 @@ function Home() {
                     </>
                 )}
                 {
-                    (["staff", "manager"].includes(user.role)) && (
+                    (["staff", "manager"].includes(user.roleName)) && (
                         < div className="col-4">
                             <MemberOperationsCard />
                         </div>
                     )}
                 {
-                    (user.role === "manager") && (
+                    (user.roleName === "manager") && (
                         <>
                             < div className="col-4">
                                 <StaffOperationsCard />

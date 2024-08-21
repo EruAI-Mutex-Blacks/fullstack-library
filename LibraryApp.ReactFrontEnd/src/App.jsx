@@ -38,59 +38,59 @@ function App() {
               <Route exact path="/Register" element={<Register />}></Route>
 
               <Route exact path="/SearchBook" element={
-                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <SearchBookOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/BorrowedBooks" element={
-                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <BorrowedBooksOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/SendMessage" element={
-                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <SendMessageOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/ViewInbox" element={
-                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                <ProtectedRoute roles={["member", "staff", "manager"]}>
                   <ViewInboxOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/ReadBook" element={
-                <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
+                <ProtectedRoute roles={["member", "staff", "manager"]}>
                   < BookReadingPage />
                 </ProtectedRoute>}>
               </Route>
 
               <Route exact path="/BorrowRequests" element={
-                <ProtectedRoute roles={["Staff", "Admin"]}>
+                <ProtectedRoute roles={["staff", "manager"]}>
                   < BorrowRequestsOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/MemberRegistirations" element={
-                <ProtectedRoute roles={["Staff", "Admin"]}>
+                <ProtectedRoute roles={["staff", "manager"]}>
                   < MemberRegistirationsOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/PunishMember" element={
-                <ProtectedRoute roles={["Staff", "Admin"]}>
+                <ProtectedRoute roles={["staff", "manager"]}>
                   < PunishMemberOP />
                 </ProtectedRoute>}>
               </Route>
 
               <Route exact path="/ChangeRole" element={
-                <ProtectedRoute roles={["Admin"]}>
+                <ProtectedRoute roles={["manager"]}>
                   < ChangeRoleOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/PunishStaff" element={
-                <ProtectedRoute roles={["Admin"]}>
+                <ProtectedRoute roles={["manager"]}>
                   < PunishStaffOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/BookCreateRequests" element={
-                <ProtectedRoute roles={["Admin"]}>
+                <ProtectedRoute roles={["manager"]}>
                   < BookCreateReqOP />
                 </ProtectedRoute>}>
               </Route>

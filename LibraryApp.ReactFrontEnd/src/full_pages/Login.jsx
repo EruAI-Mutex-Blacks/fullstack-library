@@ -10,7 +10,7 @@ function Login() {
     const { setUser } = useUser();
     const navigate = useNavigate();
 
-    const user = {
+    const loginDTO = {
         username : username,
         password : password
     }
@@ -19,15 +19,12 @@ function Login() {
         const response = await fetch("http://localhost:5109/api/Account/Login", {
             method : "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(user)
+            body: JSON.stringify(loginDTO)
         });
-        const data = await response.json();
-        console.log(data);
-        //api request with our username and password
-        //user = api request response
-        //setUser() if true
-        //navigate("/")
-
+        const userDTO = await response.json();
+        setUser(userDTO);
+        console.log(userDTO);
+        navigate("/");
     };
 
     return (
