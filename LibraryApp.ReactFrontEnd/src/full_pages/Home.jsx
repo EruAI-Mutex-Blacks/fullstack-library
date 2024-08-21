@@ -10,38 +10,48 @@ function Home() {
     const { user } = useUser();
 
     return (
-        <div className='container'>
-            <div className="row d-flex flex-row justify-content-around">
-                {(["member", "staff", "manager"].includes(user.roleName)) && (
-                    <>
-                        <div className="col-4">
-                            <BookOperationsCard />
-                        </div>
-                        < div className="col-4">
-                            <MessageOperationsCard />
-                        </div>
-                    </>
-                )}
-                {
-                    (["staff", "manager"].includes(user.roleName)) && (
-                        < div className="col-4">
-                            <MemberOperationsCard />
-                        </div>
-                    )}
-                {
-                    (user.roleName === "manager") && (
-                        <>
-                            < div className="col-4">
-                                <StaffOperationsCard />
-                            </div>
-                            < div className="col-4">
-                                <AuthorOperationsCard />
-                            </div>
-                        </>
-                    )}
+        !user ? (
+            <div className='flex-fill align-self-center text-center'>
+                <div>
+                    <h1>Welcome to the library</h1>
+                    <p>Please login or register to our library from the <b>top right corner</b> to do any kind of operations</p>
+                </div>
             </div>
-        </div >
-    )
+        )
+            :
+            (user) && (
+                <div className='container'>
+                    <div className="row d-flex flex-row justify-content-around">
+                        {(["member", "staff", "manager"].includes(user.roleName)) && (
+                            <>
+                                <div className="col-4">
+                                    <BookOperationsCard />
+                                </div>
+                                < div className="col-4">
+                                    <MessageOperationsCard />
+                                </div>
+                            </>
+                        )}
+                        {
+                            (["staff", "manager"].includes(user.roleName)) && (
+                                < div className="col-4">
+                                    <MemberOperationsCard />
+                                </div>
+                            )}
+                        {
+                            (user.roleName === "manager") && (
+                                <>
+                                    < div className="col-4">
+                                        <StaffOperationsCard />
+                                    </div>
+                                    < div className="col-4">
+                                        <AuthorOperationsCard />
+                                    </div>
+                                </>
+                            )}
+                    </div>
+                </div >
+            ))
 }
 
 export default Home;

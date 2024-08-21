@@ -23,7 +23,6 @@ function Login() {
         });
         const userDTO = await response.json();
         setUser(userDTO);
-        console.log(userDTO);
         navigate("/");
     };
 
