@@ -44,32 +44,64 @@ function App() {
               </Route>
               <Route exact path="/BorrowedBooks" element={
                 <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
-                  <SearchBookOP />
+                  <BorrowedBooksOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/SendMessage" element={
                 <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
-                  <SearchBookOP />
+                  <SendMessageOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/ViewInbox" element={
                 <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
-                  <SearchBookOP />
+                  <ViewInboxOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/ReadBook" element={
                 <ProtectedRoute roles={["Member", "Staff", "Admin"]}>
-                  <SearchBookOP />
+                  < BookReadingPage />
                 </ProtectedRoute>}>
               </Route>
-            
-          </Routes>
-        </UserProvider>
-      </main>
-      <footer className="mt-auto">
-        <Footer />
-      </footer>
-    </div>
+
+              <Route exact path="/BorrowRequests" element={
+                <ProtectedRoute roles={["Staff", "Admin"]}>
+                  < BorrowRequestsOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/MemberRegistirations" element={
+                <ProtectedRoute roles={["Staff", "Admin"]}>
+                  < MemberRegistirationsOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/PunishMember" element={
+                <ProtectedRoute roles={["Staff", "Admin"]}>
+                  < PunishMemberOP />
+                </ProtectedRoute>}>
+              </Route>
+
+              <Route exact path="/ChangeRole" element={
+                <ProtectedRoute roles={["Admin"]}>
+                  < ChangeRoleOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/PunishStaff" element={
+                <ProtectedRoute roles={["Admin"]}>
+                  < PunishStaffOP />
+                </ProtectedRoute>}>
+              </Route>
+              <Route exact path="/BookCreateRequests" element={
+                <ProtectedRoute roles={["Admin"]}>
+                  < BookCreateReqOP />
+                </ProtectedRoute>}>
+              </Route>
+
+            </Routes>
+          </UserProvider>
+        </main>
+        <footer className="mt-auto">
+          <Footer />
+        </footer>
+      </div>
     </BrowserRouter >
   )
 }
