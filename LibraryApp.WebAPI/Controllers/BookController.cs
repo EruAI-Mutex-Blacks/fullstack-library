@@ -14,10 +14,12 @@ namespace fullstack_library.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepo;
+        private readonly IBookBorrowActivityRepository _bookBorrowRepo;
 
-        public BookController(IBookRepository bookRepo)
+        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo)
         {
             _bookRepo = bookRepo;
+            _bookBorrowRepo = bookBorrowRepo;
         }
 
         [HttpPut("ApprovePublishing/{bookId}")]
@@ -56,6 +58,25 @@ namespace fullstack_library.Controllers
                 PublishDate = b.PublishDate,
             });
             return Ok(books);
+        }
+
+        [HttpGet("BorrowedBooks")]
+        public IActionResult BorrowedBooks([FromQuery] int userId)
+        {
+            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
+            {
+                BorrowDate = bba.BorrowDate,
+                ReturnDate = bba.ReturnDate,
+                BookDTO = new BookDTO
+                {
+                    Authors = bba.Book.BookAuthors.Select(ba => ba.User.Name).ToList(),
+                    Title = bba.Book.Title,
+                    IsBorrowed = bba.Book.IsBorrowed,
+                    PublishDate = bba.Book.PublishDate,
+                },
+            });
+
+            return Ok(borrowedBookDTOS);
         }
     }
 }

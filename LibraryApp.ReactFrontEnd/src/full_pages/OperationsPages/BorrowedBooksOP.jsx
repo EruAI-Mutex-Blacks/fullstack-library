@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom";
 import BookOperationsCard from "../../Components/OperationsCards/BookOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
+import { useEffect, useState } from "react";
+import { useUser } from "../../AccountOperations/UserContext";
 
 
 function BorrowedBooksOP() {
 
-    //borrowed books will be fetched from api using current logged in user's id.
-    const seedBook = {
-        id: 1,
-        title: "Book 1",
-        publishDate: `${new Date().getDate()}-${new Date().getUTCMonth()}-${new Date().getFullYear()}`,
-        isBorrowed: false
+    const { user } = useUser();
+    const [books, setBooks] = useState([]);
+
+    const getBorrowedBooks = async function () {
+        var response = await fetch("http://localhost:5109/api/Book/BorrowedBooks?userId=" + user.id);
+        var books = await response.json();
+        console.log(books);
+        setBooks(books);
     }
 
-    const seedBooks = [];
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
+    useEffect(() => {
+        getBorrowedBooks();
+    }, []);
 
     function handleReturnClick(book) {
     }
@@ -26,22 +28,26 @@ function BorrowedBooksOP() {
         <table className="table table-light table-striped table-hover flex-fill">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Title</th>
+                    <th>Authors</th>
                     <th>Publish Date</th>
+                    <th>Borrowed Date</th>
+                    <th>Return Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {seedBooks.map(b => (
+                {books.map(b => (
                     <tr>
-                        <td>{b.id}</td>
-                        <td>{b.title}</td>
-                        <td>{b.publishDate}</td>
+                        <td>{b.bookDTO.title}</td>
+                        <td>{b.bookDTO.authors.join(", ")}</td>
+                        <td>{b.bookDTO.publishDate}</td>
+                        <td>{b.borrowDate}</td>
+                        <td>{b.returnDate}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
-                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Read</Link></li>
-                                <li className="me-2"><Link onClick={() => { handleReturnClick(b) }} className={`py-1 px-2 btn btn-success`}>Return</Link></li>
+                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookDTO.id} className={`py-1 px-2 btn btn-danger`}>Read</Link></li>
+                                <li className="me-2"><Link onClick={() => { handleReturnClick(b.bookDTO) }} className={`py-1 px-2 btn btn-success`}>Return</Link></li>
                             </ul>
                         </td>
                     </tr>
