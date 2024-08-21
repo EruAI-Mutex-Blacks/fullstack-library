@@ -37,7 +37,7 @@ namespace fullstack_library.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("PublishDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -53,7 +53,7 @@ namespace fullstack_library.Migrations
                             Id = 1,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 4, 11, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2596),
+                            PublishDate = new DateTime(2024, 4, 13, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5644),
                             Title = "Book 1"
                         },
                         new
@@ -61,7 +61,7 @@ namespace fullstack_library.Migrations
                             Id = 2,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 8, 6, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2605),
+                            PublishDate = new DateTime(2024, 8, 8, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5656),
                             Title = "Book 2"
                         },
                         new
@@ -69,7 +69,7 @@ namespace fullstack_library.Migrations
                             Id = 3,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 3, 13, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2606),
+                            PublishDate = new DateTime(2024, 3, 15, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5658),
                             Title = "Book 3"
                         });
                 });
@@ -129,10 +129,10 @@ namespace fullstack_library.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -150,24 +150,24 @@ namespace fullstack_library.Migrations
                         {
                             Id = 1,
                             BookId = 1,
-                            BorrowDate = new DateTime(2024, 8, 12, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2730),
-                            ReturnDate = new DateTime(2024, 8, 18, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2730),
+                            BorrowDate = new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763),
+                            ReturnDate = new DateTime(2024, 8, 20, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763),
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             BookId = 2,
-                            BorrowDate = new DateTime(2024, 8, 5, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2732),
-                            ReturnDate = new DateTime(2024, 8, 12, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2732),
+                            BorrowDate = new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5765),
+                            ReturnDate = new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5766),
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
                             BookId = 3,
-                            BorrowDate = new DateTime(2024, 7, 29, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2733),
-                            ReturnDate = new DateTime(2024, 8, 5, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2734),
+                            BorrowDate = new DateTime(2024, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767),
+                            ReturnDate = new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767),
                             UserId = 3
                         });
                 });
@@ -315,17 +315,27 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Admin"
+                            Name = "pendingUser"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User"
+                            Name = "member"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Author"
+                            Name = "author"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "staff"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "manager"
                         });
                 });
 
@@ -338,7 +348,7 @@ namespace fullstack_library.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<int>("FineAmount")
                         .HasColumnType("integer");
@@ -381,7 +391,7 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(1993, 7, 29, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2838),
+                            BirthDate = new DateTime(1993, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5863),
                             FineAmount = 0,
                             Gender = 'M',
                             IsPunished = false,
@@ -394,7 +404,7 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateTime(1985, 5, 15, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2842),
+                            BirthDate = new DateTime(1985, 5, 17, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5868),
                             FineAmount = 0,
                             Gender = 'W',
                             IsPunished = false,
@@ -407,7 +417,7 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 3,
-                            BirthDate = new DateTime(1984, 6, 25, 15, 3, 12, 922, DateTimeKind.Utc).AddTicks(2844),
+                            BirthDate = new DateTime(1984, 6, 27, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5870),
                             FineAmount = 0,
                             Gender = 'W',
                             IsPunished = false,

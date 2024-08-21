@@ -49,7 +49,7 @@ namespace fullstack_library.Controllers
         [HttpPost("Register")]
         public IActionResult Register(RegisterDTO registerDTO)
         {
-            //TODO here we make user newUser first then a staff will approve or deny the req
+            //TODO here we make user pendinguser first then a staff will approve or deny the req cannot leave null
             _userRepo.CreateUser(new User
             {
                 Name = registerDTO.Name,
@@ -58,6 +58,7 @@ namespace fullstack_library.Controllers
                 Password = registerDTO.Password,
                 BirthDate = registerDTO.BirthDate,
                 Gender = registerDTO.Gender,
+                RoleId = 1,
             });
             return Ok(new { message = "User registered" });
         }

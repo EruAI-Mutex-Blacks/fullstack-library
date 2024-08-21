@@ -31,6 +31,7 @@ function Login() {
             }
 
             const userDTO = await response.json();
+            //FIXME use cookies or smt like that to keep user logged in until it logs out
             setUser(userDTO);
             navigate("/");
         } catch (error) {

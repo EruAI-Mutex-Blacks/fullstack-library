@@ -21,8 +21,9 @@ namespace fullstack_library.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    PublishDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false)
+                    IsPublished = table.Column<bool>(type: "boolean", nullable: false),
+                    PublishDate = table.Column<DateTime>(type: "DATE", nullable: false),
+                    IsBorrowed = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,8 +74,10 @@ namespace fullstack_library.Migrations
                     Surname = table.Column<string>(type: "text", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Gender = table.Column<char>(type: "character(1)", nullable: false)
+                    BirthDate = table.Column<DateTime>(type: "DATE", nullable: false),
+                    Gender = table.Column<char>(type: "character(1)", nullable: false),
+                    IsPunished = table.Column<bool>(type: "boolean", nullable: false),
+                    FineAmount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,8 +124,8 @@ namespace fullstack_library.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BookId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    BorrowDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    BorrowDate = table.Column<DateTime>(type: "DATE", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "DATE", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,14 +144,43 @@ namespace fullstack_library.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SenderId = table.Column<int>(type: "integer", nullable: false),
+                    ReceiverId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Details = table.Column<string>(type: "text", nullable: false),
+                    IsReceiverRead = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Users_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_Users_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Books",
-                columns: new[] { "Id", "IsAvailable", "PublishDate", "Title" },
+                columns: new[] { "Id", "IsBorrowed", "IsPublished", "PublishDate", "Title" },
                 values: new object[,]
                 {
-                    { 1, true, new DateTime(2024, 3, 29, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3396), "Book 1" },
-                    { 2, true, new DateTime(2024, 7, 24, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3404), "Book 2" },
-                    { 3, true, new DateTime(2024, 2, 29, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3405), "Book 3" }
+                    { 1, false, true, new DateTime(2024, 4, 13, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5644), "Book 1" },
+                    { 2, false, true, new DateTime(2024, 8, 8, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5656), "Book 2" },
+                    { 3, false, true, new DateTime(2024, 3, 15, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5658), "Book 3" }
                 });
 
             migrationBuilder.InsertData(
@@ -156,9 +188,11 @@ namespace fullstack_library.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Admin" },
-                    { 2, "User" },
-                    { 3, "Author" }
+                    { 1, "pendingUser" },
+                    { 2, "member" },
+                    { 3, "author" },
+                    { 4, "staff" },
+                    { 5, "manager" }
                 });
 
             migrationBuilder.InsertData(
@@ -173,12 +207,12 @@ namespace fullstack_library.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "BirthDate", "Gender", "Name", "Password", "RoleId", "Surname", "Username" },
+                columns: new[] { "Id", "BirthDate", "FineAmount", "Gender", "IsPunished", "Name", "Password", "RoleId", "Surname", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1993, 7, 16, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3542), 'M', "User 1", "123", 1, "surname1", "sr1" },
-                    { 2, new DateTime(1985, 5, 2, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3545), 'W', "User 2", "123", 2, "surname2", "sr12" },
-                    { 3, new DateTime(1984, 6, 12, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3547), 'W', "User 3", "123", 3, "surname3", "sr123" }
+                    { 1, new DateTime(1993, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5863), 0, 'M', false, "User 1", "123", 1, "surname1", "sr1" },
+                    { 2, new DateTime(1985, 5, 17, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5868), 0, 'W', false, "User 2", "123", 2, "surname2", "sr12" },
+                    { 3, new DateTime(1984, 6, 27, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5870), 0, 'W', false, "User 3", "123", 3, "surname3", "sr123" }
                 });
 
             migrationBuilder.InsertData(
@@ -196,9 +230,21 @@ namespace fullstack_library.Migrations
                 columns: new[] { "Id", "BookId", "BorrowDate", "ReturnDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 7, 30, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3488), new DateTime(2024, 8, 5, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3489), 1 },
-                    { 2, 2, new DateTime(2024, 7, 23, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3491), new DateTime(2024, 7, 30, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3492), 2 },
-                    { 3, 3, new DateTime(2024, 7, 16, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3493), new DateTime(2024, 7, 23, 19, 41, 34, 298, DateTimeKind.Utc).AddTicks(3494), 3 }
+                    { 1, 1, new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763), new DateTime(2024, 8, 20, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763), 1 },
+                    { 2, 2, new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5765), new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5766), 2 },
+                    { 3, 3, new DateTime(2024, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767), new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767), 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Messages",
+                columns: new[] { "Id", "Details", "IsReceiverRead", "ReceiverId", "SenderId", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Selam, nasılsın? Bir konu hakkında soru soracaktım", false, 2, 1, "Title test 1" },
+                    { 2, "iş nasıl gidiyor", false, 3, 1, "Title test 2" },
+                    { 3, "yeni tshirt aldım", false, 1, 2, "Title test 3" },
+                    { 4, "çalışın ulan! anca dedikodu", false, 3, 2, "Title test 4" },
+                    { 5, "Sakin ol patron", false, 2, 3, "Title test 5" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -220,6 +266,16 @@ namespace fullstack_library.Migrations
                 name: "IX_BookBorrowActivities_UserId",
                 table: "BookBorrowActivities",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ReceiverId",
+                table: "Messages",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pages_BookId",
@@ -246,6 +302,9 @@ namespace fullstack_library.Migrations
 
             migrationBuilder.DropTable(
                 name: "BookBorrowActivities");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Pages");

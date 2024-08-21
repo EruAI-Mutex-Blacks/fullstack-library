@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace fullstack_library.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20240810210947_AddBookTablePublishedColumn")]
-    partial class AddBookTablePublishedColumn
+    [Migration("20240821175348_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace fullstack_library.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("PublishDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -56,7 +56,7 @@ namespace fullstack_library.Migrations
                             Id = 1,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 4, 2, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(879),
+                            PublishDate = new DateTime(2024, 4, 13, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5644),
                             Title = "Book 1"
                         },
                         new
@@ -64,7 +64,7 @@ namespace fullstack_library.Migrations
                             Id = 2,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 7, 28, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(887),
+                            PublishDate = new DateTime(2024, 8, 8, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5656),
                             Title = "Book 2"
                         },
                         new
@@ -72,7 +72,7 @@ namespace fullstack_library.Migrations
                             Id = 3,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 3, 4, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(889),
+                            PublishDate = new DateTime(2024, 3, 15, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5658),
                             Title = "Book 3"
                         });
                 });
@@ -132,10 +132,10 @@ namespace fullstack_library.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -153,25 +153,106 @@ namespace fullstack_library.Migrations
                         {
                             Id = 1,
                             BookId = 1,
-                            BorrowDate = new DateTime(2024, 8, 3, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(984),
-                            ReturnDate = new DateTime(2024, 8, 9, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(985),
+                            BorrowDate = new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763),
+                            ReturnDate = new DateTime(2024, 8, 20, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5763),
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             BookId = 2,
-                            BorrowDate = new DateTime(2024, 7, 27, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(987),
-                            ReturnDate = new DateTime(2024, 8, 3, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(988),
+                            BorrowDate = new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5765),
+                            ReturnDate = new DateTime(2024, 8, 14, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5766),
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
                             BookId = 3,
-                            BorrowDate = new DateTime(2024, 7, 20, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(990),
-                            ReturnDate = new DateTime(2024, 7, 27, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(990),
+                            BorrowDate = new DateTime(2024, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767),
+                            ReturnDate = new DateTime(2024, 8, 7, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5767),
                             UserId = 3
+                        });
+                });
+
+            modelBuilder.Entity("LibraryApp.Data.Entity.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsReceiverRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Details = "Selam, nasılsın? Bir konu hakkında soru soracaktım",
+                            IsReceiverRead = false,
+                            ReceiverId = 2,
+                            SenderId = 1,
+                            Title = "Title test 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Details = "iş nasıl gidiyor",
+                            IsReceiverRead = false,
+                            ReceiverId = 3,
+                            SenderId = 1,
+                            Title = "Title test 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Details = "yeni tshirt aldım",
+                            IsReceiverRead = false,
+                            ReceiverId = 1,
+                            SenderId = 2,
+                            Title = "Title test 3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Details = "çalışın ulan! anca dedikodu",
+                            IsReceiverRead = false,
+                            ReceiverId = 3,
+                            SenderId = 2,
+                            Title = "Title test 4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Details = "Sakin ol patron",
+                            IsReceiverRead = false,
+                            ReceiverId = 2,
+                            SenderId = 3,
+                            Title = "Title test 5"
                         });
                 });
 
@@ -237,17 +318,27 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Admin"
+                            Name = "pendingUser"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User"
+                            Name = "member"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Author"
+                            Name = "author"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "staff"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "manager"
                         });
                 });
 
@@ -260,10 +351,16 @@ namespace fullstack_library.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("DATE");
+
+                    b.Property<int>("FineAmount")
+                        .HasColumnType("integer");
 
                     b.Property<char>("Gender")
                         .HasColumnType("character(1)");
+
+                    b.Property<bool>("IsPunished")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -297,8 +394,10 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(1993, 7, 20, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(1053),
+                            BirthDate = new DateTime(1993, 7, 31, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5863),
+                            FineAmount = 0,
                             Gender = 'M',
+                            IsPunished = false,
                             Name = "User 1",
                             Password = "123",
                             RoleId = 1,
@@ -308,8 +407,10 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 2,
-                            BirthDate = new DateTime(1985, 5, 6, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(1056),
+                            BirthDate = new DateTime(1985, 5, 17, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5868),
+                            FineAmount = 0,
                             Gender = 'W',
+                            IsPunished = false,
                             Name = "User 2",
                             Password = "123",
                             RoleId = 2,
@@ -319,8 +420,10 @@ namespace fullstack_library.Migrations
                         new
                         {
                             Id = 3,
-                            BirthDate = new DateTime(1984, 6, 16, 21, 9, 47, 230, DateTimeKind.Utc).AddTicks(1058),
+                            BirthDate = new DateTime(1984, 6, 27, 17, 53, 48, 4, DateTimeKind.Utc).AddTicks(5870),
+                            FineAmount = 0,
                             Gender = 'W',
+                            IsPunished = false,
                             Name = "User 3",
                             Password = "123",
                             RoleId = 3,
@@ -365,6 +468,25 @@ namespace fullstack_library.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LibraryApp.Data.Entity.Message", b =>
+                {
+                    b.HasOne("LibraryApp.Data.Entity.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Data.Entity.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("LibraryApp.Data.Entity.Page", b =>
