@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 namespace LibraryApp.Data.Entity
 {
     public class Book
@@ -5,6 +6,7 @@ namespace LibraryApp.Data.Entity
         public int Id { get; set; }
         public string Title { get; set; }= string.Empty;
         public bool IsPublished { get; set; }        
+        [Column(TypeName = "DATE")]
         public DateTime PublishDate { get; set; }
         public bool IsBorrowed { get; set; }        
 

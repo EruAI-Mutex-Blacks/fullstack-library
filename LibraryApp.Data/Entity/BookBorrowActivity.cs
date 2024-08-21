@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
 namespace LibraryApp.Data.Entity
 {
     public class BookBorrowActivity
@@ -6,7 +7,9 @@ namespace LibraryApp.Data.Entity
         public int Id { get; set; }
         public int BookId { get; set; }
         public int UserId { get; set; }
+        [Column(TypeName = "DATE")]
         public DateTime BorrowDate { get; set; }
+        [Column(TypeName = "DATE")]
         public DateTime ReturnDate { get; set; }
 
         public Book Book { get; set; } = null!;

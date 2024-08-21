@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace LibraryApp.Data.Entity
 {
     public class User
@@ -8,6 +10,7 @@ namespace LibraryApp.Data.Entity
         public string Surname { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        [Column(TypeName = "DATE")]
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
         public bool IsPunished { get; set; }

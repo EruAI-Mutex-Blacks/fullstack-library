@@ -50,10 +50,11 @@ namespace LibraryApp.Data.Entity
             );
 
             modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "manager" },
+                new Role { Id = 1, Name = "pendingUser" },
                 new Role { Id = 2, Name = "member" },
-                new Role { Id = 3, Name = "staff" },
-                new Role { Id = 4, Name = "author" }
+                new Role { Id = 3, Name = "author" },
+                new Role { Id = 4, Name = "staff" },
+                new Role { Id = 5, Name = "manager" }
             );
 
             modelBuilder.Entity<User>().HasData(
