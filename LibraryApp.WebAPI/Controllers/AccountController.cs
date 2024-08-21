@@ -49,7 +49,6 @@ namespace fullstack_library.Controllers
         [HttpPost("Register")]
         public IActionResult Register(RegisterDTO registerDTO)
         {
-            //TODO here we make user pendinguser first then a staff will approve or deny the req cannot leave null
             _userRepo.CreateUser(new User
             {
                 Name = registerDTO.Name,
