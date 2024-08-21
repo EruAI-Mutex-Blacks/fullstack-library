@@ -20,14 +20,22 @@ function Login() {
     }
 
     const handleLoginClick = async function () {
-        const response = await fetch("http://localhost:5109/api/Account/Login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(loginDTO)
-        });
-        const userDTO = await response.json();
-        setUser(userDTO);
-        navigate("/");
+        try {
+            const response = await fetch("http://localhost:5109/api/Account/Login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loginDTO)
+            });
+            if (!response.ok) {
+                return;
+            }
+
+            const userDTO = await response.json();
+            setUser(userDTO);
+            navigate("/");
+        } catch (error) {
+            console.log("There was an error in the process", error);
+        }
     };
 
     return (
