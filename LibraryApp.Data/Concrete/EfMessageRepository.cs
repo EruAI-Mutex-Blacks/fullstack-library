@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryApp.Data.Abstract;
+using Microsoft.EntityFrameworkCore;
 using LibraryApp.Data.Entity;
 
 namespace LibraryApp.Data.Concrete
@@ -23,14 +24,16 @@ namespace LibraryApp.Data.Concrete
             _context.SaveChanges();
         }
 
-        public void GetMessagesByReceiverId(int receiverId)
+        //TODO Make every list returning method queryable returning method and delete getmethods as property is public 
+        public List<Message> GetMessagesByReceiverId(int receiverId)
         {
-            throw new NotImplementedException();
+            return _context.Messages.Where(m => m.ReceiverId == receiverId).Include(m => m.Sender).ToList();
         }
 
-        public void GetMessagesBySenderId(int senderId)
-        {
-            throw new NotImplementedException();
-        }
+        //to see sent messages
+        // public void GetMessagesBySenderId(int senderId)
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }

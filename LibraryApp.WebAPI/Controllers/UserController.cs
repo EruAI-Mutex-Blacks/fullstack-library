@@ -72,6 +72,8 @@ namespace fullstack_library.Controllers
             var receiver = _userRepo.GetUserById(msg.ReceiverId);
             if (receiver == null) return NotFound(new { message = "Receiver user not found" });
 
+            //FIXME cannot send title rn
+
             var entity = new Message
             {
                 SenderId = msg.SenderId,
@@ -81,7 +83,22 @@ namespace fullstack_library.Controllers
             };
             _msgRepo.CreateMessage(entity);
 
-            return Ok(new {Message = "Message has been sent"});
+            return Ok(new { Message = "Message has been sent" });
+        }
+
+        [HttpGet("GetInbox")]
+        public IActionResult GetInbox([FromQuery] int userId)
+        {
+            var msgs = _msgRepo.GetMessagesByReceiverId(userId).Take(15).Reverse();
+
+            return Ok(msgs.Select(m =>
+            new MessageDTO
+            {
+                Details = m.Details,
+                ReceiverId = m.ReceiverId,
+                SenderId = m.SenderId,
+                SenderName = m.Sender.Name + " " + m.Sender.Surname,
+            }));
         }
 
         [HttpGet("GetMsgReceivers")]

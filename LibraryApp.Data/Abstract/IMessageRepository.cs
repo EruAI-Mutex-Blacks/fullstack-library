@@ -6,7 +6,9 @@ public interface IMessageRepository
 {
     public IQueryable<Message> Messages { get; }
 
-    public void GetMessagesBySenderId(int senderId);
-    public void GetMessagesByReceiverId(int receiverId);
+    public List<Message> GetMessagesByReceiverId(int receiverId);
     public void CreateMessage(Message msg);
+
+    //to see sent messages
+    // public void GetMessagesBySenderId(int senderId);
 }

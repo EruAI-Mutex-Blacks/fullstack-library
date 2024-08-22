@@ -1,74 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageOperationsCard from "../../Components/OperationsCards/MessageOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
-
+import { useUser } from "../../AccountOperations/UserContext"
 
 function ViewInboxOP() {
     //TODO maybe do message card jsx component for left panel to not repeat same codes
-    //TODO add topic of message
+    //TODO add title of message
 
-    const [username, setUsername] = useState("iniital?");
-    const [avatar, setAvatar] = useState("initial?");
+    const { user } = useUser();
+    const [messages, setMessages] = useState([]);
+    const [senderName, setSenderName] = useState("iniital?");
     const [msgDetails, setMsgDetails] = useState("determine what to put here as initially");
+    const [msgTitle, setMsgTitle] = useState("hey");
 
-    const handleMsgCardClick = function (user) {
-        //GET message content from api with sender id and receiver id instead of below.
-        setMsgDetails("fwefwgwrgwefew wrgwrg erg erg erg r erg et awd af wee sacdasd asda sd asda sd asda sdas");
-        setUsername(user.name);
-        setAvatar(user.avatar);
-        //TODO add extra read state here
+    const getInbox = async function () {
+        const res = await fetch("http://localhost:5109/api/User/GetInbox?userId=" + user.id);
+        if (!res.ok) return;
+        const messages = await res.json();
+        setMessages(messages);
+        console.log(messages);
     }
 
-    //messages that has sent to currently logged in user
+    useEffect(() => {
+        getInbox();
+    }, []);
+
+    //when click on a message from left fetch that message or just filter fetched messages list so we need messageId
+
+    const handleMsgCardClick = async function (message) {
+        setSenderName(message.senderName);
+        setMsgDetails(message.details);
+        setMsgTitle(message.title);
+
+        //TODO add extra read state and when unmount fetch db to update readstates here
+    }
+
     const rightPanel = (
-        <div className="d-flex container flex-fill justify-content-between">
+        <div className="d-flex container p-0 flex-fill justify-content-between">
             <div className="col-3 me-2 p-2 bg-light rounded" style={{ height: "65vh", overflow: "auto" }}>
-                {/*--------------------------------- card -----------------------------------*/}
-                <div onClick={() => { handleMsgCardClick({ id: 1, name: "turker" , avatar:"turko.jpg"}) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
-                    <div className="d-flex mb-2 justify-content-between border-bottom border-dark">
-                        <div>sm avt</div>
-                        <div><h6 className="align-self-center">Sender 1</h6></div>
+                {messages.map((m, index) =>
+                (
+                    <div onClick={() => { handleMsgCardClick(m) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
+                        <div className="d-flex mb-2 justify-content-between border-bottom border-dark">
+                            <p className="mb-1 pe-1 text-start fs-7">Title???</p>
+                            <p className="mb-1 ps-1 fs-8 text-end"><b>{m.senderName}</b></p>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <p className="pt-1 fs-8 mb-2 text-start">{m.details.slice(0, 20) + "..."}</p>
+                            <span className="badge text-bg-danger align-self-center ms-2 p-1">unread</span>
+                        </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="pt-1 fs-7 mb-2">small piece..</p>
-                        <span className="badge text-bg-danger align-self-center ms-2 p-1">unread</span>
-                    </div>
-                </div>
-                {/*--------------------------------- card -----------------------------------*/}
-                <div onClick={() => { handleMsgCardClick({ id: 1, name: "mrat" , avatar:"mrat.jpg"}) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
-                    <div className="d-flex mb-2 justify-content-between border-bottom border-dark">
-                        <div>sm avt</div>
-                        <div><h6 className="align-self-center">Sender 1</h6></div>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="pt-1 fs-7 mb-2">small piece..</p>
-                        <span className="badge text-bg-danger align-self-center ms-2 p-1">unread</span>
-                    </div>
-                </div>
-                {/*--------------------------------- card -----------------------------------*/}
-                <div onClick={() => { handleMsgCardClick({ id: 1, name: "hata" , avatar:"hata.jpg"}) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
-                    <div className="d-flex mb-2 justify-content-between border-bottom border-dark">
-                        <div>sm avt</div>
-                        <div><h6 className="align-self-center">Sender 1</h6></div>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="pt-1 fs-7 mb-2">small piece..</p>
-                        <span className="badge text-bg-danger align-self-center ms-2 p-1">unread</span>
-                    </div>
-                </div>
+                )
+                )}
             </div>
-            <div className="col-9 p-2 bg-light rounded d-flex flex-column" style={{ height: "65vh", overflow: "auto" }}>
+            <div className="col-9 p-2 bg-light rounded d-flex flex-column" style={{ height: "65vh" }}>
                 <div className="d-flex justify-content-between bg-success-subtle border-bottom border-dark px-3 pt-3 pb-0 rounded mb-2">
-                    <div>{avatar}</div>
-                    <h4>{username}</h4>
+                    <div className="text-start">{msgTitle}</div>
+                    <h5 className="text-end">{senderName}</h5>
                 </div>
-                <div className="p-3 bg-success-subtle px-3 pt-3 pb-0 rounded">
+                <div className="p-3 bg-success-subtle px-3 pt-3 pb-0 rounded flex-fill" style={{ overflow: "auto" }}>
                     <p>{msgDetails}</p>
                 </div>
             </div>
         </div>
     );
-
+    //FIXME yazı uzayınca nedense genişliyor
     return (<GeneralOperationsPage leftPanel={(<MessageOperationsCard />)} rightPanel={rightPanel} />)
 }
 
