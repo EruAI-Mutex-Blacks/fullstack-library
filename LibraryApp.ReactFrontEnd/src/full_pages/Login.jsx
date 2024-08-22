@@ -31,7 +31,7 @@ function Login() {
             }
 
             const userDTO = await response.json();
-            //FIXME use cookies or smt like that to keep user logged in until it logs out
+            //FIXME use cookies or smt like that to keep user logged in until it logs out. jwt to send token when we need to do any kind of operations. it needs to check if user is real otherwise some people can send a placholder user to server. or if you need basic make a currentuser in backend and want password for every action to check if they are same
             setUser(userDTO);
             navigate("/");
         } catch (error) {

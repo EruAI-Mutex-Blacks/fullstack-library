@@ -34,6 +34,7 @@ namespace fullstack_library.Controllers
             UserDTO userDTO = new UserDTO
             {
                 Id = user.Id,
+                RoleId = user.RoleId,
                 RoleName = user.Role.Name,
                 Name = user.Name,
                 Surname = user.Surname,
