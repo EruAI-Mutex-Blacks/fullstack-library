@@ -11,6 +11,7 @@ namespace LibraryApp.Data.Entity
         public DateTime BorrowDate { get; set; }
         [Column(TypeName = "DATE")]
         public DateTime ReturnDate { get; set; }
+        public bool IsApproved { get; set; }
 
         public Book Book { get; set; } = null!;
         public User User { get; set; } = null!;

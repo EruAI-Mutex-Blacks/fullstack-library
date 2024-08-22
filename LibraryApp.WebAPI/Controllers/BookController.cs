@@ -63,7 +63,7 @@ namespace fullstack_library.Controllers
         [HttpGet("BorrowedBooks")]
         public IActionResult BorrowedBooks([FromQuery] int userId)
         {
-            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
+            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
             {
                 BorrowDate = bba.BorrowDate,
                 ReturnDate = bba.ReturnDate,
@@ -73,6 +73,23 @@ namespace fullstack_library.Controllers
                     Title = bba.Book.Title,
                     IsBorrowed = bba.Book.IsBorrowed,
                     PublishDate = bba.Book.PublishDate,
+                },
+            });
+
+            return Ok(borrowedBookDTOS);
+        }
+
+        [HttpGet("BorrowRequests")]
+        public IActionResult BorrowRequests()
+        {
+            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).Select(bba => new BookBorrowActivityDTO
+            {
+                RequestorName = bba.User.Name + " " + bba.User.Surname,
+                BorrowDate = bba.BorrowDate,
+                ReturnDate = bba.ReturnDate,
+                BookDTO = new BookDTO
+                {
+                    Title = bba.Book.Title,
                 },
             });
 

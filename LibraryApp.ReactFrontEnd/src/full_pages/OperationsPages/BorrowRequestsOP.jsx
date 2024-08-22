@@ -1,25 +1,34 @@
 import { Link } from "react-router-dom";
 import MemberOperationsCard from "../../Components/OperationsCards/MemberOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
+import { useEffect, useState } from "react";
 
 
 function BorrowRequestsOP() {
 
     //borrow requests from members that has sent to currently logged in staff
-    const seedBook = {
-        id: 1,
-        title: "Book 1",
-        publishDate: `${new Date().getDate()}-${new Date().getUTCMonth()}-${new Date().getFullYear()}`,
-        isBorrowed: false
-    }
 
-    const seedBooks = [];
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
+    const [bookBorrowDTOS, setBookBorrowDTOS] = useState([]);
+
+    const getBorrowRequests = async function () {
+        try {
+            const response = await fetch("http://localhost:5109/api/Book/BorrowRequests", {
+                method: "GET",
+            });
+
+            if (!response.ok) return;
+
+            const bookBorrowDTOS = await response.json();
+            setBookBorrowDTOS(bookBorrowDTOS);
+
+        } catch (error) {
+            console.log("there was an error in fetching", error);
+        }
+    };
+
+    useEffect(() => {
+        getBorrowRequests();
+    }, []);
 
     function handleApproveClick(book) {
         window.alert("approved");
@@ -35,16 +44,18 @@ function BorrowRequestsOP() {
                 <tr>
                     <th>Book</th>
                     <th>Requestor</th>
-                    <th>Request Date</th>
+                    <th>Borrow Date</th>
+                    <th>Return Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {seedBooks.map(b => (
-                    <tr>
-                        <td>{b.title}</td>
-                        <td>{"hey"}</td>
-                        <td>{new Date().getFullYear()}</td>
+                {bookBorrowDTOS.map((b, index) => (
+                    <tr key={index}>
+                        <td>{b.bookDTO.title}</td>
+                        <td>{b.requestorName}</td>
+                        <td>{new Date(b.borrowDate).toLocaleDateString("en-US")}</td>
+                        <td>{new Date(b.returnDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
                                 <li className="me-2"><Link onClick={() => { handleApproveClick(b) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
