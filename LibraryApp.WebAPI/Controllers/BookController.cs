@@ -133,7 +133,7 @@ namespace fullstack_library.Controllers
                 Pages = book.Pages.Select(p => new PageDTO
                 {
                     Content = p.Content,
-                    Id = p.Id,
+                    PageNumber = p.PageNumber,
                 }).ToList(),
             });
         }
