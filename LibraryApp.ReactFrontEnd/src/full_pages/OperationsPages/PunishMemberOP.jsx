@@ -9,6 +9,9 @@ function PunishMemberOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
     const { user } = useUser();
     const [selectedUser, setSelectedUser] = useState({});
+    const [delayedDays, setDelayedDays] = useState(0);
+    const [finePerDay, setFinePerDay] = useState(0);
+    const [totalFine, setTotalFine] = useState(0);
 
     const getLowerRoleUsers = async function () {
         const res = await fetch(`http://localhost:5109/api/User/GetUsersForPunishment?roleId=${user.roleId}&userId=${user.id}`, {
@@ -25,11 +28,17 @@ function PunishMemberOP() {
     }, []);
 
     const handleSelectionChange = function (e) {
-        if (e.target.value) {
-            setSelectedUser(lowerRoleUsers.find(lru => lru.id == e.target.value));
-            console.log(lowerRoleUsers.find(lru => lru.id == e.target.value));
-        }
+        setSelectedUser(lowerRoleUsers.find(lru => lru.id == e.target.value));
+        console.log(lowerRoleUsers.find(lru => lru.id == e.target.value));
     }
+
+    const handleInputChange = function (e, callback) {
+        callback(prev => prev = e.target.value);
+    }
+
+    useEffect(() => {
+        setTotalFine(Math.round(delayedDays * finePerDay * 10) / 10);
+    }, [delayedDays, finePerDay])
 
     const handlePunishClick = function (id) {
     }
@@ -51,19 +60,19 @@ function PunishMemberOP() {
                     <h5 className="border-bottom border-dark pb-1">Punish user</h5>
                     <form>
                         <div className="my-3 px-2 row">
-                            <div className="col text-start pe-0">
-                                <p>Delayed days</p>
-                                <p>{6} </p>
+                            <div className="align-self-center col text-start pe-0">
+                                <label className="form-label" htmlFor="delayedDays">Delayed days</label>
+                                <input id="delayedDays" className="form-control d-inline" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
                             </div>
-                            <p className="col-1 align-self-center p-0 m-0">X</p>
-                            <div className=" col text-center ">
+                            <p className="col-1 align-self-center m-0">X</p>
+                            <div className=" col text-center align-self-center">
                                 <label className="form-label" htmlFor="finePerDay">Fine amount per day ($)</label>
-                                <input id="finePerDay" className="form-control d-inline" type="number" min={0} step={0.1} />
+                                <input id="finePerDay" className="form-control d-inline" type="number" min={0} step={0.1} onChange={e => handleInputChange(e, setFinePerDay)} />
                             </div>
-                            <p className="col-1 align-self-center ps-3 m-0">=</p>
-                            <div className="col text-end ps-0">
-                                <p>Total fine</p>
-                                <p>{"15$"}</p>
+                            <p className="col-1 align-self-center m-0">=</p>
+                            <div className="col text-end ps-0 align-self-center">
+                                <p>Total fine ($)</p>
+                                <p>{totalFine}</p>
                             </div>
                         </div>
                         <div className="mb-0">
@@ -78,14 +87,14 @@ function PunishMemberOP() {
                     </form>
                 </div>
                 <div className="col border border-dark rounded p-3 ms-2">
-                    <h5 className="border-bottom border-dark pb-1">Punishment status of {selectedUser.name}</h5>
+                    <h5 className="border-bottom border-dark pb-1">Punishment status of {selectedUser?.name}</h5>
                     <div className="my-3 mb-2">
                         <label htmlFor="isPunished" className="form-label  me-2">Is user punished?</label>
-                        <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser.isPunished} />
+                        <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="fineAmount" className="form-label">User's current total fine</label>
-                        <input id="finePerDay" className="form-control" type="number" value={selectedUser.fineAmount} min={0} step={0.1} />
+                        <input id="finePerDay" className="form-control" type="number" value={selectedUser?.fineAmount ?? 0} min={0} step={0.1} />
                     </div>
                     <Link onClick={() => { handlePunishClick(id) }} className="btn btn-success py-2 px-4">Update</Link>
                 </div>
