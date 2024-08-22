@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import MemberOperationsCard from "../../Components/OperationsCards/MemberOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
+import GeneralOperationsCard from "../../Components/OperationsCards/GeneralOperationsCard";
 
 
-function PunishMemberOP() {
+function PunishSomeoneOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
     const { user } = useUser();
     const [selectedUser, setSelectedUser] = useState({});
@@ -101,7 +101,7 @@ function PunishMemberOP() {
             </div>
         </div>
     );
-    return (<GeneralOperationsPage leftPanel={(<MemberOperationsCard />)} rightPanel={rightPanel} />)
+    return (<GeneralOperationsPage leftPanel={(<GeneralOperationsCard />)} rightPanel={rightPanel} />)
 }
 
-export default PunishMemberOP
+export default PunishSomeoneOP

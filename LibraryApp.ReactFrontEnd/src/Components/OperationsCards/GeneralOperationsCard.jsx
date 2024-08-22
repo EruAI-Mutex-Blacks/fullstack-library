@@ -1,21 +1,23 @@
 import { Link } from "react-router-dom"
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
 
-function StaffOperationsCard() {
+function GeneralOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
                 <Link className="btn bg-custom-primary" to="/ChangeRole">Change role of someone</Link>
             </li>
             <li className="">
-                <Link className="btn bg-custom-primary" to="/PunishStaff">Punish a staff</Link>
+                <Link className="btn bg-custom-primary" to="/PunishSomeone">Punish someone</Link>
             </li>
         </>
     )
 
     return (
-        <HomeGeneralOperationsCard title="Staff Operations" items={items} />
+        <HomeGeneralOperationsCard title="General Operations" items={items} />
     )
 }
 
-export default StaffOperationsCard
+export default GeneralOperationsCard
+
+//TODO profile page and my books page for authors. my books page includes writing a book and books of all currently being writed ones

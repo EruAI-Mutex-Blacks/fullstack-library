@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import StaffOperationsCard from "../../Components/OperationsCards/StaffOperationsCard"
+import GeneralOperationsCard from "../../Components/OperationsCards/GeneralOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
@@ -72,7 +72,7 @@ function ChangeRoleOP() {
         </div>
     );
 
-    return (<GeneralOperationsPage leftPanel={(<StaffOperationsCard />)} rightPanel={rightPanel} />)
+    return (<GeneralOperationsPage leftPanel={(<GeneralOperationsCard />)} rightPanel={rightPanel} />)
 }
 
 export default ChangeRoleOP

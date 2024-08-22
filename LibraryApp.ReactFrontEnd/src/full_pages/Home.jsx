@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BookOperationsCard from '../Components/OperationsCards/BookOperationsCard.jsx';
 import MessageOperationsCard from '../Components/OperationsCards/MessageOperationsCard.jsx';
 import MemberOperationsCard from '../Components/OperationsCards/MemberOperationsCard.jsx';
-import StaffOperationsCard from '../Components/OperationsCards/StaffOperationsCard.jsx';
+import GeneralOperationsCard from '../Components/OperationsCards/GeneralOperationsCard.jsx';
 import AuthorOperationsCard from '../Components/OperationsCards/AuthorOperationsCard.jsx';
 import { useUser } from '../AccountOperations/UserContext.jsx';
 
@@ -48,7 +48,7 @@ function Home() {
                     (user.roleName === "manager") && (
                         <>
                             < div className="col-4">
-                                <StaffOperationsCard />
+                                <GeneralOperationsCard />
                             </div>
                             < div className="col-4">
                                 <AuthorOperationsCard />
