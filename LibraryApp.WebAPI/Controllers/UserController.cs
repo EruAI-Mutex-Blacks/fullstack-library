@@ -115,5 +115,21 @@ namespace fullstack_library.Controllers
             }
             ));
         }
+
+        [HttpGet("MemberRegistirations")]
+        public IActionResult GetPendingRegistirations()
+        {
+            var pendingUsers = _userRepo.Users.Where(u => u.RoleId == 1);
+
+            return Ok(pendingUsers.Select(pu => new UserDTO
+            {
+                BirthDate = pu.BirthDate,
+                Gender = pu.Gender,
+                Id = pu.Id,
+                Name = pu.Name,
+                Surname = pu.Surname,
+                Username = pu.Username,
+            }));
+        }
     }
 }
