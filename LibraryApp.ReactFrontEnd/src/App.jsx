@@ -16,7 +16,6 @@ import BorrowRequestsOP from './full_pages/OperationsPages/BorrowRequestsOP.jsx'
 import MemberRegistirationsOP from './full_pages/OperationsPages/MemberRegistirationsOP.jsx'
 import PunishSomeoneOP from './full_pages/OperationsPages/PunishSomeoneOP.jsx'
 import ChangeRoleOP from './full_pages/OperationsPages/ChangeRoleOP.jsx'
-import PunishStaffOP from './full_pages/OperationsPages/PunishStaffOP.jsx'
 import BookCreateReqOP from './full_pages/OperationsPages/BookCreateReqOP.jsx'
 import BookReadingPage from './full_pages/BookReadingPage.jsx'
 import { UserProvider } from './AccountOperations/UserContext.jsx'
@@ -86,11 +85,6 @@ function App() {
               <Route exact path="/ChangeRole" element={
                 <ProtectedRoute roles={["manager"]}>
                   < ChangeRoleOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/PunishStaff" element={
-                <ProtectedRoute roles={["manager"]}>
-                  < PunishStaffOP />
                 </ProtectedRoute>}>
               </Route>
               <Route exact path="/BookCreateRequests" element={
