@@ -101,8 +101,8 @@ namespace fullstack_library.Controllers
             }));
         }
 
-        [HttpGet("GetMsgReceivers")]
-        public IActionResult GetMsgReceivers([FromQuery] int roleId, [FromQuery] int userId)
+        [HttpGet("GetUsersOfLowerOrEqualRole")]
+        public IActionResult GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
             //return lower or same roles
@@ -113,6 +113,24 @@ namespace fullstack_library.Controllers
                 Id = u.Id,
                 Name = u.Name + " " + u.Surname,
                 RoleName = u.Role.Name,
+            }
+            ));
+        }
+
+        [HttpGet("GetUsersOfLowerRole")]
+        public IActionResult GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
+        {
+            //designed like the higher the role the greater it's id
+            //return lower roles
+            var users = _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
+
+            return Ok(users.Select(u => new
+            {
+                Id = u.Id,
+                Name = u.Name + " " + u.Surname,
+                RoleName = u.Role.Name,
+                IsPunished = u.IsPunished,
+                FineAmount = u.FineAmount,
             }
             ));
         }
@@ -133,22 +151,5 @@ namespace fullstack_library.Controllers
             }));
         }
 
-        [HttpGet("GetUsersForPunishment")]
-        public IActionResult GetUsersForPunishment([FromQuery] int roleId, [FromQuery] int userId)
-        {
-            //designed like the higher the role the greater it's id
-            //return lower roles
-            var users = _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
-
-            return Ok(users.Select(u => new
-            {
-                Id = u.Id,
-                Name = u.Name + " " + u.Surname,
-                RoleName = u.Role.Name,
-                IsPunished = u.IsPunished,
-                FineAmount = u.FineAmount,
-            }
-            ));
-        }
     }
 }

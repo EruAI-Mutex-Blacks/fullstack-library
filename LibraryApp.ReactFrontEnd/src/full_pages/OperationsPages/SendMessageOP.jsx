@@ -13,7 +13,7 @@ function SendMessageOP() {
     const [message, setMessage] = useState("");
 
     const getReceivers = async function () {
-        const res = await fetch(`http://localhost:5109/api/User/GetMsgReceivers?roleId=${user.roleId}&userId=${user.id}`, {
+        const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerOrEqualRole?roleId=${user.roleId}&userId=${user.id}`, {
             method: "GET"
         });
         if (!res.ok) return;

@@ -14,7 +14,7 @@ function PunishMemberOP() {
     const [totalFine, setTotalFine] = useState(0);
 
     const getLowerRoleUsers = async function () {
-        const res = await fetch(`http://localhost:5109/api/User/GetUsersForPunishment?roleId=${user.roleId}&userId=${user.id}`, {
+        const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
             method: "GET"
         });
 
