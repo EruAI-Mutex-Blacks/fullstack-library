@@ -77,8 +77,12 @@ function SearchBookOP() {
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
                                 {/* TODO find a way to make it readable for only first 3 pages of the book without creating extra page. maybe send another parameter*/}
-                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Preview the book</Link></li>
-                                <li className="me-2"><button onClick={() => { handleBorrowClick(b) }} className={`py-1 px-2 btn btn-success ${b.isBorrowed ? "disabled" : ""}`}>Borrow</button></li>
+                                <li className="me-2">
+                                    <Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Preview the book</Link>
+                                </li>
+                                <li className="me-2">
+                                    <button onClick={() => { handleBorrowClick(b) }} className={`py-1 px-2 btn btn-success ${b.isBorrowed ? "disabled" : ""}`}>Borrow</button>
+                                </li>
                             </ul>
                         </td>
                     </tr>

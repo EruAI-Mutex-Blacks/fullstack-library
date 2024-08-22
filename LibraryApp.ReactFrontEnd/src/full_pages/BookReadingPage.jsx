@@ -42,7 +42,7 @@ function BookReadingPage() {
                     <h4>Pages</h4>
                 </div>
                 <div className="d-flex justify-content-center flex-wrap p-3 bg-success-subtle rounded">
-                    {book.pages.map((p, index) => (
+                    {book?.pages?.map((p, index) => (
                         <button key={index} className="btn btn-success me-2 mb-2" onClick={() => handlePageClick(p)}>{p.id}</button>
                     ))}
                 </div>
