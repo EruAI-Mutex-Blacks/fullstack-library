@@ -105,6 +105,7 @@ namespace fullstack_library.Controllers
         public IActionResult GetMsgReceivers([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
+            //return lower or same roles
             var users = _userRepo.Users.Where(u => u.RoleId <= roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
 
             return Ok(users.Select(u => new
@@ -130,6 +131,24 @@ namespace fullstack_library.Controllers
                 Surname = pu.Surname,
                 Username = pu.Username,
             }));
+        }
+
+        [HttpGet("GetUsersForPunishment")]
+        public IActionResult GetUsersForPunishment([FromQuery] int roleId, [FromQuery] int userId)
+        {
+            //designed like the higher the role the greater it's id
+            //return lower roles
+            var users = _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
+
+            return Ok(users.Select(u => new
+            {
+                Id = u.Id,
+                Name = u.Name + " " + u.Surname,
+                RoleName = u.Role.Name,
+                IsPunished = u.IsPunished,
+                FineAmount = u.FineAmount,
+            }
+            ));
         }
     }
 }
