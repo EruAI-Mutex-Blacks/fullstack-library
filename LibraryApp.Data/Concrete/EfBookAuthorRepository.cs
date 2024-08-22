@@ -10,7 +10,7 @@ namespace LibraryApp.Data.Concrete
     public class EfBookAuthorRepository : IBookAuthorRepository
     {
         public IQueryable<BookAuthor> BookAuthors => _context.BookAuthors;
-        private LibraryDbContext _context;
+        private readonly LibraryDbContext _context;
 
         public EfBookAuthorRepository(LibraryDbContext context)
         {
@@ -19,27 +19,30 @@ namespace LibraryApp.Data.Concrete
 
         public void CreateBookAuthor(BookAuthor bookAuthor)
         {
-            throw new NotImplementedException();
+            _context.BookAuthors.Add(bookAuthor);
+            _context.SaveChanges();
         }
 
-        public void GetBookAuthors()
+        public IEnumerable<BookAuthor> GetBookAuthors()
         {
-            throw new NotImplementedException();
+            return _context.BookAuthors.ToList();
         }
 
-        public void GetBookAuthorById(int id)
+        public BookAuthor? GetBookAuthorById(int id)
         {
-            throw new NotImplementedException();
+            return _context.BookAuthors.FirstOrDefault(ba => ba.Id == id);
         }
 
         public void UpdateBookAuthor(BookAuthor bookAuthor)
         {
-            throw new NotImplementedException();
+            _context.BookAuthors.Update(bookAuthor);
+            _context.SaveChanges();
         }
 
         public void DeleteBookAuthor(BookAuthor bookAuthor)
         {
-            throw new NotImplementedException();
+            _context.BookAuthors.Remove(bookAuthor);
+            _context.SaveChanges();
         }
     }
 }

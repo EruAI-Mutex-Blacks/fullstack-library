@@ -4,6 +4,7 @@ namespace LibraryApp.Data.Entity
     {
         public int Id { get; set; }
         public string Title { get; set; }= string.Empty;
+        public string Author { get; set; } = string.Empty;
         public bool IsPublished { get; set; }        
         public DateTime PublishDate { get; set; }
         public bool IsBorrowed { get; set; }        

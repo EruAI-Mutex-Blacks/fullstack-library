@@ -10,8 +10,8 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<BookAuthor> BookAuthors { get; }
 
-        void GetBookAuthors();
-        void GetBookAuthorById(int id);
+        IEnumerable<BookAuthor> GetBookAuthors();
+        BookAuthor? GetBookAuthorById(int id);
         void CreateBookAuthor(BookAuthor bookAuthor);
         void UpdateBookAuthor(BookAuthor bookAuthor);
         void DeleteBookAuthor(BookAuthor bookAuthor);
