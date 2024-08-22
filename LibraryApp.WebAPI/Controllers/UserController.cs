@@ -16,11 +16,13 @@ namespace fullstack_library.Controllers
     {
         private readonly IUserRepository _userRepo;
         private readonly IMessageRepository _msgRepo;
+        private readonly IRoleRepository _roleRepo;
 
-        public UserController(IUserRepository userRepo, IMessageRepository msgRepo)
+        public UserController(IUserRepository userRepo, IMessageRepository msgRepo, IRoleRepository roleRepo)
         {
             _userRepo = userRepo;
             _msgRepo = msgRepo;
+            _roleRepo = roleRepo;
         }
 
         [HttpPut("ApproveRegistiration/{userId}")]
@@ -128,6 +130,7 @@ namespace fullstack_library.Controllers
             {
                 Id = u.Id,
                 Name = u.Name + " " + u.Surname,
+                RoleId = u.RoleId,
                 RoleName = u.Role.Name,
                 IsPunished = u.IsPunished,
                 FineAmount = u.FineAmount,
@@ -151,5 +154,19 @@ namespace fullstack_library.Controllers
             }));
         }
 
+        [HttpGet("GetAllRoles")]
+        public IActionResult GetAllRoles([FromQuery] int roleId)
+        {
+            //designed like the higher the role the greater it's id
+            //return lower roles
+            var roles = _roleRepo.Roles.Where(r => r.Id != roleId && r.Id != 1);
+
+            return Ok(roles.Select(r => new
+            {
+                r.Id,
+                r.Name
+            }
+            ));
+        }
     }
 }
