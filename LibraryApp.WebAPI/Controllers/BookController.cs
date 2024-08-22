@@ -121,5 +121,21 @@ namespace fullstack_library.Controllers
             _bookBorrowRepo.CreateBookBorrowActivity(bba);
             return Ok(new { Message = "Borrow request has been sent to staff. Please wait for approval." });
         }
+
+        [HttpGet("GetBook")]
+        public IActionResult GetBook([FromQuery] int bookId)
+        {
+            var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == bookId);
+            if (book == null) return NotFound(new { Message = "Book not found" });
+            return Ok(new ReadBookDTO
+            {
+                Title = book.Title,
+                Pages = book.Pages.Select(p => new PageDTO
+                {
+                    Content = p.Content,
+                    Id = p.Id,
+                }).ToList(),
+            });
+        }
     }
 }
