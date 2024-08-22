@@ -24,7 +24,7 @@ function BookReadingPage() {
 
     const handlePageClick = function (p) {
         setPageContent(p.content);
-        setPageNum(p.id);
+        setPageNum(p.pageNumber);
     }
 
     return (
@@ -43,7 +43,7 @@ function BookReadingPage() {
                 </div>
                 <div className="d-flex justify-content-center flex-wrap p-3 bg-success-subtle rounded">
                     {book?.pages?.map((p, index) => (
-                        <button key={index} className="btn btn-success me-2 mb-2" onClick={() => handlePageClick(p)}>{p.id}</button>
+                        <button key={index} className="btn btn-success me-2 mb-2" onClick={() => handlePageClick(p)}>{p.pageNumber}</button>
                     ))}
                 </div>
             </div>
