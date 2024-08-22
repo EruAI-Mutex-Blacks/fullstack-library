@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
+using LibraryApp.Data.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,13 @@ namespace fullstack_library.Controllers
     {
         private readonly IBookRepository _bookRepo;
         private readonly IBookBorrowActivityRepository _bookBorrowRepo;
+        private readonly IUserRepository _userRepo;
 
-        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo)
+        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo)
         {
             _bookRepo = bookRepo;
             _bookBorrowRepo = bookBorrowRepo;
+            _userRepo = userRepo;
         }
 
         [HttpPut("ApprovePublishing/{bookId}")]
@@ -52,6 +55,7 @@ namespace fullstack_library.Controllers
         {
             var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO
             {
+                Id = b.Id,
                 Title = b.Title,
                 IsBorrowed = b.IsBorrowed,
                 Authors = b.BookAuthors.Select(ba => ba.User.Name).ToList(),
@@ -94,6 +98,28 @@ namespace fullstack_library.Controllers
             });
 
             return Ok(borrowedBookDTOS);
+        }
+
+        [HttpPost("BorrowBook")]
+        public IActionResult BorrowBook(BorrowBookDTO borrowBookDTO)
+        {
+            var user = _userRepo.GetUserById(borrowBookDTO.UserId);
+            if (user == null) return NotFound(new { Message = "User could not found" });
+            var book = _bookRepo.GetBookById(borrowBookDTO.BookId);
+            if (book == null) return NotFound(new { Message = "Book could not found" });
+            if (book.IsBorrowed) return BadRequest(new { Message = "Book already borrowed" });
+            if (_bookBorrowRepo.BookBorrowActivities.Any(bba => !bba.IsApproved && bba.UserId == borrowBookDTO.UserId)) return BadRequest(new { Message = "You already requested one book. Please wait for approval before you request more." });
+
+            BookBorrowActivity bba = new()
+            {
+                BookId = borrowBookDTO.BookId,
+                UserId = borrowBookDTO.UserId,
+                BorrowDate = DateTime.Now,
+                IsApproved = false,
+                ReturnDate = DateTime.Now.AddDays(14),
+            };
+            _bookBorrowRepo.CreateBookBorrowActivity(bba);
+            return Ok(new { Message = "Borrow request has been sent to staff. Please wait for approval." });
         }
     }
 }

@@ -19,27 +19,21 @@ namespace LibraryApp.Data.Concrete
 
         public void CreateBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
         {
-            throw new NotImplementedException();
-        }
-
-        public void GetBookBorrowActivities()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GetBookBorrowActivityById(int id)
-        {
-            throw new NotImplementedException();
+            _context.BookBorrowActivities.Add(bookBorrowActivity);
+            _context.SaveChanges();
         }
 
         public void UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
         {
-            throw new NotImplementedException();
+            _context.BookBorrowActivities.Update(bookBorrowActivity);
+            _context.SaveChanges();
         }
 
         public void DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
         {
-            throw new NotImplementedException();
+            _context.BookBorrowActivities.Remove(bookBorrowActivity);
+            _context.SaveChanges();
+
         }
     }
 }

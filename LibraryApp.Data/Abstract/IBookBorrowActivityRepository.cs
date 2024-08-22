@@ -10,8 +10,6 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<BookBorrowActivity> BookBorrowActivities { get; }
 
-        void GetBookBorrowActivities();
-        void GetBookBorrowActivityById(int id);
         void CreateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
         void UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
         void DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity);

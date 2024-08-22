@@ -8,6 +8,7 @@ namespace fullstack_library.DTO
 {
     public class BookDTO
     {
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public DateTime PublishDate { get; set; }
         public bool IsBorrowed { get; set; }
