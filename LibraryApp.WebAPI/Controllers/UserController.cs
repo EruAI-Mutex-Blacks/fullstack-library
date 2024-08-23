@@ -25,31 +25,21 @@ namespace fullstack_library.Controllers
             _roleRepo = roleRepo;
         }
 
-        [HttpPut("ApproveRegistiration/{userId}")]
-        public IActionResult ApproveRegistiration(int? userId)
+        [HttpPut("SetRegistirationRequest")]
+        public IActionResult ApproveRegistiration(UserRegistirationDTO userRegistirationDTO)
         {
-            //TODO to approve registiration use role table make a role which is like newUser or no role at all and when we approve change role to like default user or like give selection to user to make him select which role he wants and we can see it if we approve make it that role. And again only staffs can access to this method
-            if (userId == null) return BadRequest(new { message = "Invalid user id" });
-            var user = _userRepo.GetUserById(userId.Value);
+            var user = _userRepo.GetUserById(userRegistirationDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
 
-            user.RoleId = 1; //make it like default role
-            _userRepo.UpdateUser(user);
+            if (userRegistirationDTO.IsApproved)
+            {
+                user.RoleId++;
+                _userRepo.UpdateUser(user);
+            }
+            else
+                _userRepo.DeleteUser(user);
 
-            return Ok(new { message = "User approved" });
-        }
-
-        [HttpDelete("DeleteRegistiration/{userId}")]
-        public IActionResult DeleteRegistiration(int? userId)
-        {
-            //TODO instead of deletion think another thing
-            if (userId == null) return BadRequest(new { message = "Invalid user id" });
-            var user = _userRepo.GetUserById(userId.Value);
-            if (user == null) return NotFound(new { message = "User not found" });
-
-            _userRepo.DeleteUser(user);
-
-            return Ok(new { message = "User rejected" });
+            return Ok(new { message = "Operation done!" });
         }
 
         [HttpPut("set-punishment/{userId}")]

@@ -22,12 +22,25 @@ function MemberRegistirationsOP() {
         fetchRegistirations();
     }, []);
 
-    function handleApproveClick(user) {
-        window.alert("approved");
-    }
+    async function handleClick(user, isApproved) {
 
-    function handleRejectClick(user) {
-        window.alert("rejected");
+        const regisDTO = {
+            userId: user.id,
+            isApproved: isApproved,
+        }
+
+        const res = await fetch("http://localhost:5109/api/User/SetRegistirationRequest", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(regisDTO),
+        });
+
+        if (!res.ok) return;
+
+        const data = await res.json();
+        console.log(data);
+
+        fetchRegistirations();
     }
 
     const rightPanel = (
@@ -43,17 +56,17 @@ function MemberRegistirationsOP() {
                 </tr>
             </thead>
             <tbody>
-                {pendingUsers.map((r, index) => (
+                {pendingUsers.map((pu, index) => (
                     <tr key={index}>
-                        <td>{r.id}</td>
-                        <td>{r.name + " " + r.surname}</td>
-                        <td>{r.username}</td>
-                        <td>{r.gender}</td>
-                        <td>{new Date(r.birthDate).toLocaleDateString("en-us")}</td>
+                        <td>{pu.id}</td>
+                        <td>{pu.name + " " + pu.surname}</td>
+                        <td>{pu.username}</td>
+                        <td>{pu.gender}</td>
+                        <td>{new Date(pu.birthDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
-                                <li className="me-2"><Link onClick={() => { handleApproveClick(r) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
-                                <li className="me-2"><Link onClick={() => { handleRejectClick(r) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
+                                <li className="me-2"><Link onClick={() => { handleClick(pu, true) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
+                                <li className="me-2"><Link onClick={() => { handleClick(pu, false) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
                             </ul>
                         </td>
                     </tr>
