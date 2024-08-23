@@ -30,6 +30,12 @@ namespace LibraryApp.Data.Concrete
             return _context.Messages.Where(m => m.ReceiverId == receiverId).Include(m => m.Sender).ToList();
         }
 
+        public void UpdateMessage(Message msg){
+            _context.Messages.Update(msg);
+            _context.SaveChanges();
+        }
+
+
         //to see sent messages
         // public void GetMessagesBySenderId(int senderId)
         // {

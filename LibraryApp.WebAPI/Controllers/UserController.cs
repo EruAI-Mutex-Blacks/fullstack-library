@@ -91,16 +91,18 @@ namespace fullstack_library.Controllers
         [HttpGet("GetInbox")]
         public IActionResult GetInbox([FromQuery] int userId)
         {
-            var msgs = _msgRepo.GetMessagesByReceiverId(userId).Take(15).Reverse();
-
+            var msgs = _msgRepo.GetMessagesByReceiverId(userId);
+            msgs.Reverse();
             return Ok(msgs.Select(m =>
             new MessageDTO
             {
+                Id = m.Id,
                 Title = m.Title,
                 Details = m.Details,
                 ReceiverId = m.ReceiverId,
                 SenderId = m.SenderId,
                 SenderName = m.Sender.Name + " " + m.Sender.Surname,
+                IsReceiverRead = m.IsReceiverRead,
             }));
         }
 
@@ -168,6 +170,18 @@ namespace fullstack_library.Controllers
                 r.Name
             }
             ));
+        }
+
+        [HttpPost("UpdateMessageReadState")]
+        public IActionResult UpdateMessageReadState(MessageDTO readMsg)
+        {
+            var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == readMsg.Id);
+            if (msg == null) return NotFound(new { Message = "Message could not found" });
+            msg.IsReceiverRead = true;
+
+            _msgRepo.UpdateMessage(msg);
+
+            return Ok(new { Message = "Message updated" });
         }
     }
 }

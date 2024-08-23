@@ -8,6 +8,7 @@ public interface IMessageRepository
 
     public List<Message> GetMessagesByReceiverId(int receiverId);
     public void CreateMessage(Message msg);
+    public void UpdateMessage(Message msg);
 
     //to see sent messages
     // public void GetMessagesBySenderId(int senderId);
