@@ -96,6 +96,7 @@ namespace fullstack_library.Controllers
             return Ok(msgs.Select(m =>
             new MessageDTO
             {
+                Title = m.Title,
                 Details = m.Details,
                 ReceiverId = m.ReceiverId,
                 SenderId = m.SenderId,

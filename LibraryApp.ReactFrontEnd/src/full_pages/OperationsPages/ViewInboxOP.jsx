@@ -40,9 +40,9 @@ function ViewInboxOP() {
             <div className="col-3 me-2 p-2 bg-light rounded" style={{ height: "65vh", overflow: "auto" }}>
                 {messages.map((m, index) =>
                 (
-                    <div onClick={() => { handleMsgCardClick(m) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
+                    <div key={index} onClick={() => { handleMsgCardClick(m) }} className="mb-2 d-flex flex-column border border-dark rounded p-2 bg-success-subtle btn">
                         <div className="d-flex mb-2 justify-content-between border-bottom border-dark">
-                            <p className="mb-1 pe-1 text-start fs-7">Title???</p>
+                            <p className="mb-1 pe-1 text-start fs-7">{m.title}</p>
                             <p className="mb-1 ps-1 fs-8 text-end"><b>{m.senderName}</b></p>
                         </div>
                         <div className="d-flex justify-content-between">
