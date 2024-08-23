@@ -12,6 +12,7 @@ namespace LibraryApp.Data.Entity
         [Column(TypeName = "DATE")]
         public DateTime ReturnDate { get; set; }
         public bool IsApproved { get; set; }
+        public bool IsReturned { get; set; }
 
         public Book Book { get; set; } = null!;
         public User User { get; set; } = null!;
