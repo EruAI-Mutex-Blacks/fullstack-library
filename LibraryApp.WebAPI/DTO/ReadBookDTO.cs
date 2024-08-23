@@ -8,6 +8,7 @@ namespace fullstack_library.DTO
 {
     public class ReadBookDTO
     {
+        public int BorrowedById { get; set; }
         public string Title { get; set; } = string.Empty;
         public List<PageDTO> Pages { get; set; } = new();
     }
