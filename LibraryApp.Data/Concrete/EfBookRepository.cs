@@ -32,9 +32,10 @@ namespace LibraryApp.Data.Concrete
             return Books.FirstOrDefault(b => b.Id == id);
         }
 
-        public void UpdateBook(Book book)
+        public async Task UpdateBook(Book book)
         {
-            throw new NotImplementedException();
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteBook(Book book)

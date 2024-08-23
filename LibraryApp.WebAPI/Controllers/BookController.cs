@@ -88,6 +88,7 @@ namespace fullstack_library.Controllers
         {
             var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).Select(bba => new BookBorrowActivityDTO
             {
+                Id = bba.Id,
                 RequestorName = bba.User.Name + " " + bba.User.Surname,
                 BorrowDate = bba.BorrowDate,
                 ReturnDate = bba.ReturnDate,
@@ -98,6 +99,29 @@ namespace fullstack_library.Controllers
             });
 
             return Ok(borrowedBookDTOS);
+        }
+
+        [HttpPost("SetBorrowRequest")]
+        public async Task<IActionResult> SetBorrowRequest(SetBorrowRequestDTO setBorrowRequestDTO)
+        {
+            var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
+            if (bookBorrowActivity == null) return NotFound();
+
+            if (setBorrowRequestDTO.IsApproved)
+            {
+                bookBorrowActivity.IsApproved = true;
+                bookBorrowActivity.Book.IsBorrowed = true;
+                await _bookBorrowRepo.UpdateBookBorrowActivity(bookBorrowActivity);
+
+                //delete other waiting requests for same book
+                var sameBookRequests = _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved && bba.BookId == bookBorrowActivity.BookId && bba.Id != bookBorrowActivity.Id).ToList();
+                await _bookBorrowRepo.DeleteBookBorrowActivities(sameBookRequests);
+            }
+            else
+                await _bookBorrowRepo.DeleteBookBorrowActivity(bookBorrowActivity);
+
+
+            return Ok(new { Message = "Operation done!" });
         }
 
         [HttpPost("BorrowBook")]

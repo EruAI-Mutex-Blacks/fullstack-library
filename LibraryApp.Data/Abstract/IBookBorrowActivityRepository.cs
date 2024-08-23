@@ -11,7 +11,8 @@ namespace LibraryApp.Data.Abstract
         IQueryable<BookBorrowActivity> BookBorrowActivities { get; }
 
         void CreateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
-        void UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
-        void DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
+        Task UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
+        Task DeleteBookBorrowActivities(List<BookBorrowActivity> bookBorrowActivities);
+        Task DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
     }
 }

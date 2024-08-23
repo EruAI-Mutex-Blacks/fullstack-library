@@ -8,6 +8,7 @@ namespace fullstack_library.DTO
 {
     public class BookBorrowActivityDTO
     {
+        public int Id { get; set; }
         public string? RequestorName { get; set; }
         [Column(TypeName = "DATE")]
         public DateTime BorrowDate { get; set; }

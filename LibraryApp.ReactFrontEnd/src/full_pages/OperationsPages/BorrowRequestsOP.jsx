@@ -30,12 +30,23 @@ function BorrowRequestsOP() {
         getBorrowRequests();
     }, []);
 
-    function handleApproveClick(book) {
-        window.alert("approved");
-    }
+    async function handleClick(isApproved, id) {
+        const br = {
+            id: id,
+            isApproved: isApproved,
+        }
 
-    function handleRejectClick(book) {
-        window.alert("rejected");
+        const res = await fetch("http://localhost:5109/api/Book/SetBorrowRequest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(br),
+        })
+
+        if(!res.ok) return;
+        const data = await res.json();
+        console.log(data);
+
+        await getBorrowRequests();
     }
 
     const rightPanel = (
@@ -58,8 +69,8 @@ function BorrowRequestsOP() {
                         <td>{new Date(b.returnDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
-                                <li className="me-2"><Link onClick={() => { handleApproveClick(b) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
-                                <li className="me-2"><Link onClick={() => { handleRejectClick(b) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
+                                <li className="me-2"><Link onClick={() => { handleClick(true, b.id) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
+                                <li className="me-2"><Link onClick={() => { handleClick(false, b.id) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
                             </ul>
                         </td>
                     </tr>
