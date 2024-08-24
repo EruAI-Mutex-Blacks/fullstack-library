@@ -13,5 +13,6 @@ namespace LibraryApp.Data.Entity
         public List<Page> Pages { get; set; } = new();
         public List<BookAuthor> BookAuthors { get; set; } = new();
         public List<BookBorrowActivity> BookBorrowActivities { get; set; } = new();
+        public List<BookPublishRequest> BookPublishRequests { get; set; } = new();
     }
 }

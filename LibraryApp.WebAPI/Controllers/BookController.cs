@@ -17,12 +17,14 @@ namespace fullstack_library.Controllers
         private readonly IBookRepository _bookRepo;
         private readonly IBookBorrowActivityRepository _bookBorrowRepo;
         private readonly IUserRepository _userRepo;
+        private readonly IBookPublishRequestRepository _bookPublishReqsRepo;
 
-        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo)
+        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository)
         {
             _bookRepo = bookRepo;
             _bookBorrowRepo = bookBorrowRepo;
             _userRepo = userRepo;
+            _bookPublishReqsRepo = bookPublishRequestRepository;
         }
 
         [HttpPut("ApprovePublishing/{bookId}")]
@@ -42,12 +44,26 @@ namespace fullstack_library.Controllers
         [HttpDelete("RejectPublishing/{bookId}")]
         public IActionResult RejectPublishingBook(int? bookId)
         {
+            //make ispending false for both operations
             //TODO check role if not manager than return unauthorized
             if (bookId == null) return BadRequest(new { message = "Invalid book id" });
             var book = _bookRepo.GetBookById(bookId.Value);
             if (book == null) return NotFound(new { message = "Book could not found" }); //return notfound status code
             _bookRepo.DeleteBook(book);
             return Ok(new { message = "Book has been rejected" });
+        }
+
+        [HttpGet("BookPublishRequests")]
+        public IActionResult BookPublishRequests()
+        {
+            var BookPublishRequests = _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User);
+            return Ok(BookPublishRequests.Select(bpr => new BookPublishReqDTO
+            {
+                Authors = bpr.Book.BookAuthors.Select(ba => ba.User.Name).ToList(),
+                BookName = bpr.Book.Title,
+                Id = bpr.Id,
+                RequestDate = bpr.RequestDate,
+            }));
         }
 
         [HttpGet("SearchBook")]

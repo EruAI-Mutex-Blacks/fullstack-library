@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom"
 import AuthorOperationsCard from "../../Components/OperationsCards/AuthorOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
+import { useEffect, useState } from "react"
 
 function BookCreateReqOP() {
-    //Book creation requests that has sent to logged in manager
-    const seedBook = {
-        id: 1,
-        title: "Book 1",
-        publishDate: `${new Date().getDate()}-${new Date().getUTCMonth()}-${new Date().getFullYear()}`,
-        isBorrowed: false
+
+    const [requests, setRequests] = useState([]);
+
+    const getPendingRequests = async function () {
+        const response = await fetch("http://localhost:5109/api/Book/BookPublishRequests", {
+            method: "GET"
+        });
+
+        const data = await response.json();
+        if (!response.ok) return;
+        setRequests(data);
     }
 
-    const seedBooks = [];
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
-    seedBooks.push(seedBook);
+    useEffect(() => {
+        getPendingRequests();
+    }, []);
 
     function handleApproveClick(book) {
         window.alert("approved");
@@ -31,18 +33,18 @@ function BookCreateReqOP() {
         <table className="table table-light table-striped table-hover flex-fill">
             <thead>
                 <tr>
-                    <th>Book</th>
-                    <th>Author</th>
+                    <th>Book Name</th>
+                    <th>Authors</th>
                     <th>Request Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {seedBooks.map(b => (
-                    <tr>
-                        <td>{b.title}</td>
-                        <td>{"hey"}</td>
-                        <td>{new Date().getFullYear()}</td>
+                {requests.map((b, index) => (
+                    <tr key={index}>
+                        <td>{b.bookName}</td>
+                        <td>{b.authors.join(", ")}</td>
+                        <td>{new Date(b.requestDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
                                 <li className="me-2"><Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Read the book</Link></li>

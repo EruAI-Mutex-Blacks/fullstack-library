@@ -11,6 +11,7 @@ namespace LibraryApp.Data.Entity
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Message> Messages => Set<Message>();
+        public DbSet<BookPublishRequest> BookPublishRequests => Set<BookPublishRequest>();
 
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {

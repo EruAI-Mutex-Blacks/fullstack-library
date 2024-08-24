@@ -37,6 +37,7 @@ builder.Services.AddScoped<IPageRepository, EfPageRepository >();
 builder.Services.AddScoped<IRoleRepository, EfRoleRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IMessageRepository, EfMessageRepository>();
+builder.Services.AddScoped<IBookPublishRequestRepository, EfBookPublishRequestRepository>();
 
 var app = builder.Build();
 app.UseRouting();
