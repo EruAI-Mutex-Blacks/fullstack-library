@@ -173,5 +173,17 @@ namespace fullstack_library.Controllers
 
             return Ok(new { Message = "Message updated" });
         }
+
+        [HttpPut("ChangeRole")]
+        public IActionResult ChangeRole(UpdateRoleDTO updateRoleDTO)
+        {
+            var user = _userRepo.GetUserById(updateRoleDTO.UserId);
+            if (user == null) return NotFound(new { Message = "User could not found" });
+            if (!_roleRepo.Roles.Any(r => r.Id == updateRoleDTO.NewRoleId)) return NotFound(new { Message = "Role could not found" });
+
+            user.RoleId = updateRoleDTO.NewRoleId;
+            _userRepo.UpdateUser(user);
+            return Ok(new {Message = "Operation Done!"});
+        }
     }
 }

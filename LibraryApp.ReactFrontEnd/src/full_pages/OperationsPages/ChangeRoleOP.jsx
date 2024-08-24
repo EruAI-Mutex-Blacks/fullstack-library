@@ -11,6 +11,7 @@ function ChangeRoleOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState({});
     const [allRemainingRoles, setAllRemainingRoles] = useState([]);
+    const [selectedRoleId, setSelectedRoleId] = useState(0);
 
     const getLowerRoleUsers = async function () {
         const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
@@ -31,15 +32,35 @@ function ChangeRoleOP() {
         setAllRemainingRoles(await res.json());
     }
 
-    const handleSelectionChange = function (e) {
+    const handleUserSelection = function (e) {
         const selectedUser = lowerRoleUsers.find(lru => lru.id == e.target.value);
         setSelectedUser(selectedUser);
-        if(!selectedUser)
-        {
+        if (!selectedUser) {
             setAllRemainingRoles([]);
             return;
         }
         getAllRemainingRoles(selectedUser.roleId);
+    }
+
+    const handleUpdateClick = async function () {
+        const changeRoleDTO = {
+            userId: selectedUser.id,
+            newRoleId: selectedRoleId,
+        }
+
+        const res = await fetch(`http://localhost:5109/api/User/ChangeRole`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(changeRoleDTO)
+        });
+
+        const data = await res.json();
+        console.log(data);
+        if (!res.ok) return;
+
+        setLowerRoleUsers([]);
+        getLowerRoleUsers();
+        setAllRemainingRoles([]);
     }
 
     useEffect(() => {
@@ -50,7 +71,7 @@ function ChangeRoleOP() {
         <div className="flex-fill">
             <div className="mb-3">
                 <label htmlFor="userToChange" className="form-label">Select user</label>
-                <select name="userToChange" id="userToChange" className="form-select" onChange={e => handleSelectionChange(e)}>
+                <select name="userToChange" id="userToChange" className="form-select" onChange={e => handleUserSelection(e)}>
                     <option value="">Select someone</option>
                     {lowerRoleUsers.map((lru, index) => (
                         <option key={index} value={lru.id}>{lru.name + " - " + lru.roleName}</option>
@@ -59,7 +80,7 @@ function ChangeRoleOP() {
             </div>
             <div className="mb-3">
                 <label htmlFor="role" className="form-label">Role</label>
-                <select name="role" id="role" className="form-select">
+                <select name="role" id="role" className="form-select" onChange={e => setSelectedRoleId(e.target.value)}>
                     <option value="">Select another role</option>
                     {allRemainingRoles.map((arr, index) => (
                         <option key={index} value={arr?.id}>{arr?.name}</option>
@@ -67,7 +88,7 @@ function ChangeRoleOP() {
                 </select>
             </div>
             <div className="mb-3 d-flex justify-content-end">
-                <Link className="btn btn-success">Update</Link>
+                <button onClick={handleUpdateClick} className="btn btn-success">Update</button>
             </div>
         </div>
     );
