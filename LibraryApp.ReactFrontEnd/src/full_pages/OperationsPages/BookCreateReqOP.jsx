@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import AuthorOperationsCard from "../../Components/OperationsCards/AuthorOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify";
 
 function BookCreateReqOP() {
 
@@ -29,13 +30,16 @@ function BookCreateReqOP() {
 
         const response = await fetch("http://localhost:5109/api/Book/SetPublishing", {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(publishBookDTO),
         });
 
         const data = await response.json();
         console.log(data);
         if (!response.ok) return;
+
+        if (isApproved) toast.success("Request approved");
+        else toast.error("Request rejected");
 
         const updatedRequests = requests.filter(r => r.id != requestId);
         setRequests(updatedRequests);

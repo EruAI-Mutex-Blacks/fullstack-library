@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import MemberOperationsCard from "../../Components/OperationsCards/MemberOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 
 function MemberRegistirationsOP() {
@@ -38,7 +39,9 @@ function MemberRegistirationsOP() {
         if (!res.ok) return;
 
         const data = await res.json();
-        console.log(data);
+
+        if (isApproved) toast.success("Request approved");
+        else toast.error("Request rejected");
 
         fetchRegistirations();
     }

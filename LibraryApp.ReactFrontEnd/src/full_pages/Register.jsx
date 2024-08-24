@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 function Register() {
@@ -17,8 +18,14 @@ function Register() {
     const handleRegisterClick = async function (e) {
         e.preventDefault();
 
-        if (!name || !surname || !username || !password || !confirmPassword || !birthDate || !gender || (password !== confirmPassword)) {
-            alert("Fill all the fields and make sure passwords are the same");
+        if (!name || !surname || !username || !password || !confirmPassword || !birthDate || !gender) {
+            toast.error("Please fill all the fields.");
+            return;
+        }
+
+        if(password !== confirmPassword)
+        {
+            toast.error("Both password must be same.");
             return;
         }
 
@@ -39,7 +46,8 @@ function Register() {
             });
             if (!response.ok) return;
             const data = await response.json();
-            console.log(data);
+            toast.success("You are registered");
+            toast.info("Directing to login page");
             navigate("/Login");
         } catch (error) {
             console.log("there was an error", error);

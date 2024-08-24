@@ -3,6 +3,8 @@ import MessageOperationsCard from "../../Components/OperationsCards/MessageOpera
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useUser } from '../../AccountOperations/UserContext'
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 
 function SendMessageOP() {
 
@@ -30,6 +32,11 @@ function SendMessageOP() {
     const handleSendClick = async function (e) {
         e.preventDefault();
 
+        if (!receiverId || !title || !message) {
+            toast.error("Please fill all the fields");
+            return;
+        }
+
         const messageDTO = {
             senderId: user.id,
             receiverId: receiverId,
@@ -43,9 +50,12 @@ function SendMessageOP() {
             body: JSON.stringify(messageDTO),
         });
 
-        if(!res.ok) return;
+        if (!res.ok) return;
         const data = await res.json();
-        console.log(data);
+        setReceiverId(0);
+        setTitle("");
+        setMessage("");
+        toast.success("Message has sent");
     }
 
     //consider adding security bc people can change value of option and we can send random person a msg
@@ -54,7 +64,7 @@ function SendMessageOP() {
             <div className="mb-3">
                 <label htmlFor="sendingTo" className="form-label">Select receiver</label>
                 <select id="sendingTo" className="form-select" onChange={e => setReceiverId(e.target.value)}>
-                    <option value="0">Select someone</option>
+                    <option value="">Select someone</option>
                     {receivers.map((rc, index) => (
                         <option key={index} value={rc.id}>{rc.name + " - " + rc.roleName}</option>
                     ))}
@@ -62,11 +72,11 @@ function SendMessageOP() {
             </div>
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" id="title" className="form-control" onChange={e => setTitle(e.target.value)} />
+                <input type="text" id="title" className="form-control" onChange={e => setTitle(e.target.value)} value={title} maxLength={75} />
             </div>
             <div className="mb-3">
                 <label htmlFor="message" className="form-label">Your message</label>
-                <textarea type="text" id="message" className="form-control" rows={3} style={{ resize: "none" }} onChange={e => setMessage(e.target.value)}></textarea>
+                <textarea type="text" id="message" className="form-control" rows={3} style={{ resize: "none" }} value={message} onChange={e => setMessage(e.target.value)}></textarea>
             </div>
             <div className="d-flex justify-content-end">
                 <button onClick={e => handleSendClick(e)} className="btn btn-success py-2 px-4">Send</button>

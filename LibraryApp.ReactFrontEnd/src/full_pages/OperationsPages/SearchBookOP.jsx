@@ -3,6 +3,7 @@ import BookOperationsCard from "../../Components/OperationsCards/BookOperationsC
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext"
+import { toast } from "react-toastify";
 
 //TODO en son güvenlik modu kapatılabilir 2 kere çağrılıyor sayfalar
 function SearchBookOP() {
@@ -46,11 +47,12 @@ function SearchBookOP() {
 
             if (!response.ok) {
                 const data = await response.json();
-                console.log(data);
+                toast.error("You already have an active request. Please wait for approval before making another one.");
                 return;
             }
+
             const data = await response.json();
-            console.log(data);
+            toast.success("Request has sent to staff. Please wait for approval.");
         } catch (err) {
             console.log(err);
         }
@@ -60,7 +62,6 @@ function SearchBookOP() {
         <table className="table table-light table-striped table-hover flex-fill">
             <thead>
                 <tr>
-                    <th>Cover</th>
                     <th>Title</th>
                     <th>Publish Date</th>
                     <th>Is Borrowed</th>
@@ -70,7 +71,6 @@ function SearchBookOP() {
             <tbody>
                 {books.map(b => (
                     <tr>
-                        <td>{b.Cover}</td>
                         <td>{b.title}</td>
                         <td>{new Date(b.publishDate).toLocaleDateString("en-us")}</td>
                         <td>{b.isBorrowed ? "Yes" : "No"}</td>

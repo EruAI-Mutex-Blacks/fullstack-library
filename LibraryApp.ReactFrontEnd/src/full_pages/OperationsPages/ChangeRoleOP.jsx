@@ -3,6 +3,7 @@ import GeneralOperationsCard from "../../Components/OperationsCards/GeneralOpera
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
+import { toast } from "react-toastify";
 
 function ChangeRoleOP() {
     //users will be listed that has lower role from manager. currently logged in user can change role of them to make it lower or manager
@@ -43,6 +44,12 @@ function ChangeRoleOP() {
     }
 
     const handleUpdateClick = async function () {
+        if(!selectedRoleId || !selectedUser)
+        {
+            toast.error("Please select one.");
+            return;
+        }
+
         const changeRoleDTO = {
             userId: selectedUser.id,
             newRoleId: selectedRoleId,
@@ -58,6 +65,10 @@ function ChangeRoleOP() {
         console.log(data);
         if (!res.ok) return;
 
+        toast.success("Role has changed");
+
+        setSelectedUser({});
+        setSelectedRoleId(0);
         setLowerRoleUsers([]);
         getLowerRoleUsers();
         setAllRemainingRoles([]);

@@ -22,83 +22,100 @@ import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+
 //TODO profile page
 function App() {
   return (
     <BrowserRouter>
-      <UserProvider>
-        <div className="d-flex flex-column min-vh-100">
-          <header>
-            <Navbar />
-          </header>
-          <main className="flex-fill d-flex bg-custom-primary">
-            <Routes>
-              <Route exact path="/" element={<Home />}></Route>
-              <Route exact path="/Login" element={
-                <PublicRoute ><Login /></PublicRoute>
-              }></Route>
-              <Route exact path="/Register" element={
-                <PublicRoute ><Register /></PublicRoute>
-              }></Route>
-              <Route exact path="/SearchBook" element={
-                <ProtectedRoute roles={["member", "staff", "manager"]}>
-                  <SearchBookOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/BorrowedBooks" element={
-                <ProtectedRoute roles={["member", "staff", "manager"]}>
-                  <BorrowedBooksOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/SendMessage" element={
-                <ProtectedRoute roles={["member", "staff", "manager"]}>
-                  <SendMessageOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/ViewInbox" element={
-                <ProtectedRoute roles={["member", "staff", "manager"]}>
-                  <ViewInboxOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/ReadBook" element={
-                <ProtectedRoute roles={["member", "staff", "manager"]}>
-                  < BookReadingPage />
-                </ProtectedRoute>}>
-              </Route>
+      <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition:Bounce />
+        <UserProvider>
+          <div className="d-flex flex-column min-vh-100">
+            <header>
+              <Navbar />
+            </header>
+            <main className="flex-fill d-flex bg-custom-primary">
+              <Routes>
+                <Route exact path="/" element={<Home />}></Route>
+                <Route exact path="/Login" element={
+                  <PublicRoute ><Login /></PublicRoute>
+                }></Route>
+                <Route exact path="/Register" element={
+                  <PublicRoute ><Register /></PublicRoute>
+                }></Route>
+                <Route exact path="/SearchBook" element={
+                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                    <SearchBookOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/BorrowedBooks" element={
+                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                    <BorrowedBooksOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/SendMessage" element={
+                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                    <SendMessageOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/ViewInbox" element={
+                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                    <ViewInboxOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/ReadBook" element={
+                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                    < BookReadingPage />
+                  </ProtectedRoute>}>
+                </Route>
 
-              <Route exact path="/BorrowRequests" element={
-                <ProtectedRoute roles={["staff", "manager"]}>
-                  < BorrowRequestsOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/MemberRegistirations" element={
-                <ProtectedRoute roles={["staff", "manager"]}>
-                  < MemberRegistirationsOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/PunishSomeone" element={
-                <ProtectedRoute roles={["staff", "manager"]}>
-                  < PunishSomeoneOP />
-                </ProtectedRoute>}>
-              </Route>
+                <Route exact path="/BorrowRequests" element={
+                  <ProtectedRoute roles={["staff", "manager"]}>
+                    < BorrowRequestsOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/MemberRegistirations" element={
+                  <ProtectedRoute roles={["staff", "manager"]}>
+                    < MemberRegistirationsOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/PunishSomeone" element={
+                  <ProtectedRoute roles={["staff", "manager"]}>
+                    < PunishSomeoneOP />
+                  </ProtectedRoute>}>
+                </Route>
 
-              <Route exact path="/ChangeRole" element={
-                <ProtectedRoute roles={["manager"]}>
-                  < ChangeRoleOP />
-                </ProtectedRoute>}>
-              </Route>
-              <Route exact path="/BookCreateRequests" element={
-                <ProtectedRoute roles={["manager"]}>
-                  < BookCreateReqOP />
-                </ProtectedRoute>}>
-              </Route>
-            </Routes>
-          </main>
-          <footer className="mt-auto">
-            <Footer />
-          </footer>
-        </div>
-      </UserProvider>
+                <Route exact path="/ChangeRole" element={
+                  <ProtectedRoute roles={["manager"]}>
+                    < ChangeRoleOP />
+                  </ProtectedRoute>}>
+                </Route>
+                <Route exact path="/BookCreateRequests" element={
+                  <ProtectedRoute roles={["manager"]}>
+                    < BookCreateReqOP />
+                  </ProtectedRoute>}>
+                </Route>
+              </Routes>
+            </main>
+            <footer className="mt-auto">
+              <Footer />
+            </footer>
+          </div>
+        </UserProvider>
+      </div>
     </BrowserRouter >
   )
 }

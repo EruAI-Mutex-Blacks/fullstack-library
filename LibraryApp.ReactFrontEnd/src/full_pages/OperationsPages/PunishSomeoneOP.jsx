@@ -3,18 +3,18 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
 import GeneralOperationsCard from "../../Components/OperationsCards/GeneralOperationsCard";
-
+import { toast } from "react-toastify";
 
 function PunishSomeoneOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
     const { user } = useUser();
-    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedUser, setSelectedUser] = useState();
     const [delayedDays, setDelayedDays] = useState(0);
     const [finePerDay, setFinePerDay] = useState(0);
     const [details, setDetails] = useState("");
     const [totalFine, setTotalFine] = useState(0);
 
-    const getLowerRoleUsers = async function () {
+    const fetchLowerRoleUsers = async function () {
         const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
             method: "GET"
         });
@@ -25,7 +25,7 @@ function PunishSomeoneOP() {
     }
 
     useEffect(() => {
-        getLowerRoleUsers();
+        fetchLowerRoleUsers();
     }, []);
 
     const handleSelectionChange = function (e) {
@@ -33,25 +33,29 @@ function PunishSomeoneOP() {
         setFinePerDay(0);
         setTotalFine(0);
         setSelectedUser(lowerRoleUsers.find(lru => lru.id == e.target.value));
-        console.log(lowerRoleUsers.find(lru => lru.id == e.target.value));
     }
 
     const handleInputChange = function (e, callback) {
         callback(prev => prev = e.target.value);
     }
 
-    //FIXME for example 4 is fine at first then i make it 6 directly then i changed delayeddays calculation it is 0.4. it is making total fine 4.4 instead of 6.4
+    //FIXME for example 4 is the fine at first then i make it 6 directly then i changed delayeddays calculation it is 0.4. it is making total fine 4.4 instead of 6.4
     useEffect(() => {
         setTotalFine((selectedUser?.fineAmount ?? 0) + Math.round(delayedDays * finePerDay * 10) / 10);
     }, [delayedDays, finePerDay, selectedUser])
 
     const handleUpdateClick = async function (e) {
         e.preventDefault();
-        if (selectedUser.fineAmount === totalFine) {
-            console.log("nothing changed");
+
+        if (!selectedUser) {
+            toast.error("Please select someone");
             return;
         }
-        if (selectedUser == null) return;
+
+        if (selectedUser.fineAmount === totalFine) {
+            toast.error("Nothing changed");
+            return;
+        }
 
         const punishUserDTO = {
             userId: selectedUser.id,
@@ -70,13 +74,14 @@ function PunishSomeoneOP() {
         const data = await res.json();
         console.log(data);
         if (!res.ok) return;
+        toast.success(selectedUser.isPunished ? "Updated." : "User punished");
         setDelayedDays(0);
         setFinePerDay(0);
         setTotalFine(0);
         setLowerRoleUsers([]);
         setDetails("");
-        setSelectedUser({});
-        getLowerRoleUsers();
+        setSelectedUser();
+        fetchLowerRoleUsers();
     }
 
     const rightPanel = (
@@ -97,7 +102,7 @@ function PunishSomeoneOP() {
                         <div className="d-flex flex-fill">
                             <div className="my-3 mb-2 flex-fill align-self-center">
                                 <label htmlFor="isPunished" className="form-label  me-2">Is user already punished?</label>
-                                <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} onChange={e => setUpdatedIsPunished(e.target.value)} />
+                                <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} onChange={e => selectedUser?.isPunished} />
                             </div>
                         </div>
                         <div className="my-3 row">
@@ -118,7 +123,7 @@ function PunishSomeoneOP() {
                             <label htmlFor="message" className="form-label">Cause & details of punishment</label>
                             <div className="d-flex align-items-center">
                                 <textarea value={details} type="text" className="form-control me-2" rows={2} style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
-                                <button onClick={(e) => { handleUpdateClick(e) }} className="btn btn-danger py-2 px-4">Update</button>
+                                <button onClick={(e) => { handleUpdateClick(e) }} className="btn btn-danger py-2 px-4">{selectedUser?.isPunished ? "Update" : "Punish"}</button>
                             </div>
                         </div>
                     </form>

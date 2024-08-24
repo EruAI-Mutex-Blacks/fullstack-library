@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useUser } from '../AccountOperations/UserContext'
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -14,29 +15,40 @@ function Login() {
     }, [user, navigate])
     //TODO change links to buttons link being used for navigation
 
-    const loginDTO = {
-        username: username,
-        password: password
-    }
+
 
     const handleLoginClick = async function () {
-        try {
-            const response = await fetch("http://localhost:5109/api/Account/Login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loginDTO)
-            });
-            if (!response.ok) {
-                return;
-            }
 
-            const userDTO = await response.json();
-            //FIXME use cookies or smt like that to keep user logged in until it logs out. jwt to send token when we need to do any kind of operations. it needs to check if user is real otherwise some people can send a placholder user to server. or if you need basic make a currentuser in backend and want password for every action to check if they are same
-            setUser(userDTO);
-            navigate("/");
-        } catch (error) {
-            console.log("There was an error in the process", error);
+        if(!username || !password) {
+            toast.error("Please fill all the fields");
+            return;
         }
+        
+        const loginDTO = {
+            username: username,
+            password: password
+        }
+
+        if (username)
+            try {
+                const response = await fetch("http://localhost:5109/api/Account/Login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(loginDTO)
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    toast.error(data.message || 'An error occurred. Please try again.');
+                    return;
+                }
+
+                const userDTO = await response.json();
+                //FIXME use cookies or smt like that to keep user logged in until it logs out. jwt to send token when we need to do any kind of operations. it needs to check if user is real otherwise some people can send a placholder user to server. or if you need basic make a currentuser in backend and want password for every action to check if they are same
+                setUser(userDTO);
+                navigate("/");
+            } catch (error) {
+                console.log("There was an error in the process", error);
+            }
     };
 
     return (
