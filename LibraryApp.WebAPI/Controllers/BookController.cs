@@ -27,30 +27,25 @@ namespace fullstack_library.Controllers
             _bookPublishReqsRepo = bookPublishRequestRepository;
         }
 
-        [HttpPut("ApprovePublishing/{bookId}")]
-        public IActionResult ApprovePublishingBook(int? bookId)
-        {
-            //TODO check role if not manager than return unauthorized
-            if (bookId == null) return BadRequest(new { message = "Invalid book id" });
-            var book = _bookRepo.GetBookById(bookId.Value);
-            if (book == null) return NotFound(new { message = "Book could not found" }); //return notfound status code
-            book.IsPublished = true;
-            _bookRepo.UpdateBook(book);
-            return Ok(new { message = "Book has been approved" });
-        }
+        //TODO authorize at backend too
 
-
-        //TODO dont delete maybe handle rejection on frontend only or make a bookcreation table and remove it from there only or wait a bool query string in setpublishingbook and update it according to query string.
-        [HttpDelete("RejectPublishing/{bookId}")]
-        public IActionResult RejectPublishingBook(int? bookId)
+        [HttpPut("SetPublishing")]
+        public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
-            //make ispending false for both operations
-            //TODO check role if not manager than return unauthorized
-            if (bookId == null) return BadRequest(new { message = "Invalid book id" });
-            var book = _bookRepo.GetBookById(bookId.Value);
-            if (book == null) return NotFound(new { message = "Book could not found" }); //return notfound status code
-            _bookRepo.DeleteBook(book);
-            return Ok(new { message = "Book has been rejected" });
+            var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
+            if (request == null) return NotFound();
+
+            if (publishBookDTO.IsApproved)
+            {
+                request.Book.IsPublished = true;
+                request.Book.PublishDate = DateTime.Now;
+                await _bookRepo.UpdateBook(request.Book);
+            }
+
+            request.IsPending = false;
+            await _bookPublishReqsRepo.UpdateRequest(request);
+
+            return Ok(new { message = "Operation done!" });
         }
 
         [HttpGet("BookPublishRequests")]

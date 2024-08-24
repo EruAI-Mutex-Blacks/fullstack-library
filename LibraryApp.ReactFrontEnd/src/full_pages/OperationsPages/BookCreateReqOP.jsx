@@ -21,8 +21,24 @@ function BookCreateReqOP() {
         getPendingRequests();
     }, []);
 
-    function handleApproveRejectClick(bookId, isApproved) {
+    async function handleApproveRejectClick(requestId, isApproved) {
+        const publishBookDTO = {
+            requestId: requestId,
+            isApproved: isApproved,
+        }
 
+        const response = await fetch("http://localhost:5109/api/Book/SetPublishing", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(publishBookDTO),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        if (!response.ok) return;
+
+        const updatedRequests = requests.filter(r => r.id != requestId);
+        setRequests(updatedRequests);
     }
 
     const rightPanel = (

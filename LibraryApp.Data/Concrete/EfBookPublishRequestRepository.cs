@@ -22,6 +22,13 @@ namespace LibraryApp.Data.Concrete
             _context.BookPublishRequests.Add(bpr);
             _context.SaveChanges();
         }
+
+        public async Task UpdateRequest(BookPublishRequest bpr)
+        {
+            _context.BookPublishRequests.Update(bpr);
+            await _context.SaveChangesAsync();
+        }
+
         public void DeleteRequest(BookPublishRequest bpr)
         {
             _context.BookPublishRequests.Remove(bpr);
