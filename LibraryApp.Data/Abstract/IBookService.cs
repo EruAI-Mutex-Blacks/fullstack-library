@@ -12,6 +12,6 @@ namespace LibraryApp.Data.Abstract
     public interface IBookService
     {
         void writeBook(string title, string authorName, string content);
-        void UploadBook(string title, string authorName, Stream pdfStream);
+        void uploadBook(string title, string authorName, Stream pdfStream);
     }
 }

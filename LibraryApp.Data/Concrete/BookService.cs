@@ -67,7 +67,7 @@ namespace LibraryApp.Data.Concrete
         {
             Console.WriteLine($"Sent to admin: {book.Title}");
         }
-        public void UploadBook(string title, string authorName, Stream pdfStream)
+        public void uploadBook(string title, string authorName, Stream pdfStream)
         {
             var author = _bookAuthorRepository.BookAuthors
                 .FirstOrDefault(a => a.User.Name == authorName)?.User;
