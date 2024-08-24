@@ -61,6 +61,7 @@ namespace fullstack_library.Controllers
             {
                 Authors = bpr.Book.BookAuthors.Select(ba => ba.User.Name).ToList(),
                 BookName = bpr.Book.Title,
+                BookId = bpr.Book.Id,
                 Id = bpr.Id,
                 RequestDate = bpr.RequestDate,
             }));

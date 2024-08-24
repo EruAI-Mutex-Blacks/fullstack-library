@@ -21,12 +21,8 @@ function BookCreateReqOP() {
         getPendingRequests();
     }, []);
 
-    function handleApproveClick(book) {
-        window.alert("approved");
-    }
+    function handleApproveRejectClick(bookId, isApproved) {
 
-    function handleRejectClick(book) {
-        window.alert("rejected");
     }
 
     const rightPanel = (
@@ -47,9 +43,9 @@ function BookCreateReqOP() {
                         <td>{new Date(b.requestDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
-                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.id} className={`py-1 px-2 btn btn-danger`}>Read the book</Link></li>
-                                <li className="me-2"><Link onClick={() => { handleApproveClick(b) }} className={`py-1 px-2 btn btn-success`}>Approve</Link></li>
-                                <li className="me-2"><Link onClick={() => { handleRejectClick(b) }} className={`py-1 px-2 btn btn-danger`}>Reject</Link></li>
+                                <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className={`py-1 px-2 btn btn-danger`}>Read the book</Link></li>
+                                <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className={`py-1 px-2 btn btn-success`}>Approve</button></li>
+                                <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className={`py-1 px-2 btn btn-danger`}>Reject</button></li>
                             </ul>
                         </td>
                     </tr>

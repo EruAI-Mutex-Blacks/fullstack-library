@@ -17,8 +17,8 @@ function BookReadingPage() {
         });
         if (!res.ok) return;
         const book = await res.json();
-        book.pages = book.borrowedById == user.id ? book.pages : book.pages.slice(0, 3);
-        book.title = book.borrowedById == user.id ? book.title : book.title + " [Preview]";
+        book.pages = user.id !== 2 || book.borrowedById == user.id ? book.pages : book.pages.slice(0, 3);
+        book.title = user.id !== 2 || book.borrowedById == user.id ? book.title : book.title + " [Preview]";
         setBook(book);
     }
 
