@@ -11,6 +11,7 @@ function PunishSomeoneOP() {
     const [selectedUser, setSelectedUser] = useState({});
     const [delayedDays, setDelayedDays] = useState(0);
     const [finePerDay, setFinePerDay] = useState(0);
+    const [details, setDetails] = useState("");
     const [totalFine, setTotalFine] = useState(0);
 
     const getLowerRoleUsers = async function () {
@@ -40,7 +41,25 @@ function PunishSomeoneOP() {
         setTotalFine(Math.round(delayedDays * finePerDay * 10) / 10);
     }, [delayedDays, finePerDay])
 
-    const handlePunishClick = function (id) {
+    const handlePunishClick = async function (e) {
+        e.preventDefault();
+
+        const punishUserDTO = {
+            userId: selectedUser.id,
+            punisherId: user.id,
+            isPunished: true,
+            fineAmount: totalFine,
+            details: details,
+        }
+
+        const res = await fetch(`http://localhost:5109/api/User/SetPunishment`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(punishUserDTO),
+        });
+
+        const data = await res.json();
+        console.log(data);
     }
 
     const rightPanel = (
@@ -78,8 +97,8 @@ function PunishSomeoneOP() {
                         <div className="mb-0">
                             <label htmlFor="message" className="form-label">Cause & details of punishment</label>
                             <div className="d-flex align-items-center">
-                                <textarea type="text" className="form-control me-2" rows={2} style={{ resize: "none" }}></textarea>
-                                <Link onClick={() => { handlePunishClick(id) }} className="btn btn-danger py-2 px-4">Punish</Link>
+                                <textarea type="text" className="form-control me-2" rows={2} style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
+                                <button onClick={(e) => { handlePunishClick(e) }} className="btn btn-danger py-2 px-4">Punish</button>
                             </div>
                         </div>
                         <div className="d-flex justify-content-end">

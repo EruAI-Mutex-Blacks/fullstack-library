@@ -16,7 +16,7 @@ namespace fullstack_library.DTO
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
         public bool IsPunished { get; set; }
-        public int FineAmount { get; set; }
+        public float FineAmount { get; set; }
 
     }
 }

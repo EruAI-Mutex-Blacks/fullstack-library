@@ -42,17 +42,25 @@ namespace fullstack_library.Controllers
             return Ok(new { message = "Operation done!" });
         }
 
-        [HttpPut("set-punishment/{userId}")]
-        public IActionResult SetPunishment(int? userId, [FromQuery] bool isPunished, [FromQuery] int fineAmount)
+        [HttpPut("SetPunishment")]
+        public IActionResult SetPunishment(PunishUserDTO punishUserDTO)
         {
             //TODO can be used for both staff and users like if it is punished cannot login to system and later on we can change ispunished to false and maybe use punishmentDTO for the parameters
 
-            if (userId == null) return BadRequest(new { message = "Invalid user id" });
-            var user = _userRepo.GetUserById(userId.Value);
+            var user = _userRepo.GetUserById(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
-            user.IsPunished = isPunished;
-            user.FineAmount = fineAmount;
+            if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId)) return NotFound(new { message = "Punisher not found" });
+            user.FineAmount = user.IsPunished ? user.FineAmount + punishUserDTO.FineAmount : punishUserDTO.FineAmount;
+            user.IsPunished = punishUserDTO.IsPunished;
             _userRepo.UpdateUser(user);
+            _msgRepo.CreateMessage(new Message
+            {
+                ReceiverId = user.Id,
+                Details = punishUserDTO.IsPunished ? punishUserDTO.Details : "Your punishment removed. Thanks for being good boy.",
+                SenderId = punishUserDTO.PunisherId,
+                Title = punishUserDTO.IsPunished ? "You are punished from library at " + DateTime.Now : "Your punishment removed.",
+            });
+
             return Ok(new { message = "Punishment status updated" });
         }
 
@@ -183,7 +191,7 @@ namespace fullstack_library.Controllers
 
             user.RoleId = updateRoleDTO.NewRoleId;
             _userRepo.UpdateUser(user);
-            return Ok(new {Message = "Operation Done!"});
+            return Ok(new { Message = "Operation Done!" });
         }
     }
 }
