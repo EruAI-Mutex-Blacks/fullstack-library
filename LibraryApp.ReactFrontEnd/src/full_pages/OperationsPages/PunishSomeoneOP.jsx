@@ -29,6 +29,9 @@ function PunishSomeoneOP() {
     }, []);
 
     const handleSelectionChange = function (e) {
+        setDelayedDays(0);
+        setFinePerDay(0);
+        setTotalFine(0);
         setSelectedUser(lowerRoleUsers.find(lru => lru.id == e.target.value));
         console.log(lowerRoleUsers.find(lru => lru.id == e.target.value));
     }
@@ -37,17 +40,23 @@ function PunishSomeoneOP() {
         callback(prev => prev = e.target.value);
     }
 
+    //FIXME for example 4 is fine at first then i make it 6 directly then i changed delayeddays calculation it is 0.4. it is making total fine 4.4 instead of 6.4
     useEffect(() => {
-        setTotalFine(Math.round(delayedDays * finePerDay * 10) / 10);
-    }, [delayedDays, finePerDay])
+        setTotalFine((selectedUser?.fineAmount ?? 0) + Math.round(delayedDays * finePerDay * 10) / 10);
+    }, [delayedDays, finePerDay, selectedUser])
 
-    const handlePunishClick = async function (e) {
+    const handleUpdateClick = async function (e) {
         e.preventDefault();
+        if (selectedUser.fineAmount === totalFine) {
+            console.log("nothing changed");
+            return;
+        }
+        if (selectedUser == null) return;
 
         const punishUserDTO = {
             userId: selectedUser.id,
             punisherId: user.id,
-            isPunished: true,
+            isPunished: totalFine > 0,
             fineAmount: totalFine,
             details: details,
         }
@@ -60,10 +69,17 @@ function PunishSomeoneOP() {
 
         const data = await res.json();
         console.log(data);
+        if (!res.ok) return;
+        setDelayedDays(0);
+        setFinePerDay(0);
+        setTotalFine(0);
+        setLowerRoleUsers([]);
+        setDetails("");
+        setSelectedUser({});
+        getLowerRoleUsers();
     }
 
     const rightPanel = (
-
         <div className="flex-fill">
             <div className="mb-3 border-bottom border-dark p-3 border rounded">
                 <label htmlFor="sendingTo" className="form-label">Select user to view punishment status</label>
@@ -76,46 +92,36 @@ function PunishSomeoneOP() {
             </div>
             <div className="row m-0 p-0">
                 <div className="col border border-dark rounded p-3 me-2">
-                    <h5 className="border-bottom border-dark pb-1">Punish user</h5>
+                    <h5 className="border-bottom border-dark pb-1">Punishment of {selectedUser?.name}</h5>
                     <form>
-                        <div className="my-3 px-2 row">
+                        <div className="d-flex flex-fill">
+                            <div className="my-3 mb-2 flex-fill align-self-center">
+                                <label htmlFor="isPunished" className="form-label  me-2">Is user already punished?</label>
+                                <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} onChange={e => setUpdatedIsPunished(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="my-3 row">
                             <div className="align-self-center col text-start pe-0">
                                 <label className="form-label" htmlFor="delayedDays">Delayed days</label>
-                                <input id="delayedDays" className="form-control d-inline" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
+                                <input id="delayedDays" value={delayedDays} className="form-control d-inline" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
                             </div>
-                            <p className="col-1 align-self-center m-0">X</p>
                             <div className=" col text-center align-self-center">
                                 <label className="form-label" htmlFor="finePerDay">Fine amount per day ($)</label>
-                                <input id="finePerDay" className="form-control d-inline" type="number" min={0} step={0.1} onChange={e => handleInputChange(e, setFinePerDay)} />
+                                <input id="finePerDay" className="form-control d-inline" type="number" min={0} step={0.1} value={finePerDay} onChange={e => handleInputChange(e, setFinePerDay)} />
                             </div>
-                            <p className="col-1 align-self-center m-0">=</p>
-                            <div className="col text-end ps-0 align-self-center">
-                                <p>Total fine ($)</p>
-                                <p>{totalFine}</p>
+                            <div className="col align-self-center text-end">
+                                <label htmlFor="fineAmount" className="form-label"><b>User's final total fine</b></label>
+                                <input id="finePerDay" className="form-control" type="number" value={totalFine} onChange={e => setTotalFine(e.target.value)} min={0} step={0.1} />
                             </div>
                         </div>
                         <div className="mb-0">
                             <label htmlFor="message" className="form-label">Cause & details of punishment</label>
                             <div className="d-flex align-items-center">
-                                <textarea type="text" className="form-control me-2" rows={2} style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
-                                <button onClick={(e) => { handlePunishClick(e) }} className="btn btn-danger py-2 px-4">Punish</button>
+                                <textarea value={details} type="text" className="form-control me-2" rows={2} style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
+                                <button onClick={(e) => { handleUpdateClick(e) }} className="btn btn-danger py-2 px-4">Update</button>
                             </div>
                         </div>
-                        <div className="d-flex justify-content-end">
-                        </div>
                     </form>
-                </div>
-                <div className="col border border-dark rounded p-3 ms-2">
-                    <h5 className="border-bottom border-dark pb-1">Punishment status of {selectedUser?.name}</h5>
-                    <div className="my-3 mb-2">
-                        <label htmlFor="isPunished" className="form-label  me-2">Is user punished?</label>
-                        <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="fineAmount" className="form-label">User's current total fine</label>
-                        <input id="finePerDay" className="form-control" type="number" value={selectedUser?.fineAmount ?? 0} min={0} step={0.1} />
-                    </div>
-                    <Link onClick={() => { handlePunishClick(id) }} className="btn btn-success py-2 px-4">Update</Link>
                 </div>
             </div>
         </div>

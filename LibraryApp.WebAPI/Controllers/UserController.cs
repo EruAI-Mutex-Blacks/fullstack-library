@@ -50,7 +50,7 @@ namespace fullstack_library.Controllers
             var user = _userRepo.GetUserById(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
             if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId)) return NotFound(new { message = "Punisher not found" });
-            user.FineAmount = user.IsPunished ? user.FineAmount + punishUserDTO.FineAmount : punishUserDTO.FineAmount;
+            user.FineAmount = punishUserDTO.FineAmount;
             user.IsPunished = punishUserDTO.IsPunished;
             _userRepo.UpdateUser(user);
             _msgRepo.CreateMessage(new Message
