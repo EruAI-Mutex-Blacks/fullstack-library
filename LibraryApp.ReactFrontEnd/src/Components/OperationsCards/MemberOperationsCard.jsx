@@ -7,10 +7,10 @@ function MemberOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <Link className="btn bg-custom-primary" to="/BorrowRequests">See pending borrow requests</Link>
+                <Link className="btn bg-custom-primary" to="/BorrowRequests">See borrow requests</Link>
             </li>
             <li className="">
-                <Link className="btn bg-custom-primary" to="/MemberRegistirations">Approve member registiration</Link>
+                <Link className="btn bg-custom-primary" to="/MemberRegistirations">See member registirations</Link>
             </li>
         </>
     )

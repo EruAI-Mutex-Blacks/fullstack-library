@@ -18,6 +18,13 @@ function Home() {
                 <p>Please <b>login or register</b> to our library from the <b>top right corner</b> to be able to do any kind of operations.</p>
             </div>
         </div>);
+    else if (user.isPunished)
+        mainContent = (<div className='flex-fill align-self-center text-center'>
+            <div>
+                <h1>Welcome to the library</h1>
+                <p>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
+            </div>
+        </div>)
     else if (user.roleName === "pendingUser")
         mainContent = (<div className='flex-fill align-self-center text-center'>
             <div>

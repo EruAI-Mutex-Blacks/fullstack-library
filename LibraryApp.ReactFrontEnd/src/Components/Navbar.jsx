@@ -7,7 +7,6 @@ function Navbar() {
 
     const handleLogoutClick = function () {
         logout();
-        <Navigate to="/" />
     }
 
     let topRightLinks = "";
@@ -29,7 +28,7 @@ function Navbar() {
                     <Link className='nav-link active disabled' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
                 </li>
                 <li>
-                    <Link className='nav-link active' aria-current="page" onClick={handleLogoutClick}>Logout</Link>
+                    <Link className='nav-link active' aria-current="page" to="/" onClick={handleLogoutClick}>Logout</Link>
                 </li>
             </>
         )
