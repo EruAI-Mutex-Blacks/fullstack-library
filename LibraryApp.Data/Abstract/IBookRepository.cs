@@ -8,7 +8,7 @@ namespace LibraryApp.Data.Abstract
 {
     public interface IBookRepository
     {
-        IQueryable<Book> Books { get; }
+        IQueryable<Book> Books { get; } //veriler db den cekilmeden sorgu yapýlýyor get kullanýlmasýndaki amac
 
         IQueryable<Book> GetBooks();
         Book? GetBookById(int id);
