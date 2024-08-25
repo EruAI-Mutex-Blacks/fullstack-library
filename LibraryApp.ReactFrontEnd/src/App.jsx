@@ -21,11 +21,11 @@ import BookReadingPage from './full_pages/BookReadingPage.jsx'
 import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
+import MyBooksOP from './full_pages/OperationsPages/MyBooksOP.jsx'
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
-//TODO profile page
 function App() {
   return (
     <BrowserRouter>
@@ -56,28 +56,34 @@ function App() {
                 <Route exact path="/Register" element={
                   <PublicRoute ><Register /></PublicRoute>
                 }></Route>
+                <Route exact path='/MyBooks' element={
+                  <ProtectedRoute roles={["author"]}>
+                    <MyBooksOP />
+                  </ProtectedRoute>
+                }>
+                </Route>
                 <Route exact path="/SearchBook" element={
-                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     <SearchBookOP />
                   </ProtectedRoute>}>
                 </Route>
                 <Route exact path="/BorrowedBooks" element={
-                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     <BorrowedBooksOP />
                   </ProtectedRoute>}>
                 </Route>
                 <Route exact path="/SendMessage" element={
-                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     <SendMessageOP />
                   </ProtectedRoute>}>
                 </Route>
                 <Route exact path="/ViewInbox" element={
-                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     <ViewInboxOP />
                   </ProtectedRoute>}>
                 </Route>
                 <Route exact path="/ReadBook" element={
-                  <ProtectedRoute roles={["member", "staff", "manager"]}>
+                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     < BookReadingPage />
                   </ProtectedRoute>}>
                 </Route>

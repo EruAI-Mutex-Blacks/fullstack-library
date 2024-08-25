@@ -28,7 +28,7 @@ function Home() {
     else if (user)
         mainContent = (<div className='container'>
             <div className="row d-flex flex-row justify-content-around">
-                {(["member", "staff", "manager"].includes(user.roleName)) && (
+                {(["member", "staff", "manager", "author"].includes(user.roleName)) && (
                     <>
                         <div className="col-4">
                             <BookOperationsCard />

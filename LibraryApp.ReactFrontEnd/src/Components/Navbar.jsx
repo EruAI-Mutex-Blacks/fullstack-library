@@ -12,8 +12,6 @@ function Navbar() {
 
     let topRightLinks = "";
 
-    //TODO use library for showing errors etc.
-
     if (!user) {
         topRightLinks = (
             <>
@@ -46,8 +44,17 @@ function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse " id="navbarNav">
                     <ul className="navbar-nav w-100 d-flex flex-row justify-content-between">
-                        <li className="nav-item d-flex flex-row justify-content-evenly">
-                            <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                        <li className=''>
+                            <ul className='d-flex list-inline'>
+                                <li className="">
+                                    <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                                </li>
+                                <li className="">
+                                    {
+                                        (user?.roleName === "author") && (<Link className="nav-link active" aria-current="page" to="/MyBooks">My books</Link>)
+                                    }
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <ul className='list-inline nav-item d-flex flex-row justify-content-evenly'>

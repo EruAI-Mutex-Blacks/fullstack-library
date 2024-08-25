@@ -174,5 +174,22 @@ namespace fullstack_library.Controllers
                 }).ToList(),
             });
         }
+
+        [HttpGet("GetBooksByAuthor")]
+        public IActionResult GetBooksByAuthor([FromQuery] int userId)
+        {
+            if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound();
+            var books = _bookRepo.Books.Include(b => b.BookAuthors).Where(b => b.BookAuthors.Any(ba => ba.UserId == userId)).Include(b => b.BookPublishRequests);
+            // string status = _bookPublishReqsRepo.Requests.Any(bpr => bpr.IsPending && books.Any(b => b.Id == bpr.BookId)) ? "Waiting for approval" : books.
+            var MyBookDTOS = books.Select(b => new MyBooksDTO
+            {
+                BookId = b.Id,
+                BookName = b.Title,
+                PublishDate = b.PublishDate,
+                Status = b.IsPublished ? "Published" : b.BookPublishRequests.Any(bpr => bpr.IsPending) ? "Waiting for approval" : "Can send request",
+            });
+
+            return Ok(MyBookDTOS);
+        }
     }
 }
