@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../../AccountOperations/UserContext";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function MyBooksOP() {
 
@@ -28,6 +29,22 @@ function MyBooksOP() {
         fetchBooks();
     }, []);
 
+    const handleRequestClick = async function (bookId) {
+        const res = await fetch("http://localhost:5109/api/Book/RequestPublishment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookId)
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            console.log(data);
+            toast.error(data || "An error occured");
+            return;
+        }
+        toast.success("Request has sent");
+    }
+
     return (
         <div className="container ">
             <h1 className="row border-bottom border-dark py-4">My Books</h1>
@@ -50,7 +67,7 @@ function MyBooksOP() {
                                 <td className="">
                                     <Link className="btn btn-success me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
                                     <Link className="btn btn-success me-2" to={"/WriteBook?bookId="}>Write</Link>
-                                    <button className="btn btn-success me-2">Request publishment</button>
+                                    <button className="btn btn-success me-2" disabled={mb.status !== "isPublished"} onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
                                 </td>
                             </tr>
                         ))}

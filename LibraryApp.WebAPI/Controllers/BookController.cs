@@ -62,6 +62,24 @@ namespace fullstack_library.Controllers
             }));
         }
 
+        [HttpPost("RequestPublishment")]
+        public IActionResult RequestPublishment([FromBody] int bookId)
+        {
+            var book = _bookRepo.GetBookById(bookId);
+            if (book == null) return NotFound();
+            if (book.IsPublished) return BadRequest(new { Message = "Your book is already published." });
+            if (_bookPublishReqsRepo.Requests.Any(bpr => bpr.IsPending && bpr.BookId == bookId))
+                return BadRequest(new { Message = "Your request is still active." });
+
+            _bookPublishReqsRepo.CreateRequest(new BookPublishRequest()
+            {
+                BookId = bookId,
+                IsPending = true,
+                RequestDate = DateTime.Now,
+            });
+            return Ok(new { Message = "Request has sent" });
+        }
+
         [HttpGet("SearchBook")]
         public IActionResult SearchBook([FromQuery] string? bookName)
         {
