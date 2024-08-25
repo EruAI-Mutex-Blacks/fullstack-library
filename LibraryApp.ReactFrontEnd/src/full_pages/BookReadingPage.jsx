@@ -29,6 +29,8 @@ function BookReadingPage() {
         book.pages = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.pages : book.pages.slice(0, 3);
         book.title = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.title : book.title + " [Preview]";
         setBook(book);
+        setPageContent(book.pages[0].content);
+        setPageNum(book.pages[0].pageNumber);
     }
 
     useEffect(() => {
