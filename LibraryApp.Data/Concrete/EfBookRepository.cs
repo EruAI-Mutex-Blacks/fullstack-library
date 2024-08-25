@@ -19,7 +19,8 @@ namespace LibraryApp.Data.Concrete
 
         public void CreateBook(Book book)
         {
-            throw new NotImplementedException();
+            _context.Books.Add(book);
+            _context.SaveChanges();
         }
 
         public IQueryable<Book> GetBooks()

@@ -231,7 +231,25 @@ namespace fullstack_library.Controllers
             });
 
             return Ok(new { Message = "Page saved." });
+        }
 
+        [HttpPost("CreateBook")]
+        public IActionResult CreateBook([FromBody] int authorId)
+        {
+            if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound();
+            _bookRepo.CreateBook(new Book
+            {
+                IsBorrowed = false,
+                IsPublished = false,
+                PublishDate = new DateTime(1000, 1, 1),
+                Title = "New Book",
+                BookAuthors = [
+                    new BookAuthor(){
+                        UserId = authorId,
+                    }
+                ]
+            });
+            return Ok(new { Message = "Book created" });
         }
     }
 }

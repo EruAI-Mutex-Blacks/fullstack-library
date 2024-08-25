@@ -45,9 +45,25 @@ function MyBooksOP() {
         toast.success("Request has sent");
     }
 
+    const handleCreateClick = async function () {
+        const res = await fetch("http://localhost:5109/api/Book/CreateBook", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user.id)
+        });
+
+        if (!res.ok) return;
+        const data = await res.json();
+        toast.success(data.message || "Created.");
+        await fetchBooks();
+    }
+
     return (
         <div className="container ">
-            <h1 className="row border-bottom border-dark py-4">My Books</h1>
+            <div className="d-flex flex-row justify-content-between border-bottom border-dark align-items-end">
+                <h1 className="pt-4">My Books</h1>
+                <button onClick={handleCreateClick} className="btn btn-success mb-2">Create a book</button>
+            </div>
             <div className="row py-2">
                 <table className="table table-bordered table-striped">
                     <thead>
@@ -68,6 +84,7 @@ function MyBooksOP() {
                                     <Link className="btn btn-success me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
                                     <Link className={`btn btn-success me-2 ${mb.status === "Published" ? "disabled" : ""}`} to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
                                     <button className="btn btn-success me-2" disabled={mb.status === "Published"} onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
+                                    <button className={`btn btn-success me-2 ${mb.status === "Published" ? "disabled" : ""}`} to={"/WriteBook?bookId=" + mb.bookId}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -81,8 +98,7 @@ function MyBooksOP() {
 export default MyBooksOP;
 
 //TODO create book to db then as writing add pages into that
-//TODO if book is published cannot requesst publishment and cannot write. and no more than 1 request
-//TODO book writing page with content and page number inputs
+//TODO book publish no more than 1 request
 //TODO importing a txt file into same page's content field
 //TODO profile page?
 //TODO authorization at backend too
