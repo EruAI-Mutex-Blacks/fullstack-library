@@ -46,8 +46,8 @@ function Register() {
             });
             if (!response.ok) return;
             const data = await response.json();
-            toast.success("You are registered");
-            toast.info("Directing to login page");
+            toast.success("Registiration request has sent to staffs.");
+            toast.info("Directing to login page.");
             navigate("/Login");
         } catch (error) {
             console.log("there was an error", error);

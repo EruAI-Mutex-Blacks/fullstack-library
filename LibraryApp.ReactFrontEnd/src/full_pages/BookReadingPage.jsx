@@ -17,8 +17,13 @@ function BookReadingPage() {
         });
         if (!res.ok) return;
         const book = await res.json();
-        book.pages = user.roleId !== 2 || book.borrowedById == user.id ? book.pages : book.pages.slice(0, 3);
-        book.title = user.roleId !== 2 || book.borrowedById == user.id ? book.title : book.title + " [Preview]";
+
+        const isMemberOrAuthor = ["member", "author"].includes(user.roleName);
+        const isBorrowedByUser = book.borrowedById == user.id;
+        const isWrittenByUser = book.authorIds?.includes(user.id);
+
+        book.pages = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.pages : book.pages.slice(0, 3);
+        book.title = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.title : book.title + " [Preview]";
         setBook(book);
     }
 

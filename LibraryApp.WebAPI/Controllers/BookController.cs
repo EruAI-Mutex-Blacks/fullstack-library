@@ -161,12 +161,13 @@ namespace fullstack_library.Controllers
         [HttpGet("GetBook")]
         public IActionResult GetBook([FromQuery] int bookId)
         {
-            var book = _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).FirstOrDefault(b => b.Id == bookId);
+            var book = _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).Include(b => b.BookAuthors).FirstOrDefault(b => b.Id == bookId);
             if (book == null) return NotFound(new { Message = "Book not found" });
             return Ok(new ReadBookDTO
             {
                 BorrowedById = book.BookBorrowActivities.FirstOrDefault(bba => bba.IsApproved && !bba.IsReturned)?.UserId ?? 0,
                 Title = book.Title,
+                AuthorIds = book.BookAuthors.Select(ba => ba.UserId).ToList(),
                 Pages = book.Pages.Select(p => new PageDTO
                 {
                     Content = p.Content,
