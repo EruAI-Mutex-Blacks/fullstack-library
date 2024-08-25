@@ -196,12 +196,15 @@ namespace fullstack_library.Controllers
             });
         }
 
+        //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]
         public IActionResult GetBooksByAuthor([FromQuery] int userId)
         {
             if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound();
-            var books = _bookRepo.Books.Include(b => b.BookAuthors).Where(b => b.BookAuthors.Any(ba => ba.UserId == userId)).Include(b => b.BookPublishRequests);
-            // string status = _bookPublishReqsRepo.Requests.Any(bpr => bpr.IsPending && books.Any(b => b.Id == bpr.BookId)) ? "Waiting for approval" : books.
+            var books = _bookRepo.Books
+            .AsNoTracking()
+            .Where(b => b.BookAuthors.Any(ba => ba.UserId == userId));
+            
             var MyBookDTOS = books.Select(b => new MyBooksDTO
             {
                 BookId = b.Id,
@@ -212,8 +215,6 @@ namespace fullstack_library.Controllers
 
             return Ok(MyBookDTOS);
         }
-
-        //TODO add creating book
 
         [HttpPost("WritePage")]
         public IActionResult WritePage([FromBody] PageDTO pageDTO)
@@ -250,6 +251,17 @@ namespace fullstack_library.Controllers
                 ]
             });
             return Ok(new { Message = "Book created" });
+        }
+
+        [HttpPut("UpdateBookName")]
+        public IActionResult UpdateBookName(MyBooksDTO myBooksDTO)
+        {
+            var book = _bookRepo.Books.FirstOrDefault(b => b.Id == myBooksDTO.BookId);
+            if (book == null) return NotFound();
+
+            book.Title = myBooksDTO.BookName;
+            _bookRepo.UpdateBook(book);
+            return Ok(new { Message = "Book Updated" });
         }
     }
 }
