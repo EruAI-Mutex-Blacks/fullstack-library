@@ -88,7 +88,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult SearchBook([FromQuery] string? bookName)
         {
-            var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO
+            var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(20).Select(b => new BookDTO
             {
                 Id = b.Id,
                 Title = b.Title,
