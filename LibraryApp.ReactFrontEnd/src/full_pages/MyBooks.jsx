@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useUser } from "../../AccountOperations/UserContext";
+import { useUser } from "../AccountOperations/UserContext";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -66,7 +66,7 @@ function MyBooksOP() {
                                 <td>{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
                                 <td className="">
                                     <Link className="btn btn-success me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
-                                    <Link className="btn btn-success me-2" to={"/WriteBook?bookId="}>Write</Link>
+                                    <Link className="btn btn-success me-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
                                     <button className="btn btn-success me-2" disabled={mb.status !== "isPublished"} onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
                                 </td>
                             </tr>

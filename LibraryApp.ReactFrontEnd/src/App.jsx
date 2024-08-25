@@ -21,7 +21,8 @@ import BookReadingPage from './full_pages/BookReadingPage.jsx'
 import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
-import MyBooksOP from './full_pages/OperationsPages/MyBooksOP.jsx'
+import MyBooks from './full_pages/MyBooks.jsx'
+import WriteBook from './full_pages/WriteBook.jsx'
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
@@ -58,10 +59,14 @@ function App() {
                 }></Route>
                 <Route exact path='/MyBooks' element={
                   <ProtectedRoute roles={["author"]}>
-                    <MyBooksOP />
+                    <MyBooks />
                   </ProtectedRoute>
-                }>
-                </Route>
+                }></Route>
+                <Route exact path='/WriteBook' element={
+                  <ProtectedRoute roles={["author"]}>
+                    <WriteBook />
+                  </ProtectedRoute>
+                }></Route>
                 <Route exact path="/SearchBook" element={
                   <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                     <SearchBookOP />
