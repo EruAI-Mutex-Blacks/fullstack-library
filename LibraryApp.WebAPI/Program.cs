@@ -66,7 +66,7 @@ builder.Services.AddAuthorization(opt =>
     opt.AddPolicy("ManagerPolicy", policy => policy.RequireRole("manager"));
     opt.AddPolicy("AuthorPolicy", policy => policy.RequireRole("author"));
     opt.AddPolicy("StaffOrManagerPolicy", policy => policy.RequireRole("staff", "manager"));
-    opt.AddPolicy("StaffOrManagerPolicy", policy => policy.RequireRole("member", "author", "staff", "manager"));
+    opt.AddPolicy("MemberOrHigherPolicy", policy => policy.RequireRole("member", "author", "staff", "manager"));
 });
 
 var app = builder.Build();

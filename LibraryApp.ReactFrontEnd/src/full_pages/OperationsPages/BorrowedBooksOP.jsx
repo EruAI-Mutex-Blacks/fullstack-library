@@ -3,6 +3,7 @@ import BookOperationsCard from "../../Components/OperationsCards/BookOperationsC
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
+import { toast } from "react-toastify";
 
 
 function BorrowedBooksOP() {
@@ -23,7 +24,21 @@ function BorrowedBooksOP() {
         getBorrowedBooks();
     }, []);
 
-    function handleReturnClick(book) {
+    async function handleReturnClick(book) {
+        console.log(book.id);
+        const res = await fetch("http://localhost:5109/api/Book/ReturnBook", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
+            },
+            body: JSON.stringify(book.id),
+        });
+
+        const data = await res.json();
+        if (!res.ok) return;
+        toast.success(data.message);
+        getBorrowedBooks();
     }
 
     const rightPanel = (
@@ -39,13 +54,13 @@ function BorrowedBooksOP() {
                 </tr>
             </thead>
             <tbody>
-                {books.map(b => (
-                    <tr>
+                {books.map((b, index) => (
+                    <tr key={index}>
                         <td>{b.bookDTO.title}</td>
                         <td>{b.bookDTO.authors.join(", ")}</td>
-                        <td>{b.bookDTO.publishDate}</td>
-                        <td>{b.borrowDate}</td>
-                        <td>{b.returnDate}</td>
+                        <td>{new Date(b.bookDTO.publishDate).toLocaleDateString("en-us")}</td>
+                        <td>{new Date(b.borrowDate).toLocaleDateString("en-us")}</td>
+                        <td>{new Date(b.returnDate).toLocaleDateString("en-us")}</td>
                         <td>
                             <ul className="list-inline d-flex justify-content-start">
                                 <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookDTO.id} className={`py-1 px-2 btn btn-danger`}>Read</Link></li>

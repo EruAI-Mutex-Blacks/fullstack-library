@@ -85,7 +85,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("SearchBook")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult SearchBook([FromQuery] string? bookName)
         {
             var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO
@@ -100,15 +100,16 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("BorrowedBooks")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult BorrowedBooks([FromQuery] int userId)
         {
-            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
+            var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved && !bba.IsReturned).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
             {
                 BorrowDate = bba.BorrowDate,
                 ReturnDate = bba.ReturnDate,
                 BookDTO = new BookDTO
                 {
+                    Id = bba.BookId,
                     Authors = bba.Book.BookAuthors.Select(ba => ba.User.Name).ToList(),
                     Title = bba.Book.Title,
                     IsBorrowed = bba.Book.IsBorrowed,
@@ -163,7 +164,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("BorrowBook")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult BorrowBook(BorrowBookDTO borrowBookDTO)
         {
             var user = _userRepo.GetUserById(borrowBookDTO.UserId);
@@ -186,7 +187,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetBook")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult GetBook([FromQuery] int bookId)
         {
             var book = _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).Include(b => b.BookAuthors).FirstOrDefault(b => b.Id == bookId);
@@ -213,7 +214,7 @@ namespace fullstack_library.Controllers
             var books = _bookRepo.Books
             .AsNoTracking()
             .Where(b => b.BookAuthors.Any(ba => ba.UserId == userId));
-            
+
             var MyBookDTOS = books.Select(b => new MyBooksDTO
             {
                 BookId = b.Id,
@@ -274,6 +275,23 @@ namespace fullstack_library.Controllers
             book.Title = myBooksDTO.BookName;
             _bookRepo.UpdateBook(book);
             return Ok(new { Message = "Book Updated" });
+        }
+
+        [HttpPut("ReturnBook")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
+        public IActionResult ReturnBook([FromBody] int bookId)
+        {
+            var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).FirstOrDefault(b => b.Id == bookId);
+            if (book == null) return NotFound();
+
+            var bba = book.BookBorrowActivities.FirstOrDefault(bba => !bba.IsReturned);
+            if (bba == null) return BadRequest();
+
+            book.IsBorrowed = false;
+            bba.IsReturned = true;
+            _bookRepo.UpdateBook(book);
+            _bookBorrowRepo.UpdateBookBorrowActivity(bba);
+            return Ok(new { Message = "Book returned." });
         }
     }
 }
