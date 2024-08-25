@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { useUser } from '../AccountOperations/UserContext.jsx';
 
 function Navbar() {
-    const { user, setUser } = useUser();
+    const { user, logout } = useUser();
 
     const handleLogoutClick = function () {
-        setUser(null);
+        logout();
         <Navigate to="/" />
     }
 

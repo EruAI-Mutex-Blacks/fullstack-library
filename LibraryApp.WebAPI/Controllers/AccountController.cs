@@ -7,6 +7,10 @@ using LibraryApp.Data.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using LibraryApp.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace fullstack_library.Controllers
 {
@@ -15,10 +19,12 @@ namespace fullstack_library.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
+        readonly IConfiguration _config;
 
-        public AccountController(IUserRepository userRepo)
+        public AccountController(IUserRepository userRepo, IConfiguration config)
         {
             _userRepo = userRepo;
+            _config = config;
         }
 
         //TODO make every action method async Task<>
@@ -44,7 +50,14 @@ namespace fullstack_library.Controllers
                 IsPunished = user.IsPunished,
                 Username = user.Username,
             };
-            return Ok(userDTO);
+
+            string token = GenerateJWT(user);
+
+            return Ok(new
+            {
+                userDTO = userDTO,
+                token = token,
+            });
         }
 
         [HttpPost("Register")]
@@ -61,6 +74,32 @@ namespace fullstack_library.Controllers
                 RoleId = 1,
             });
             return Ok(new { message = "User registered" });
+        }
+
+        private string GenerateJWT(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Secret").Value ?? "");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]{
+                    new Claim("userId", user.Id.ToString()),
+                    new Claim("roleId", user.RoleId.ToString()),
+                    new Claim("roleName", user.Role.Name.ToString()),
+                    new Claim("name", user.Name.ToString()),
+                    new Claim("surname", user.Surname.ToString()),
+                    new Claim("gender", user.Gender.ToString()),
+                    new Claim("birthdate", user.BirthDate.ToString()),
+                    new Claim("fineAmount", user.FineAmount.ToString()),
+                    new Claim("isPunished", user.IsPunished.ToString()),
+                    new Claim("username", user.Username.ToString()),
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

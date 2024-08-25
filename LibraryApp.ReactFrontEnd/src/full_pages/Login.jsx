@@ -7,7 +7,7 @@ function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { user, setUser } = useUser();
+    const { user, login } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,15 +15,13 @@ function Login() {
     }, [user, navigate])
     //TODO change links to buttons link being used for navigation
 
-
-
     const handleLoginClick = async function () {
 
-        if(!username || !password) {
+        if (!username || !password) {
             toast.error("Please fill all the fields");
             return;
         }
-        
+
         const loginDTO = {
             username: username,
             password: password
@@ -42,9 +40,10 @@ function Login() {
                     return;
                 }
 
-                const userDTO = await response.json();
-                //FIXME use cookies or smt like that to keep user logged in until it logs out. jwt to send token when we need to do any kind of operations. it needs to check if user is real otherwise some people can send a placholder user to server. or if you need basic make a currentuser in backend and want password for every action to check if they are same
-                setUser(userDTO);
+                const data = await response.json();
+                localStorage.setItem("token", JSON.stringify(data.token));
+
+                login(data.userDTO);
                 navigate("/");
             } catch (error) {
                 console.log("There was an error in the process", error);

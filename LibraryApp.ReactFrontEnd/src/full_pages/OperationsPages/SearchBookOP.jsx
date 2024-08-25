@@ -16,6 +16,7 @@ function SearchBookOP() {
         try {
             const response = await fetch("http://localhost:5109/api/Book/SearchBook?bookName=" + encodeURIComponent(bookQuery), {
                 method: "GET",
+                headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
             });
 
             if (!response.ok) return;
@@ -34,11 +35,12 @@ function SearchBookOP() {
     }, [])
 
     async function handleBorrowClick(book) {
-
         try {
             const response = await fetch("http://localhost:5109/api/Book/BorrowBook", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     userId: user.id,
                     bookId: book.id,

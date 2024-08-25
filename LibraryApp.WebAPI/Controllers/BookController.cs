@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,6 +84,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("SearchBook")]
+        [Authorize]
         public IActionResult SearchBook([FromQuery] string? bookName)
         {
             var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO

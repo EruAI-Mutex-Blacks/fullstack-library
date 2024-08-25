@@ -140,7 +140,6 @@ function MyBooksOP() {
 
 export default MyBooksOP;
 
-//TODO importing a txt file into same page's content field
 //TODO profile page?
 //TODO authorization at backend too
 //TODO JWT
