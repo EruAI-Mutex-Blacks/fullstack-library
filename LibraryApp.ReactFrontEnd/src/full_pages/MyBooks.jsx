@@ -66,8 +66,8 @@ function MyBooksOP() {
                                 <td>{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
                                 <td className="">
                                     <Link className="btn btn-success me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
-                                    <Link className="btn btn-success me-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
-                                    <button className="btn btn-success me-2" disabled={mb.status !== "isPublished"} onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
+                                    <Link className={`btn btn-success me-2 ${mb.status === "Published" ? "disabled" : ""}`} to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
+                                    <button className="btn btn-success me-2" disabled={mb.status === "Published"} onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
                                 </td>
                             </tr>
                         ))}

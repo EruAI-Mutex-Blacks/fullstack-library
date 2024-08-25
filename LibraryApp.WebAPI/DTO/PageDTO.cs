@@ -7,6 +7,7 @@ namespace fullstack_library.DTO
 {
     public class PageDTO
     {
+        public int BookId { get; set; }
         public int PageNumber { get; set; }
         public string Content { get; set; } = string.Empty;
     }

@@ -17,6 +17,8 @@ function BookReadingPage() {
         });
         if (!res.ok) return;
         const book = await res.json();
+        
+        book.pages.sort((a, b) => a.pageNumber - b.pageNumber);
 
         const isMemberOrAuthor = ["member", "author"].includes(user.roleName);
         const isBorrowedByUser = book.borrowedById == user.id;

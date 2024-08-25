@@ -15,16 +15,18 @@ namespace fullstack_library.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepo;
+        private readonly IPageRepository _pageRepo;
         private readonly IBookBorrowActivityRepository _bookBorrowRepo;
         private readonly IUserRepository _userRepo;
         private readonly IBookPublishRequestRepository _bookPublishReqsRepo;
 
-        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository)
+        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository, IPageRepository pageRepository)
         {
             _bookRepo = bookRepo;
             _bookBorrowRepo = bookBorrowRepo;
             _userRepo = userRepo;
             _bookPublishReqsRepo = bookPublishRequestRepository;
+            _pageRepo = pageRepository;
         }
 
         //TODO authorize at backend too
@@ -209,6 +211,27 @@ namespace fullstack_library.Controllers
             });
 
             return Ok(MyBookDTOS);
+        }
+
+        //TODO add creating book
+
+        [HttpPost("WritePage")]
+        public IActionResult WritePage([FromBody] PageDTO pageDTO)
+        {
+            var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == pageDTO.BookId);
+            if (book == null) return NotFound();
+            if (book.IsPublished) return BadRequest(new { Message = "Cannot add page to published book" });
+            if (book.Pages.Any(p => p.PageNumber == pageDTO.PageNumber)) return BadRequest(new { Message = "There is a page with that number." });
+
+            _pageRepo.CreatePage(new Page
+            {
+                BookId = pageDTO.BookId,
+                Content = pageDTO.Content,
+                PageNumber = pageDTO.PageNumber,
+            });
+
+            return Ok(new { Message = "Page saved." });
+
         }
     }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function WriteBook() {
     const location = useLocation();
@@ -15,28 +16,63 @@ function WriteBook() {
 
         if (!res.ok) return;
         const data = await res.json();
+        data.pages.sort((a, b) => a.pageNumber - b.pageNumber);
         setBook(data);
-    }
+    };
 
     useEffect(() => {
         fetchBook();
     }, []);
 
+    const handleSaveClick = async function () {
+        if (!pageContent || !pageNum) {
+            toast.error("Please fill all the fields.");
+            return;
+        }
+
+        if (book.pages.find(p => p.pageNumber == pageNum)) {
+            toast.error("There is a page with that number");
+            return;
+        }
+
+        const pageDTO = {
+            bookId: bookId,
+            content: pageContent,
+            pageNumber: pageNum,
+        };
+
+        const res = await fetch("http://localhost:5109/api/Book/WritePage", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pageDTO),
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            toast.error(data?.message ?? "An error occured");
+            return;
+        }
+        toast.success("Page saved");
+        setPageContent("");
+        setPageNum(0);
+        await fetchBook();
+    };
+
     return (
         <div className="d-flex flex-column flex-fill align-items-center">
-            <h3 className="mb-2 mt-4 p-0 border-bottom border-dark">{book?.title}</h3>
+            <h3 className="mb-2 mt-4 p-0">{book?.title}</h3>
             <div className="mb-5 p-2 bg-light rounded d-flex text-center flex-fill container">
                 <div className="flex-fill col-9">
                     <div className="d-flex justify-content-center align-items-center bg-success-subtle border-bottom border-dark pt-3 pb-2 rounded mb-2">
                         <div className="d-flex align-items-center">
-                            <h5>Page</h5><input type="number" className="ms-4 form-control d-inline" min={0} placeholder="Enter the page number" />
+                            <h5>Page</h5><input type="number" className="ms-4 form-control d-inline" min={0} placeholder="Enter the page number" value={pageNum} onChange={e => setPageNum(e.target.value)} />
                         </div>
                     </div>
                     <div className="bg-success-subtle rounded d-flex mb-2">
-                        <textarea className="rounded flex-fill bg-success-subtle px-4 py-3" placeholder="Enter the content of page" rows={9} maxLength={1250} style={{ resize: "none" }}></textarea>
+                        <textarea className="rounded flex-fill bg-success-subtle px-4 py-3" placeholder="Enter the content of page" rows={9} maxLength={1250} style={{ resize: "none" }} onChange={e => setPageContent(e.target.value)} value={pageContent}></textarea>
                     </div>
                     <div className="d-flex justify-content-end">
-                        <button className="btn btn-success px-5">Save</button>
+                        <button className="btn btn-success px-5" onClick={handleSaveClick}>Save</button>
                     </div>
                 </div>
 

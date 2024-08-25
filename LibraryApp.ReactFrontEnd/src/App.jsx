@@ -22,7 +22,7 @@ import { UserProvider } from './AccountOperations/UserContext.jsx'
 import ProtectedRoute from './AccountOperations/ProtectedRoute.jsx'
 import PublicRoute from './AccountOperations/PublicRoute.jsx'
 import MyBooks from './full_pages/MyBooks.jsx'
-import WriteBook from './full_pages/WriteBook.jsx'
+import WritePage from './full_pages/WritePage.jsx'
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
@@ -64,7 +64,7 @@ function App() {
                 }></Route>
                 <Route exact path='/WriteBook' element={
                   <ProtectedRoute roles={["author"]}>
-                    <WriteBook />
+                    <WritePage />
                   </ProtectedRoute>
                 }></Route>
                 <Route exact path="/SearchBook" element={

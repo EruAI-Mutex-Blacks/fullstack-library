@@ -19,7 +19,8 @@ namespace LibraryApp.Data.Concrete
 
         public void CreatePage(Page page)
         {
-            throw new NotImplementedException();
+            _context.Pages.Add(page);
+            _context.SaveChanges();
         }
 
         public void GetPages()
