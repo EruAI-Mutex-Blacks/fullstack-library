@@ -31,7 +31,7 @@ function Login() {
             try {
                 const response = await fetch("http://localhost:5109/api/Account/Login", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
                     body: JSON.stringify(loginDTO)
                 });
                 if (!response.ok) {

@@ -13,7 +13,9 @@ function BookReadingPage() {
 
     const getBook = async function () {
         const res = await fetch("http://localhost:5109/api/Book/GetBook?bookId=" + bookId, {
-            method: "GET"
+            method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
         if (!res.ok) return;
         const book = await res.json();

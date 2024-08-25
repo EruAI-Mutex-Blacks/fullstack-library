@@ -10,7 +10,8 @@ function BookCreateReqOP() {
 
     const getPendingRequests = async function () {
         const response = await fetch("http://localhost:5109/api/Book/BookPublishRequests", {
-            method: "GET"
+            method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
         });
 
         const data = await response.json();
@@ -30,7 +31,7 @@ function BookCreateReqOP() {
 
         const response = await fetch("http://localhost:5109/api/Book/SetPublishing", {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(publishBookDTO),
         });
 

@@ -16,7 +16,8 @@ function ChangeRoleOP() {
 
     const getLowerRoleUsers = async function () {
         const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
-            method: "GET"
+            method: "GET", headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
 
         if (!res.ok) return;
@@ -27,7 +28,8 @@ function ChangeRoleOP() {
     const getAllRemainingRoles = async function (roleId) {
         //getting all roles
         const res = await fetch(`http://localhost:5109/api/User/GetAllRoles?roleId=${roleId}`, {
-            method: "GET"
+            method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
         });
         if (!res.ok) return;
         setAllRemainingRoles(await res.json());
@@ -44,8 +46,7 @@ function ChangeRoleOP() {
     }
 
     const handleUpdateClick = async function () {
-        if(!selectedRoleId || !selectedUser)
-        {
+        if (!selectedRoleId || !selectedUser) {
             toast.error("Please select one.");
             return;
         }
@@ -57,7 +58,7 @@ function ChangeRoleOP() {
 
         const res = await fetch(`http://localhost:5109/api/User/ChangeRole`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(changeRoleDTO)
         });
 

@@ -12,6 +12,8 @@ function WriteBook() {
     const fetchBook = async function () {
         const res = await fetch("http://localhost:5109/api/Book/GetBook?bookId=" + bookId, {
             method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
 
         if (!res.ok) return;
@@ -43,7 +45,7 @@ function WriteBook() {
 
         const res = await fetch("http://localhost:5109/api/Book/WritePage", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(pageDTO),
         });
 

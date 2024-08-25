@@ -15,6 +15,7 @@ function BorrowRequestsOP() {
         try {
             const response = await fetch("http://localhost:5109/api/Book/BorrowRequests", {
                 method: "GET",
+                headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
             });
 
             if (!response.ok) return;
@@ -39,14 +40,14 @@ function BorrowRequestsOP() {
 
         const res = await fetch("http://localhost:5109/api/Book/SetBorrowRequest", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(br),
         })
 
-        if(!res.ok) return;
+        if (!res.ok) return;
         const data = await res.json();
-        
-        if(isApproved) toast.success("Request approved");
+
+        if (isApproved) toast.success("Request approved");
         else toast.error("Request rejected");
 
         await getBorrowRequests();

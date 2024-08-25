@@ -16,7 +16,9 @@ function SendMessageOP() {
 
     const getReceivers = async function () {
         const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerOrEqualRole?roleId=${user.roleId}&userId=${user.id}`, {
-            method: "GET"
+            method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
         if (!res.ok) return;
         setReceivers(await res.json());
@@ -46,7 +48,7 @@ function SendMessageOP() {
 
         const res = await fetch("http://localhost:5109/api/User/SendMessage", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(messageDTO),
         });
 

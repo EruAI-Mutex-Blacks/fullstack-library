@@ -11,7 +11,9 @@ function BorrowedBooksOP() {
     const [books, setBooks] = useState([]);
 
     const getBorrowedBooks = async function () {
-        var response = await fetch("http://localhost:5109/api/Book/BorrowedBooks?userId=" + user.id);
+        var response = await fetch("http://localhost:5109/api/Book/BorrowedBooks?userId=" + user.id, {
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+        });
         var books = await response.json();
         console.log(books);
         setBooks(books);

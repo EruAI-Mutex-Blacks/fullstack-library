@@ -40,6 +40,7 @@ function SearchBookOP() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 },
                 body: JSON.stringify({
                     userId: user.id,

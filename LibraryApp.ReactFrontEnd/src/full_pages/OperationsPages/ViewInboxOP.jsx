@@ -16,6 +16,8 @@ function ViewInboxOP() {
     const getInbox = async function () {
         const res = await fetch("http://localhost:5109/api/User/GetInbox?userId=" + user.id, {
             method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
         if (!res.ok) return;
         const messages = await res.json();
@@ -27,7 +29,7 @@ function ViewInboxOP() {
         console.log(JSON.stringify(msg));
         const res = await fetch("http://localhost:5109/api/User/UpdateMessageReadState", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(msg),
         });
 

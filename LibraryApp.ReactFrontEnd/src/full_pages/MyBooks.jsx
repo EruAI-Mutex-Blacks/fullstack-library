@@ -11,6 +11,8 @@ function MyBooksOP() {
     const fetchBooks = async function () {
         const res = await fetch("http://localhost:5109/api/Book/GetBooksByAuthor?userId=" + user.id, {
             method: "GET",
+            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+
         });
 
         if (!res.ok) {
@@ -38,7 +40,7 @@ function MyBooksOP() {
     const handleRequestClick = async function (bookId) {
         const res = await fetch("http://localhost:5109/api/Book/RequestPublishment", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(bookId)
         });
 
@@ -55,7 +57,7 @@ function MyBooksOP() {
     const handleCreateClick = async function () {
         const res = await fetch("http://localhost:5109/api/Book/CreateBook", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(user.id)
         });
 
@@ -80,7 +82,7 @@ function MyBooksOP() {
 
         const res = await fetch("http://localhost:5109/api/Book/UpdateBookName", {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(bookDTO)
         });
 

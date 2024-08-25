@@ -41,7 +41,7 @@ function Register() {
         try {
             const response = await fetch("http://localhost:5109/api/Account/Register", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
                 body: JSON.stringify(registerDTO),
             });
             if (!response.ok) return;
