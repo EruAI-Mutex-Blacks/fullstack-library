@@ -58,6 +58,19 @@ function WriteBook() {
         await fetchBook();
     };
 
+    const handleFileSelection = function (e) {
+        const file = e.target.files[0];
+        console.log(file);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = () => {
+                setPageContent(prev => prev + reader.result);
+            }
+        }
+    }
+
     return (
         <div className="d-flex flex-column flex-fill align-items-center">
             <h3 className="mb-2 mt-4 p-0">{book?.title}</h3>
@@ -72,6 +85,8 @@ function WriteBook() {
                         <textarea className="rounded flex-fill bg-success-subtle px-4 py-3" placeholder="Enter the content of page" rows={9} maxLength={1250} style={{ resize: "none" }} onChange={e => setPageContent(e.target.value)} value={pageContent}></textarea>
                     </div>
                     <div className="d-flex justify-content-end">
+                        <label className="align-self-center me-2" htmlFor="fileUpload">Import text from .txt file:</label>
+                        <input class="form-control w-50 me-2" id="fileUpload" type="file" onChange={e => handleFileSelection(e)} accept=".txt" />
                         <button className="btn btn-success px-5" onClick={handleSaveClick}>Save</button>
                     </div>
                 </div>

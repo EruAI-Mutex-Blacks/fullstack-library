@@ -140,8 +140,6 @@ function MyBooksOP() {
 
 export default MyBooksOP;
 
-//TODO create book to db then as writing add pages into that
-//TODO book publish no more than 1 request
 //TODO importing a txt file into same page's content field
 //TODO profile page?
 //TODO authorization at backend too
