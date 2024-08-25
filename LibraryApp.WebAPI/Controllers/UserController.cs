@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPut("SetRegistirationRequest")]
+        [Authorize(Policy = "StaffOrManagerPolicy")]
         public IActionResult ApproveRegistiration(UserRegistirationDTO userRegistirationDTO)
         {
             var user = _userRepo.GetUserById(userRegistirationDTO.UserId);
@@ -43,6 +45,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPut("SetPunishment")]
+        [Authorize(Policy = "StaffOrManagerPolicy")]
         public IActionResult SetPunishment(PunishUserDTO punishUserDTO)
         {
             //TODO can be used for both staff and users like if it is punished cannot login to system and later on we can change ispunished to false and maybe use punishmentDTO for the parameters
@@ -65,6 +68,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("SendMessage")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult SendMessage(MessageDTO msg)
         {
             var sender = _userRepo.GetUserById(msg.SenderId);
@@ -87,6 +91,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetInbox")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult GetInbox([FromQuery] int userId)
         {
             var msgs = _msgRepo.GetMessagesByReceiverId(userId);
@@ -105,6 +110,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetUsersOfLowerOrEqualRole")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
@@ -121,6 +127,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetUsersOfLowerRole")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
@@ -140,6 +147,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("MemberRegistirations")]
+        [Authorize(Policy = "StaffOrManagerPolicy")]
         public IActionResult GetPendingRegistirations()
         {
             var pendingUsers = _userRepo.Users.Where(u => u.RoleId == 1);
@@ -156,6 +164,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetAllRoles")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult GetAllRoles([FromQuery] int roleId)
         {
             //designed like the higher the role the greater it's id
@@ -171,6 +180,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("UpdateMessageReadState")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult UpdateMessageReadState(MessageDTO readMsg)
         {
             var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == readMsg.Id);
@@ -183,6 +193,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPut("ChangeRole")]
+        [Authorize(Policy = "ManagerPolicy")]
         public IActionResult ChangeRole(UpdateRoleDTO updateRoleDTO)
         {
             var user = _userRepo.GetUserById(updateRoleDTO.UserId);

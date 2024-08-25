@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace fullstack_library.Controllers
 {
@@ -30,6 +31,7 @@ namespace fullstack_library.Controllers
         //TODO make every action method async Task<>
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginDTO loginDTO)
         {
             var user = _userRepo.Users.Include(u => u.Role).FirstOrDefault(u => u.Username == loginDTO.Username);
@@ -61,6 +63,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("Register")]
+        [AllowAnonymous]
         public IActionResult Register(RegisterDTO registerDTO)
         {
             _userRepo.CreateUser(new User

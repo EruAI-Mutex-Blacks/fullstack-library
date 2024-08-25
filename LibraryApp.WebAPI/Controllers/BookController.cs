@@ -30,9 +30,8 @@ namespace fullstack_library.Controllers
             _pageRepo = pageRepository;
         }
 
-        //TODO authorize at backend too
-
         [HttpPut("SetPublishing")]
+        [Authorize(Policy = "ManagerPolicy")]
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
             var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
@@ -52,6 +51,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("BookPublishRequests")]
+        [Authorize(Policy = "ManagerPolicy")]
         public IActionResult BookPublishRequests()
         {
             var BookPublishRequests = _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User);
@@ -66,6 +66,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("RequestPublishment")]
+        [Authorize(Policy = "AuthorPolicy")]
         public IActionResult RequestPublishment([FromBody] int bookId)
         {
             var book = _bookRepo.GetBookById(bookId);
@@ -84,7 +85,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("SearchBook")]
-        [Authorize]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult SearchBook([FromQuery] string? bookName)
         {
             var books = _bookRepo.GetBooks().Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(10).Select(b => new BookDTO
@@ -99,6 +100,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("BorrowedBooks")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult BorrowedBooks([FromQuery] int userId)
         {
             var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
@@ -118,6 +120,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("BorrowRequests")]
+        [Authorize(Policy = "StaffOrManagerPolicy")]
         public IActionResult BorrowRequests()
         {
             var borrowedBookDTOS = _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).Select(bba => new BookBorrowActivityDTO
@@ -136,6 +139,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("SetBorrowRequest")]
+        [Authorize(Policy = "StaffOrManagerPolicy")]
         public async Task<IActionResult> SetBorrowRequest(SetBorrowRequestDTO setBorrowRequestDTO)
         {
             var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
@@ -159,6 +163,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("BorrowBook")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult BorrowBook(BorrowBookDTO borrowBookDTO)
         {
             var user = _userRepo.GetUserById(borrowBookDTO.UserId);
@@ -181,6 +186,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetBook")]
+        [Authorize(Policy="MemberOrHigherPolicy")]
         public IActionResult GetBook([FromQuery] int bookId)
         {
             var book = _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).Include(b => b.BookAuthors).FirstOrDefault(b => b.Id == bookId);
@@ -200,6 +206,7 @@ namespace fullstack_library.Controllers
 
         //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]
+        [Authorize(Policy = "AuthorPolicy")]
         public IActionResult GetBooksByAuthor([FromQuery] int userId)
         {
             if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound();
@@ -219,6 +226,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("WritePage")]
+        [Authorize(Policy = "AuthorPolicy")]
         public IActionResult WritePage([FromBody] PageDTO pageDTO)
         {
             var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == pageDTO.BookId);
@@ -237,6 +245,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPost("CreateBook")]
+        [Authorize(Policy = "AuthorPolicy")]
         public IActionResult CreateBook([FromBody] int authorId)
         {
             if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound();
@@ -256,6 +265,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpPut("UpdateBookName")]
+        [Authorize(Policy = "AuthorPolicy")]
         public IActionResult UpdateBookName(MyBooksDTO myBooksDTO)
         {
             var book = _bookRepo.Books.FirstOrDefault(b => b.Id == myBooksDTO.BookId);

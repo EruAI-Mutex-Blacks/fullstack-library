@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,16 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Secret").Value ?? "")),
         ValidateLifetime = true,
+        RoleClaimType = "roleName"
     };
+});
+
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("ManagerPolicy", policy => policy.RequireRole("manager"));
+    opt.AddPolicy("AuthorPolicy", policy => policy.RequireRole("author"));
+    opt.AddPolicy("StaffOrManagerPolicy", policy => policy.RequireRole("staff", "manager"));
+    opt.AddPolicy("StaffOrManagerPolicy", policy => policy.RequireRole("member", "author", "staff", "manager"));
 });
 
 var app = builder.Build();
