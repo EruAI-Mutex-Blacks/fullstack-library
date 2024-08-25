@@ -143,6 +143,4 @@ function MyBooksOP() {
 export default MyBooksOP;
 
 //TODO profile page?
-//TODO authorization at backend too
-//TODO JWT
 //TODO book returning

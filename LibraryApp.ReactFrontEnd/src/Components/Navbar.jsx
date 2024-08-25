@@ -26,7 +26,7 @@ function Navbar() {
         topRightLinks = (
             <>
                 <li>
-                    <Link className='nav-link active' aria-current="page" to={"/Profile?userId=" + user.id}>{user.roleName + " - " + user.name + " " + user.surname}</Link>
+                    <Link className='nav-link active disabled' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
                 </li>
                 <li>
                     <Link className='nav-link active' aria-current="page" onClick={handleLogoutClick}>Logout</Link>
