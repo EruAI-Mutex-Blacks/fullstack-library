@@ -1,8 +1,6 @@
 
 # 📚 Library Management Web App
 
-![Library Management](https://via.placeholder.com/728x90.png?text=Your+App+Banner)
-
 Welcome to the Library Management Web App! This project is a full-stack application built with **.NET Web API** on the backend and **React** on the frontend. The app allows users to manage library resources, including books, authors, and user roles.
 
 ## 🚀 Features
