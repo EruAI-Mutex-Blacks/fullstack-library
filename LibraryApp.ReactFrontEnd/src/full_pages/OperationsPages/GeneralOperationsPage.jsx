@@ -4,7 +4,7 @@ import HomeGeneralOperationsCard from "../../Components/OperationsCards/HomeGene
 function GeneralOperationsPage(props) {
     return (
         //TODO burası component drilling oluyor sanırım bunu ilerde düzeltebilirim.
-        <div className="d-flex flex-fill flex-row justify-content-between">
+        <div className="flex basis-full flex-row justify-content-between">
             <div className="w-25 text-break">
                 {props.leftPanel}
             </div>

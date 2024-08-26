@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import BookOperationsCard from '../Components/OperationsCards/BookOperationsCard.jsx';
 import MessageOperationsCard from '../Components/OperationsCards/MessageOperationsCard.jsx';
 import MemberOperationsCard from '../Components/OperationsCards/MemberOperationsCard.jsx';
