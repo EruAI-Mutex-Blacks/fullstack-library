@@ -127,17 +127,19 @@ To try endpoints, refer to the your **swagger**.
 
 ## 📷 Screenshots
 
-### Home Page
+### Manager home page
 ![Manager home page](ReadmeFiles/1.png)
+
+### Author home page
 ![Author home page](ReadmeFiles/2.png)
 
-### Searching books
+### Searching books page
 ![Searching books page](ReadmeFiles/3.png)
 
-### Author's books
+### Author's books page
 ![Author's books page](ReadmeFiles/4.png)
 
-### Author's books
+### Inbox page
 ![Inbox page](ReadmeFiles/5.png)
 
 ## 📷 Additional guide with some codes
