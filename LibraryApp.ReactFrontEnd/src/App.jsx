@@ -43,11 +43,11 @@ function App() {
           theme="light"
           transition:Bounce />
         <UserProvider>
-          <div className="d-flex flex-column min-vh-100">
+          <div className="flex flex-col min-h-screen">
             <header>
               <Navbar />
             </header>
-            <main className="flex-fill d-flex bg-custom-primary">
+            <main className="flex grow bg-custom-primary">
               <Routes>
                 <Route exact path="/" element={<Home />}></Route>
                 <Route exact path="/Login" element={

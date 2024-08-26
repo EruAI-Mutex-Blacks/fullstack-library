@@ -11,58 +11,58 @@ function Home() {
     let mainContent = "";
 
     if (!user)
-        mainContent = (<div className='flex-fill align-self-center text-center'>
+        mainContent = (<div className='grow self-center text-center'>
             <div>
-                <h1>Welcome to the library</h1>
+                <h1 className='text-4xl mb-4'>Welcome to the library</h1>
                 <p>Please <b>login or register</b> to our library from the <b>top right corner</b> to be able to do any kind of operations.</p>
             </div>
         </div>);
     else if (user.isPunished)
-        mainContent = (<div className='flex-fill align-self-center text-center'>
+        mainContent = (<div className='grow self-center text-center'>
             <div>
                 <h1>Welcome to the library</h1>
                 <p>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
             </div>
         </div>)
     else if (user.roleName === "pendingUser")
-        mainContent = (<div className='flex-fill align-self-center text-center'>
+        mainContent = (<div className='grow self-center text-center'>
             <div>
                 <h1>Welcome to the library</h1>
                 <p>Please wait for your account <b>approval</b>. Our personnel will check soon.</p>
             </div>
         </div>)
     else if (user)
-        mainContent = (<div className='container'>
-            <div className="row d-flex flex-row justify-content-around">
+        mainContent = (
+            <div className="grid grid-cols-3 gap-x-12 container mx-auto ">
                 {(["member", "staff", "manager", "author"].includes(user.roleName)) && (
                     <>
-                        <div className="col-4">
+                        <div className="">
                             <BookOperationsCard />
                         </div>
-                        < div className="col-4">
+                        < div className="">
                             <MessageOperationsCard />
                         </div>
                     </>
                 )}
                 {
                     (["staff", "manager"].includes(user.roleName)) && (
-                        < div className="col-4">
+                        < div className="">
                             <MemberOperationsCard />
                         </div>
                     )}
                 {
                     (user.roleName === "manager") && (
                         <>
-                            < div className="col-4">
+                            < div className="">
                                 <GeneralOperationsCard />
                             </div>
-                            < div className="col-4">
+                            < div className="">
                                 <AuthorOperationsCard />
                             </div>
                         </>
                     )}
             </div>
-        </div >);
+        );
 
     return mainContent;
 }

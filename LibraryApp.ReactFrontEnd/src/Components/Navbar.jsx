@@ -35,23 +35,23 @@ function Navbar() {
 
     return (
         <nav className="bg-gray-800 text-white">
-            <div className="container mx-auto flex items-center justify-between p-4">
+            <div className="mx-auto flex items-center justify-between p-4 px-10">
                 <Link className="text-xl font-bold" to="/">Navbar</Link>
-                <ul className="navbar-nav w-100 d-flex flex-row justify-content-between">
+                <ul className="items-center px-5 pt-1 w-full flex flex-row justify-between">
                     <li className=''>
-                        <ul className='d-flex list-inline'>
+                        <ul className='flex'>
                             <li className="">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                                <Link className="" to="/">Home</Link>
                             </li>
                             <li className="">
                                 {
-                                    (user?.roleName === "author") && (<Link className="nav-link active" aria-current="page" to="/MyBooks">My books</Link>)
+                                    (user?.roleName === "author") && (<Link className="" to="/MyBooks">My books</Link>)
                                 }
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <ul className='list-inline nav-item d-flex flex-row justify-content-evenly'>
+                        <ul className='flex flex-row justify-evenly space-x-4'>
                             {topRightLinks}
                         </ul>
                     </li>
