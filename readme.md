@@ -65,6 +65,14 @@ Welcome to the Library Management Web App! This project is a full-stack applicat
 2. **Setup Backend:**
    - Navigate to the `fullstack-library/LibraryApp.WebAPI` project directory.
    - Update the `appsettings.Development.json` with your PostgreSQL connection string.
+   - Install dependencies:
+     ```bash
+     dotnet restore
+     ```
+   - Install Ef Core tool if not installed already:
+     ```bash
+     dotnet tool install --global dotnet-ef
+     ```
    - Run the migrations to set up the database:
      ```bash
      dotnet ef database update
