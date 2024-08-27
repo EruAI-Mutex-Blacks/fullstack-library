@@ -4,7 +4,7 @@ function HomeGeneralOperationsCard(props) {
     //TODO animasyon eklemeyi falan sonra düşünürüm.
 
     return (
-        <div className="text-center flex flex-col bg-gray-800 rounded p-8 px-12 pb-16 ">
+        <div className="text-center h-full flex flex-col bg-gray-800 p-8 px-12 pb-16">
             <div className="text-white border-b mb-6">
                 <h3 className="text-2xl mb-2">{props.title}</h3>
             </div>

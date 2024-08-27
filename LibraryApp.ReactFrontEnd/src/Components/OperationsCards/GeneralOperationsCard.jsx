@@ -9,7 +9,7 @@ function GeneralOperationsCard() {
                 <CardLink url="/ChangeRole" text="Change role of someone" />
             </li>
             <li className="">
-                <CardLink url="/PunishSomeone" text="Punish an user"/>
+                <CardLink url="/PunishSomeone" text="Punish a user"/>
             </li>
         </>
     )
