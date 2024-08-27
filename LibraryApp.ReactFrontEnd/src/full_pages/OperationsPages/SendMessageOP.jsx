@@ -62,7 +62,7 @@ function SendMessageOP() {
 
     //consider adding security bc people can change value of option and we can send random person a msg
     const rightPanel = (
-        <form className="grow flex flex-col p-14">
+        <form className="grow flex flex-col px-14 py-6">
             <div className="mb-3">
                 <label htmlFor="sendingTo" className="text-white block font-medium mb-1">Select an option</label>
                 <select id="sendingTo" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" onChange={e => setReceiverId(e.target.value)}>
@@ -78,10 +78,10 @@ function SendMessageOP() {
             </div>
             <div className="mb-3 grow">
                 <label htmlFor="message" className="block text-white font-medium mb-1">Your message</label>
-                <textarea type="text" id="message" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" rows={8} style={{ resize: "none" }} value={message} onChange={e => setMessage(e.target.value)}></textarea>
+                <textarea type="text" id="message" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" rows={4} style={{ resize: "none" }} value={message} onChange={e => setMessage(e.target.value)}></textarea>
             </div>
             <div className="flex justify-end">
-                <button onClick={e => handleSendClick(e)} className="border border-transparent inline-block rounded px-8 py-4 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-300 text-white active:bg-green-900">Send</button>
+                <button onClick={e => handleSendClick(e)} className="border border-transparent inline-block rounded px-6 py-3 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-300 text-white active:bg-green-900">Send</button>
             </div>
         </form>
     );
