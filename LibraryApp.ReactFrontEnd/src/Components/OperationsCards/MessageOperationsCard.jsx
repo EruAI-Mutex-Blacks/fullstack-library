@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom"
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
+import CardLink from "../CardLink"
 
 
 function MessageOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <Link className="btn bg-custom-primary" to="/SendMessage">Send message</Link>
+                <CardLink url="/SendMessage" text="Send message" />
             </li>
             <li className="">
-                <Link className="btn bg-custom-primary" to="/ViewInbox">View inbox</Link>
+                <CardLink url="/ViewInbox" text="View inbox" />
             </li>
         </>)
 

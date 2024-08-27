@@ -4,13 +4,12 @@ function HomeGeneralOperationsCard(props) {
     //TODO animasyon eklemeyi falan sonra düşünürüm.
 
     return (
-        <div className="text-center d-flex flex-column bg-custom-secondary rounded p-4 my-5">
+        <div className="text-center flex flex-col bg-gray-800 rounded p-4 ">
             <div className="text-white mb-3 pt-1 ">
-                <h3>{props.title}</h3>
-                <hr />
+                <h3 className="border-b">{props.title}</h3>
             </div>
-            <div className="flex-fill d-flex flex-column ">
-                <ul className="list-inline flex-fill d-flex flex-column  align-items-center">
+            <div className="grow flex flex-col ">
+                <ul className="grow flex flex-col items-center">
                     {props.items}
                 </ul>
             </div>

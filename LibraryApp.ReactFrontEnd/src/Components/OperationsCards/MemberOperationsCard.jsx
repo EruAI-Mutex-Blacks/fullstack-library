@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import HomeGeneralOperationsCard from "./HomeGeneralOperationsCard"
+import CardLink from "../CardLink";
 
 
 function MemberOperationsCard() {
@@ -7,10 +8,10 @@ function MemberOperationsCard() {
     const items = (
         <>
             <li className="mb-4">
-                <Link className="btn bg-custom-primary" to="/BorrowRequests">See borrow requests</Link>
+                <CardLink url="/BorrowRequests" text="See pending borrow requests" />
             </li>
             <li className="">
-                <Link className="btn bg-custom-primary" to="/MemberRegistirations">See member registirations</Link>
+                <CardLink url="MemberRegistirations" text="See pending member registirations" />
             </li>
         </>
     )

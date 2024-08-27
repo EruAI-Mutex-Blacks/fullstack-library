@@ -33,7 +33,7 @@ function Home() {
         </div>)
     else if (user)
         mainContent = (
-            <div className="grid grid-cols-3 gap-x-12 container mx-auto ">
+            <div className="grid grid-cols-3 gap-x-12 container mx-24 my-10">
                 {(["member", "staff", "manager", "author"].includes(user.roleName)) && (
                     <>
                         <div className="">
