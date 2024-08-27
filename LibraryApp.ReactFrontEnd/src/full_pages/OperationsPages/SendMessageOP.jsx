@@ -62,26 +62,26 @@ function SendMessageOP() {
 
     //consider adding security bc people can change value of option and we can send random person a msg
     const rightPanel = (
-        <form className="flex-fill">
+        <form className="grow flex flex-col p-14">
             <div className="mb-3">
-                <label htmlFor="sendingTo" className="form-label">Select receiver</label>
-                <select id="sendingTo" className="form-select" onChange={e => setReceiverId(e.target.value)}>
-                    <option value="">Select someone</option>
+                <label htmlFor="sendingTo" className="text-white block font-medium mb-1">Select an option</label>
+                <select id="sendingTo" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" onChange={e => setReceiverId(e.target.value)}>
+                    <option value="">Select receiver</option>
                     {receivers.map((rc, index) => (
                         <option key={index} value={rc.id}>{rc.name + " - " + rc.roleName}</option>
                     ))}
                 </select>
             </div>
             <div className="mb-3">
-                <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" id="title" className="form-control" onChange={e => setTitle(e.target.value)} value={title} maxLength={75} />
+                <label htmlFor="title" className="text-white font-medium mb-1 block">Title</label>
+                <input type="text" id="title" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" onChange={e => setTitle(e.target.value)} value={title} maxLength={75} />
             </div>
-            <div className="mb-3">
-                <label htmlFor="message" className="form-label">Your message</label>
-                <textarea type="text" id="message" className="form-control" rows={3} style={{ resize: "none" }} value={message} onChange={e => setMessage(e.target.value)}></textarea>
+            <div className="mb-3 grow">
+                <label htmlFor="message" className="block text-white font-medium mb-1">Your message</label>
+                <textarea type="text" id="message" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" rows={8} style={{ resize: "none" }} value={message} onChange={e => setMessage(e.target.value)}></textarea>
             </div>
-            <div className="d-flex justify-content-end">
-                <button onClick={e => handleSendClick(e)} className="btn btn-success py-2 px-4">Send</button>
+            <div className="flex justify-end">
+                <button onClick={e => handleSendClick(e)} className="border border-transparent inline-block rounded px-8 py-4 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-300 text-white active:bg-green-900">Send</button>
             </div>
         </form>
     );
