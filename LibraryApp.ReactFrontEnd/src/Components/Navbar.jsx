@@ -41,7 +41,7 @@ function Navbar() {
                     <li className=''>
                         <ul className='flex'>
                             <li className="">
-                                <Link className="" to="/">Home</Link>
+                                <Link className="hover:bg-gray-400/10 rounded p-3 transition-all duration-300" to="/">Home</Link>
                             </li>
                             <li className="">
                                 {

@@ -5,6 +5,8 @@ import GeneralOperationsCard from '../Components/OperationsCards/GeneralOperatio
 import AuthorOperationsCard from '../Components/OperationsCards/AuthorOperationsCard.jsx';
 import { useUser } from '../AccountOperations/UserContext.jsx';
 
+//TODO make mobile first
+
 function Home() {
     const { user } = useUser();
 
@@ -33,32 +35,22 @@ function Home() {
         </div>)
     else if (user)
         mainContent = (
-            <div className="grid grid-cols-3 gap-x-12 container mx-24 my-10">
+            <div className="grid grid-cols-1 gap-x-12 gap-y-4 container mx-24 my-10 lg:grid-cols-2 xl:grid-cols-3">
                 {(["member", "staff", "manager", "author"].includes(user.roleName)) && (
                     <>
-                        <div className="">
-                            <BookOperationsCard />
-                        </div>
-                        < div className="">
-                            <MessageOperationsCard />
-                        </div>
+                        <BookOperationsCard />
+                        <MessageOperationsCard />
                     </>
                 )}
                 {
                     (["staff", "manager"].includes(user.roleName)) && (
-                        < div className="">
-                            <MemberOperationsCard />
-                        </div>
+                        <MemberOperationsCard />
                     )}
                 {
                     (user.roleName === "manager") && (
                         <>
-                            < div className="">
-                                <GeneralOperationsCard />
-                            </div>
-                            < div className="">
-                                <AuthorOperationsCard />
-                            </div>
+                            <GeneralOperationsCard />
+                            <AuthorOperationsCard />
                         </>
                     )}
             </div>
