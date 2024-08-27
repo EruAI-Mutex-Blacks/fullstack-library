@@ -47,7 +47,7 @@ function App() {
             <header>
               <Navbar />
             </header>
-            <main className="flex grow bg-custom-primary">
+            <main className="flex grow bg-gray-600">
               <Routes>
                 <Route exact path="/" element={<Home />}></Route>
                 <Route exact path="/Login" element={
