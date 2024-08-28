@@ -35,7 +35,7 @@ Welcome to the Library Management Web App! This project is a full-stack applicat
 - **React Router**: For routing and navigation.
 - **React Toastify**: For simple notification system.
 - **Fetch**: Built-in JavaScript API for making HTTP requests.
-- **Bootstrap**: CSS framework for responsive design.
+- **Tailwind**: CSS framework for responsive design.
 
 ### Backend
 - **.NET 8 Web API**: Backend framework for building RESTful services.
