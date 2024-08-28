@@ -28,33 +28,35 @@ namespace fullstack_library.Controllers
 
         [HttpPut("SetRegistirationRequest")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
-        public IActionResult ApproveRegistiration(UserRegistirationDTO userRegistirationDTO)
+        public async Task<IActionResult> ApproveRegistiration(UserRegistirationDTO userRegistirationDTO)
         {
-            var user = _userRepo.GetUserById(userRegistirationDTO.UserId);
+            var user = await _userRepo.GetUserByIdAsync(userRegistirationDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
 
             if (userRegistirationDTO.IsApproved)
             {
                 user.RoleId++;
-                _userRepo.UpdateUser(user);
+                await _userRepo.UpdateUserAsync(user);
             }
             else
-                _userRepo.DeleteUser(user);
+                await _userRepo.DeleteUserAsync(user);
 
             return Ok(new { message = userRegistirationDTO.IsApproved ? "Request approved." : "Request rejected" });
         }
 
         [HttpPut("SetPunishment")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
-        public IActionResult SetPunishment(PunishUserDTO punishUserDTO)
+        public async Task<IActionResult> SetPunishment(PunishUserDTO punishUserDTO)
         {
-            var user = _userRepo.GetUserById(punishUserDTO.UserId);
+            var user = await _userRepo.GetUserByIdAsync(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
             if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId)) return NotFound(new { message = "Punisher not found" });
+
             user.FineAmount = punishUserDTO.FineAmount;
             user.IsPunished = punishUserDTO.IsPunished;
-            _userRepo.UpdateUser(user);
-            _msgRepo.CreateMessage(new Message
+
+            await _userRepo.UpdateUserAsync(user);
+            await _msgRepo.CreateMessageAsync(new Message
             {
                 ReceiverId = user.Id,
                 Details = punishUserDTO.IsPunished ? punishUserDTO.Details : "Your punishment removed. Thanks for being good boy.",
@@ -67,11 +69,11 @@ namespace fullstack_library.Controllers
 
         [HttpPost("SendMessage")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult SendMessage(MessageDTO msg)
+        public async Task<IActionResult> SendMessage(MessageDTO msg)
         {
-            var sender = _userRepo.GetUserById(msg.SenderId);
+            var sender = await _userRepo.GetUserByIdAsync(msg.SenderId);
             if (sender == null) return NotFound(new { message = "Sender user not found" });
-            var receiver = _userRepo.GetUserById(msg.ReceiverId);
+            var receiver = await _userRepo.GetUserByIdAsync(msg.ReceiverId);
             if (receiver == null) return NotFound(new { message = "Receiver user not found" });
 
             var entity = new Message
@@ -81,16 +83,16 @@ namespace fullstack_library.Controllers
                 Title = msg.Title,
                 Details = msg.Details,
             };
-            _msgRepo.CreateMessage(entity);
+            await _msgRepo.CreateMessageAsync(entity);
 
             return Ok(new { Message = "Message has sent" });
         }
 
         [HttpGet("GetInbox")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult GetInbox([FromQuery] int userId)
+        public async Task<IActionResult> GetInbox([FromQuery] int userId)
         {
-            var msgs = _msgRepo.GetMessagesByReceiverId(userId);
+            var msgs = await _msgRepo.GetMessagesByReceiverIdAsync(userId);
             msgs.Reverse();
             return Ok(msgs.Select(m =>
             new MessageDTO
@@ -107,11 +109,11 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetUsersOfLowerOrEqualRole")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
+        public async Task<IActionResult> GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
             //return lower or same roles
-            var users = _userRepo.Users.Where(u => u.RoleId <= roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
+            var users = await _userRepo.Users.Where(u => u.RoleId <= roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).ToListAsync();
 
             return Ok(users.Select(u => new
             {
@@ -124,11 +126,11 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetUsersOfLowerRole")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
+        public async Task<IActionResult> GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
             //return lower roles
-            var users = _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role);
+            var users = await _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).ToListAsync();
 
             return Ok(users.Select(u => new
             {
@@ -144,9 +146,9 @@ namespace fullstack_library.Controllers
 
         [HttpGet("MemberRegistirations")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
-        public IActionResult GetPendingRegistirations()
+        public async Task<IActionResult> GetPendingRegistirations()
         {
-            var pendingUsers = _userRepo.Users.Where(u => u.RoleId == 1);
+            var pendingUsers = await _userRepo.Users.Where(u => u.RoleId == 1).ToListAsync();
 
             return Ok(pendingUsers.Select(pu => new UserDTO
             {
@@ -161,11 +163,11 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetAllRoles")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult GetAllRoles([FromQuery] int roleId)
+        public async Task<IActionResult> GetAllRoles([FromQuery] int roleId)
         {
             //designed like the higher the role the greater it's id
             //return lower roles
-            var roles = _roleRepo.Roles.Where(r => r.Id != roleId && r.Id != 1);
+            var roles = await _roleRepo.Roles.Where(r => r.Id != roleId && r.Id != 1).ToListAsync();
 
             return Ok(roles.Select(r => new
             {
@@ -177,27 +179,27 @@ namespace fullstack_library.Controllers
 
         [HttpPut("UpdateMessageReadState")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public IActionResult UpdateMessageReadState(MessageDTO readMsg)
+        public async Task<IActionResult> UpdateMessageReadState(MessageDTO readMsg)
         {
             var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == readMsg.Id);
             if (msg == null) return NotFound(new { Message = "Message could not found" });
             msg.IsReceiverRead = true;
 
-            _msgRepo.UpdateMessage(msg);
+            await _msgRepo.UpdateMessageAsync(msg);
 
             return Ok(new { Message = "Message updated" });
         }
 
         [HttpPut("ChangeRole")]
         [Authorize(Policy = "ManagerPolicy")]
-        public IActionResult ChangeRole(UpdateRoleDTO updateRoleDTO)
+        public async Task<IActionResult> ChangeRole(UpdateRoleDTO updateRoleDTO)
         {
-            var user = _userRepo.GetUserById(updateRoleDTO.UserId);
+            var user = await _userRepo.GetUserByIdAsync(updateRoleDTO.UserId);
             if (user == null) return NotFound(new { Message = "User could not found" });
             if (!_roleRepo.Roles.Any(r => r.Id == updateRoleDTO.NewRoleId)) return NotFound(new { Message = "Role could not found" });
 
             user.RoleId = updateRoleDTO.NewRoleId;
-            _userRepo.UpdateUser(user);
+            await _userRepo.UpdateUserAsync(user);
             return Ok(new { Message = "User's role changed." });
         }
     }

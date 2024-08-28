@@ -28,13 +28,11 @@ namespace fullstack_library.Controllers
             _config = config;
         }
 
-        //TODO make every action method async Task<>
-
         [HttpPost("Login")]
         [AllowAnonymous]
-        public IActionResult Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
-            var user = _userRepo.Users.Include(u => u.Role).FirstOrDefault(u => u.Username == loginDTO.Username);
+            var user = await _userRepo.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Username == loginDTO.Username);
             if (user == null) return NotFound(new { message = "Username not found" });
             if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
 
@@ -63,9 +61,9 @@ namespace fullstack_library.Controllers
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        public IActionResult Register(RegisterDTO registerDTO)
+        public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
-            _userRepo.CreateUser(new User
+            await _userRepo.CreateUserAsync(new User
             {
                 Name = registerDTO.Name,
                 Surname = registerDTO.Surname,
