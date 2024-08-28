@@ -3,7 +3,6 @@ import HomeGeneralOperationsCard from "../../Components/OperationsCards/HomeGene
 
 function GeneralOperationsPage(props) {
     return (
-        //TODO burası component drilling oluyor sanırım bunu ilerde düzeltebilirim.
         <div className="flex grow">
             <div className="w-1/6">
                 {props.leftPanel}

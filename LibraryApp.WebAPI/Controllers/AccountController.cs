@@ -38,7 +38,6 @@ namespace fullstack_library.Controllers
             if (user == null) return NotFound(new { message = "Username not found" });
             if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
 
-            //TODO return with jwt
             UserDTO userDTO = new UserDTO
             {
                 Id = user.Id,

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 function MemberRegistirationsOP() {
 
-    //TODO wrap all fetchs with try catch and give user feedback about all actions
+    //TODO refactor code use usecontext for fetching and get all methods outside of our component function
     const [pendingUsers, setPendingUsers] = useState([]);
 
     const fetchRegistirations = async function () {

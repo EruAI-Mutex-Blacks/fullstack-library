@@ -48,8 +48,6 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "StaffOrManagerPolicy")]
         public IActionResult SetPunishment(PunishUserDTO punishUserDTO)
         {
-            //TODO can be used for both staff and users like if it is punished cannot login to system and later on we can change ispunished to false and maybe use punishmentDTO for the parameters
-
             var user = _userRepo.GetUserById(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
             if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId)) return NotFound(new { message = "Punisher not found" });
@@ -75,8 +73,6 @@ namespace fullstack_library.Controllers
             if (sender == null) return NotFound(new { message = "Sender user not found" });
             var receiver = _userRepo.GetUserById(msg.ReceiverId);
             if (receiver == null) return NotFound(new { message = "Receiver user not found" });
-
-            //FIXME cannot send title rn
 
             var entity = new Message
             {

@@ -4,9 +4,6 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useUser } from "../../AccountOperations/UserContext"
 
 function ViewInboxOP() {
-    //TODO maybe do message card jsx component for left panel to not repeat same codes
-    //TODO add title of message
-
     const { user } = useUser();
     const [messages, setMessages] = useState([]);
     const [senderName, setSenderName] = useState("");
@@ -60,7 +57,6 @@ function ViewInboxOP() {
             setMessages(updatedMessages);
         }
     }
-    //FIXME long compound words breaks the style of title etc.
     const rightPanel = (
         <div className="flex flex-col grow px-10 pt-3 pb-8 text-gray-100">
             <h6 className="text-start ms-5 mb-1 font-bold ">[ {messages.filter(m => !m.isReceiverRead).length} unread messages ]</h6>
@@ -93,7 +89,6 @@ function ViewInboxOP() {
             </div>
         </div>
     );
-    //FIXME yazı uzayınca nedense genişliyor
     return (<GeneralOperationsPage leftPanel={(<MessageOperationsCard />)} rightPanel={rightPanel} />)
 }
 

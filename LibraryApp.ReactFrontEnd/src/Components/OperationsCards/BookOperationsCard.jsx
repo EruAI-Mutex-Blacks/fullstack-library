@@ -22,7 +22,13 @@ function BookOperationsCard({ onSearch }) {
             nav(searchBookLink);
     }
 
-
+    //TODO ayın elemanı
+    //TODO üstlere de mesaj atılabilmesi
+    //TODO profile page of authors
+    //TODO Book covers
+    //TODO better design
+    //TODO animations
+ 
     const items = (
         <>
             <li className="mb-4">

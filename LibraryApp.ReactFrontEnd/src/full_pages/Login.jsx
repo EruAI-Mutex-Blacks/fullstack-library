@@ -13,7 +13,6 @@ function Login() {
     useEffect(() => {
         if (user) navigate("/");
     }, [user, navigate])
-    //TODO change links to buttons link being used for navigation
 
     const handleLoginClick = async function () {
 

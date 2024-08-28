@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext"
 import { toast } from "react-toastify";
 
-//TODO en son güvenlik modu kapatılabilir 2 kere çağrılıyor sayfalar
 function SearchBookOP() {
     const [books, setBooks] = useState([]);
     const location = useLocation();

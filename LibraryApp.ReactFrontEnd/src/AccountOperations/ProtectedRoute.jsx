@@ -6,7 +6,6 @@ const ProtectedRoute = ({ roles, children }) => {
     const { user } = useUser();
 
     if (!user) {
-        //FIXME whenever i go to pages i dont authorized or not shown in my home screen it nulls user object and logs out.
         return <Navigate to="/Login" />;
     }
 

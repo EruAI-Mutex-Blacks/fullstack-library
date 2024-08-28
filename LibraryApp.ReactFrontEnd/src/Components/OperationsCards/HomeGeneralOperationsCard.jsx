@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 
 function HomeGeneralOperationsCard(props) {
-    //TODO animasyon eklemeyi falan sonra düşünürüm.
 
     return (
         <div className="text-center h-full flex flex-col bg-gray-800 p-8 px-4 pb-16">

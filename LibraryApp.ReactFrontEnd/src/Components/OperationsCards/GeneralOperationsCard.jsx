@@ -20,5 +20,3 @@ function GeneralOperationsCard() {
 }
 
 export default GeneralOperationsCard
-
-//TODO profile page and my books page for authors. my books page includes writing a book and books of all currently being writed ones
