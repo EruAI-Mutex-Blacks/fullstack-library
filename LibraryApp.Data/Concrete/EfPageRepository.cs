@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Data.Concrete
 {
@@ -17,30 +18,27 @@ namespace LibraryApp.Data.Concrete
             _context = context;
         }
 
-        public void CreatePage(Page page)
+        public async Task CreatePageAsync(Page page)
         {
             _context.Pages.Add(page);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void GetPages()
+        public async Task<Page?> GetPageByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Pages.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public void GetPageById(int id)
+        public async Task UpdatePageAsync(Page page)
         {
-            throw new NotImplementedException();
+            _context.Pages.Update(page);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdatePage(Page page)
+        public async Task DeletePageAsync(Page page)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeletePage(Page page)
-        {
-            throw new NotImplementedException();
+            _context.Pages.Remove(page);
+            await _context.SaveChangesAsync();
         }
     }
 }

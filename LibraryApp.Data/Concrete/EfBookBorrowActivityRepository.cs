@@ -17,25 +17,25 @@ namespace LibraryApp.Data.Concrete
             _context = context;
         }
 
-        public void CreateBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
+        public async Task CreateBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity)
         {
             _context.BookBorrowActivities.Add(bookBorrowActivity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
+        public async Task UpdateBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity)
         {
             _context.BookBorrowActivities.Update(bookBorrowActivity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteBookBorrowActivities(List<BookBorrowActivity> bookBorrowActivities)
+        public async Task DeleteBookBorrowActivitiesAsync(List<BookBorrowActivity> bookBorrowActivities)
         {
             _context.BookBorrowActivities.RemoveRange(bookBorrowActivities);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity)
+        public async Task DeleteBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity)
         {
             _context.BookBorrowActivities.Remove(bookBorrowActivity);
             await _context.SaveChangesAsync();

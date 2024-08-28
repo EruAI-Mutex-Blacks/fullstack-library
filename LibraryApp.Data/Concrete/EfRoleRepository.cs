@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Data.Concrete
 {
@@ -17,29 +18,27 @@ namespace LibraryApp.Data.Concrete
             _context = context;
         }
 
-        public void CreateRole(Role role)
+        public async Task CreateRoleAsync(Role role)
         {
-            throw new NotImplementedException();
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
         }
 
-        public void GetRoles()
+        public async Task<Role?> GetRoleByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public void GetRoleById(int id)
+        public async Task UpdateRoleAsync(Role role)
         {
-            throw new NotImplementedException();
+            _context.Roles.Update(role);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateRole(Role role)
+        public async Task DeleteRoleAsync(Role role)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteRole(Role role)
-        {
-            throw new NotImplementedException();
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
         }
     }
 }

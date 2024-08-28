@@ -10,9 +10,9 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<BookBorrowActivity> BookBorrowActivities { get; }
 
-        void CreateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
-        Task UpdateBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
-        Task DeleteBookBorrowActivities(List<BookBorrowActivity> bookBorrowActivities);
-        Task DeleteBookBorrowActivity(BookBorrowActivity bookBorrowActivity);
+        Task CreateBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity);
+        Task UpdateBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity);
+        Task DeleteBookBorrowActivitiesAsync(List<BookBorrowActivity> bookBorrowActivities);
+        Task DeleteBookBorrowActivityAsync(BookBorrowActivity bookBorrowActivity);
     }
 }

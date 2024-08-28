@@ -18,28 +18,28 @@ namespace LibraryApp.Data.Concrete
             _context = libraryDbContext;
         }
 
-        public void CreateMessage(Message msg)
+        public async Task CreateMessageAsync(Message msg)
         {
             _context.Messages.Add(msg);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         //TODO Make every list returning method queryable returning method and delete getmethods as property is public 
-        public List<Message> GetMessagesByReceiverId(int receiverId)
+        public async Task<List<Message>> GetMessagesByReceiverIdAsync(int receiverId)
         {
-            return _context.Messages.Where(m => m.ReceiverId == receiverId).Include(m => m.Sender).ToList();
+            return await _context.Messages.Where(m => m.ReceiverId == receiverId).Include(m => m.Sender).ToListAsync();
         }
 
-        public void UpdateMessage(Message msg){
+        public async Task UpdateMessageAsync(Message msg)
+        {
             _context.Messages.Update(msg);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-
-        //to see sent messages
-        // public void GetMessagesBySenderId(int senderId)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public async Task DeleteMessageAsync(Message msg)
+        {
+            _context.Messages.Remove(msg);
+            await _context.SaveChangesAsync();
+        }
     }
 }

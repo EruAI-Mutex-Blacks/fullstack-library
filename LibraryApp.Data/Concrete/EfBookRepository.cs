@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Data.Concrete
 {
@@ -17,31 +18,27 @@ namespace LibraryApp.Data.Concrete
             _context = context;
         }
 
-        public void CreateBook(Book book)
+        public async Task CreateBookAsync(Book book)
         {
             _context.Books.Add(book);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Book> GetBooks()
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return Books;
+            return await Books.FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public Book? GetBookById(int id)
-        {
-            return Books.FirstOrDefault(b => b.Id == id);
-        }
-
-        public async Task UpdateBook(Book book)
+        public async Task UpdateBookAsync(Book book)
         {
             _context.Books.Update(book);
             await _context.SaveChangesAsync();
         }
 
-        public void DeleteBook(Book book)
+        public async Task DeleteBookAsync(Book book)
         {
-            throw new NotImplementedException();
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
         }
     }
 }

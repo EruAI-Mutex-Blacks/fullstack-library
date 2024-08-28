@@ -9,10 +9,9 @@ namespace LibraryApp.Data.Abstract
     public interface IPageRepository
     {
         IQueryable<Page> Pages { get; }
-        void GetPages();
-        void GetPageById(int id);
-        void CreatePage(Page page);
-        void UpdatePage(Page page);
-        void DeletePage(Page page);
+        Task<Page?> GetPageByIdAsync(int id);
+        Task CreatePageAsync(Page page);
+        Task UpdatePageAsync(Page page);
+        Task DeletePageAsync(Page page);
     }
 }

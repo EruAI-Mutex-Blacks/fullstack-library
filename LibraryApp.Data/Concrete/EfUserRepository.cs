@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Data.Concrete
 {
@@ -17,32 +18,27 @@ namespace LibraryApp.Data.Concrete
             _context = context;
         }
 
-        public void CreateUser(User user)
+        public async Task CreateUserAsync(User user)
         {
             _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IQueryable<User> GetUsers()
+        public async Task<User?> GetUserByIdAsync(int id)
         {
-            return Users;
+            return await Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public User? GetUserById(int id)
-        {
-            return Users.FirstOrDefault(u => u.Id == id);
-        }
-
-        public void UpdateUser(User user)
+        public async Task UpdateUserAsync(User user)
         {
             _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteUser(User user)
+        public async Task DeleteUserAsync(User user)
         {
             _context.Users.Remove(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

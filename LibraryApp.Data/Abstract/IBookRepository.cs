@@ -8,12 +8,11 @@ namespace LibraryApp.Data.Abstract
 {
     public interface IBookRepository
     {
-        IQueryable<Book> Books { get; } //veriler db den cekilmeden sorgu yapýlýyor get kullanýlmasýndaki amac
+        IQueryable<Book> Books { get; }
 
-        IQueryable<Book> GetBooks();
-        Book? GetBookById(int id);
-        void CreateBook(Book book);
-        Task UpdateBook(Book book);
-        void DeleteBook(Book book);
+        Task<Book?> GetBookByIdAsync(int id);
+        Task CreateBookAsync(Book book);
+        Task UpdateBookAsync(Book book);
+        Task DeleteBookAsync(Book book);
     }
 }

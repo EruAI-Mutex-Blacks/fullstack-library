@@ -10,10 +10,9 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<BookAuthor> BookAuthors { get; }
 
-        void GetBookAuthors();
-        void GetBookAuthorById(int id);
-        void CreateBookAuthor(BookAuthor bookAuthor);
-        void UpdateBookAuthor(BookAuthor bookAuthor);
-        void DeleteBookAuthor(BookAuthor bookAuthor);
+        Task<BookAuthor?> GetBookAuthorByIdAsync(int id);
+        Task CreateBookAuthorAsync(BookAuthor bookAuthor);
+        Task UpdateBookAuthorAsync(BookAuthor bookAuthor);
+        Task DeleteBookAuthorAsync(BookAuthor bookAuthor);
     }
 }

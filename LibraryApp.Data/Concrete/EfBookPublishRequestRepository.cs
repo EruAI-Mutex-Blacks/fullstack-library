@@ -17,22 +17,22 @@ namespace LibraryApp.Data.Concrete
             _context = libraryDbContext;
         }
 
-        public void CreateRequest(BookPublishRequest bpr)
+        public async Task CreateRequestAsync(BookPublishRequest bpr)
         {
             _context.BookPublishRequests.Add(bpr);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateRequest(BookPublishRequest bpr)
+        public async Task UpdateRequestAsync(BookPublishRequest bpr)
         {
             _context.BookPublishRequests.Update(bpr);
             await _context.SaveChangesAsync();
         }
 
-        public void DeleteRequest(BookPublishRequest bpr)
+        public async Task DeleteRequestAsync(BookPublishRequest bpr)
         {
             _context.BookPublishRequests.Remove(bpr);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
     }

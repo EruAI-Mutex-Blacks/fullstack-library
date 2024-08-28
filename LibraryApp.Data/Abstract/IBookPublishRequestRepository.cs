@@ -10,9 +10,9 @@ namespace LibraryApp.Data.Abstract
     {
         IQueryable<BookPublishRequest> Requests { get; }
 
-        void CreateRequest(BookPublishRequest bpr);
-        Task UpdateRequest(BookPublishRequest bpr);
-        void DeleteRequest(BookPublishRequest bpr);
+        Task CreateRequestAsync(BookPublishRequest bpr);
+        Task UpdateRequestAsync(BookPublishRequest bpr);
+        Task DeleteRequestAsync(BookPublishRequest bpr);
 
     }
 }
