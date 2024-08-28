@@ -4,60 +4,29 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext"
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 function SearchBookOP() {
     const [books, setBooks] = useState([]);
     const location = useLocation();
     const bookName = new URLSearchParams(location.search).get("book");
     const { user } = useUser();
+    const { fetchData } = useFetch();
 
     const onSearch = async function (bookQuery) {
-        try {
-            const response = await fetch("http://localhost:5109/api/Book/SearchBook?bookName=" + encodeURIComponent(bookQuery), {
-                method: "GET",
-                headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-            });
-
-            if (!response.ok) return;
-
-            const bookDTOS = await response.json();
-            console.log(bookDTOS);
-            setBooks(bookDTOS);
-
-        } catch (error) {
-            console.log("there was an error in fetching", error);
-        }
+        const data = await fetchData("/api/Book/SearchBook?bookName=" + encodeURIComponent(bookQuery), "GET");
+        setBooks(data ?? []);
     };
+
+    //FIXME cannot send multiple borrow requests
 
     useEffect(() => {
         onSearch(bookName);
     }, [])
 
-    async function handleBorrowClick(book) {
-        try {
-            const response = await fetch("http://localhost:5109/api/Book/BorrowBook", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-                },
-                body: JSON.stringify({
-                    userId: user.id,
-                    bookId: book.id,
-                }),
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                toast.error("You already have an active request. Please wait for approval before making another one.");
-                return;
-            }
-
-            const data = await response.json();
-            toast.success("Request has sent to staff. Please wait for approval.");
-        } catch (err) {
-            console.log(err);
-        }
+    const handleBorrowClick = async (book) => {
+        const bookDTO = { userId: user.id, bookId: book.id }
+        const data = await fetchData("/api/Book/BorrowBook", "POST", bookDTO);
     }
 
     const rightPanel = (

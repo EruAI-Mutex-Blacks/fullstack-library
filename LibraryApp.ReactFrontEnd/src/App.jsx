@@ -25,6 +25,7 @@ import WritePage from './full_pages/WritePage.jsx'
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import { FetchProvider } from './Context/FetchContext.jsx'
 
 function App() {
   return (
@@ -42,89 +43,91 @@ function App() {
           pauseOnHover
           theme="light"
           transition:Bounce />
-        <UserProvider>
-          <div className="flex flex-col min-h-screen">
-            <header>
-              <Navbar />
-            </header>
-            <main className="flex grow bg-gray-600">
-              <Routes>
-                <Route exact path="/" element={<Home />}></Route>
-                <Route exact path="/Login" element={
-                  <PublicRoute ><Login /></PublicRoute>
-                }></Route>
-                <Route exact path="/Register" element={
-                  <PublicRoute ><Register /></PublicRoute>
-                }></Route>
-                <Route exact path='/MyBooks' element={
-                  <ProtectedRoute roles={["author"]}>
-                    <MyBooks />
-                  </ProtectedRoute>
-                }></Route>
-                <Route exact path='/WriteBook' element={
-                  <ProtectedRoute roles={["author"]}>
-                    <WritePage />
-                  </ProtectedRoute>
-                }></Route>
-                <Route exact path="/SearchBook" element={
-                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
-                    <SearchBookOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/BorrowedBooks" element={
-                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
-                    <BorrowedBooksOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/SendMessage" element={
-                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
-                    <SendMessageOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/ViewInbox" element={
-                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
-                    <ViewInboxOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/ReadBook" element={
-                  <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
-                    < BookReadingPage />
-                  </ProtectedRoute>}>
-                </Route>
+        <FetchProvider>
+          <UserProvider>
+            <div className="flex flex-col min-h-screen">
+              <header>
+                <Navbar />
+              </header>
+              <main className="flex grow bg-gray-600">
+                <Routes>
+                  <Route exact path="/" element={<Home />}></Route>
+                  <Route exact path="/Login" element={
+                    <PublicRoute ><Login /></PublicRoute>
+                  }></Route>
+                  <Route exact path="/Register" element={
+                    <PublicRoute ><Register /></PublicRoute>
+                  }></Route>
+                  <Route exact path='/MyBooks' element={
+                    <ProtectedRoute roles={["author"]}>
+                      <MyBooks />
+                    </ProtectedRoute>
+                  }></Route>
+                  <Route exact path='/WriteBook' element={
+                    <ProtectedRoute roles={["author"]}>
+                      <WritePage />
+                    </ProtectedRoute>
+                  }></Route>
+                  <Route exact path="/SearchBook" element={
+                    <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
+                      <SearchBookOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/BorrowedBooks" element={
+                    <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
+                      <BorrowedBooksOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/SendMessage" element={
+                    <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
+                      <SendMessageOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/ViewInbox" element={
+                    <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
+                      <ViewInboxOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/ReadBook" element={
+                    <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
+                      < BookReadingPage />
+                    </ProtectedRoute>}>
+                  </Route>
 
-                <Route exact path="/BorrowRequests" element={
-                  <ProtectedRoute roles={["staff", "manager"]}>
-                    < BorrowRequestsOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/MemberRegistirations" element={
-                  <ProtectedRoute roles={["staff", "manager"]}>
-                    < MemberRegistirationsOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/PunishSomeone" element={
-                  <ProtectedRoute roles={["staff", "manager"]}>
-                    < PunishSomeoneOP />
-                  </ProtectedRoute>}>
-                </Route>
+                  <Route exact path="/BorrowRequests" element={
+                    <ProtectedRoute roles={["staff", "manager"]}>
+                      < BorrowRequestsOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/MemberRegistirations" element={
+                    <ProtectedRoute roles={["staff", "manager"]}>
+                      < MemberRegistirationsOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/PunishSomeone" element={
+                    <ProtectedRoute roles={["staff", "manager"]}>
+                      < PunishSomeoneOP />
+                    </ProtectedRoute>}>
+                  </Route>
 
-                <Route exact path="/ChangeRole" element={
-                  <ProtectedRoute roles={["manager"]}>
-                    < ChangeRoleOP />
-                  </ProtectedRoute>}>
-                </Route>
-                <Route exact path="/BookCreateRequests" element={
-                  <ProtectedRoute roles={["manager"]}>
-                    < BookCreateReqOP />
-                  </ProtectedRoute>}>
-                </Route>
-              </Routes>
-            </main>
-            <footer className="mt-auto">
-              <Footer />
-            </footer>
-          </div>
-        </UserProvider>
+                  <Route exact path="/ChangeRole" element={
+                    <ProtectedRoute roles={["manager"]}>
+                      < ChangeRoleOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route exact path="/BookCreateRequests" element={
+                    <ProtectedRoute roles={["manager"]}>
+                      < BookCreateReqOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                </Routes>
+              </main>
+              <footer className="mt-auto">
+                <Footer />
+              </footer>
+            </div>
+          </UserProvider>
+        </FetchProvider>
       </div>
     </BrowserRouter >
   )
