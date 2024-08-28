@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MessageOperationsCard from "../../Components/OperationsCards/MessageOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useUser } from "../../AccountOperations/UserContext"
+import { useFetch } from "../../Context/FetchContext";
 
 function ViewInboxOP() {
     const { user } = useUser();
@@ -9,35 +10,19 @@ function ViewInboxOP() {
     const [senderName, setSenderName] = useState("");
     const [msgDetails, setMsgDetails] = useState("");
     const [msgTitle, setMsgTitle] = useState("");
+    const { fetchData } = useFetch();
 
-    const getInbox = async function () {
-        const res = await fetch("http://localhost:5109/api/User/GetInbox?userId=" + user.id, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-
-        });
-        if (!res.ok) return;
-        const messages = await res.json();
-        setMessages(messages);
-        console.log(messages);
+    const fetchInbox = async function () {
+        const data = await fetchData("/api/User/GetInbox?userId=" + user.id, "GET");
+        setMessages(data ?? []);
     }
 
     const updateReadMsg = async function (msg) {
-        console.log(JSON.stringify(msg));
-        const res = await fetch("http://localhost:5109/api/User/UpdateMessageReadState", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(msg),
-        });
-
-        if (!res.ok) return;
-
-        const data = await res.json();
-        console.log(data);
+        const data = await fetchData("/api/User/UpdateMessageReadState", "PUT", msg);
     }
 
     useEffect(() => {
-        getInbox();
+        fetchInbox();
     }, []);
 
     const handleMsgCardClick = async function (message) {

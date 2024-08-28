@@ -38,8 +38,10 @@ export const FetchProvider = ({ children }) => {
 
             if(data.message) toast.success(data.message);
             console.log(data);
+            
             return data;
         } catch (error) {
+            toast.error(error || "Something bad happened.")
             console.log(error || "Something bad happened.");
         }
     };

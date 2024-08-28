@@ -3,54 +3,31 @@ import MemberOperationsCard from "../../Components/OperationsCards/MemberOperati
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 
 function BorrowRequestsOP() {
 
-    //borrow requests from members that has sent to currently logged in staff
-
     const [bookBorrowDTOS, setBookBorrowDTOS] = useState([]);
+    const { fetchData } = useFetch();
 
-    const getBorrowRequests = async function () {
-        try {
-            const response = await fetch("http://localhost:5109/api/Book/BorrowRequests", {
-                method: "GET",
-                headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-            });
-
-            if (!response.ok) return;
-
-            const bookBorrowDTOS = await response.json();
-            setBookBorrowDTOS(bookBorrowDTOS);
-
-        } catch (error) {
-            console.log("there was an error in fetching", error);
-        }
+    const fetchBorrowRequests = async function () {
+        const data = await fetchData("/api/Book/BorrowRequests", "GET");
+        setBookBorrowDTOS(data, []);
     };
 
     useEffect(() => {
-        getBorrowRequests();
+        fetchBorrowRequests();
     }, []);
 
-    async function handleClick(isApproved, id) {
+    const handleClick = async (isApproved, id) => {
         const br = {
             id: id,
             isApproved: isApproved,
         }
 
-        const res = await fetch("http://localhost:5109/api/Book/SetBorrowRequest", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(br),
-        })
-
-        if (!res.ok) return;
-        const data = await res.json();
-
-        if (isApproved) toast.success("Request approved");
-        else toast.error("Request rejected");
-
-        await getBorrowRequests();
+        const data = await fetchData("/api/Book/SetBorrowRequest", "POST", br);
+        await fetchBorrowRequests();
     }
 
     const rightPanel = (

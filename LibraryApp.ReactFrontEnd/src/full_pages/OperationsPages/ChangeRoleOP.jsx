@@ -4,6 +4,7 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 function ChangeRoleOP() {
     //users will be listed that has lower role from manager. currently logged in user can change role of them to make it lower or manager
@@ -13,26 +14,16 @@ function ChangeRoleOP() {
     const [selectedUser, setSelectedUser] = useState({});
     const [allRemainingRoles, setAllRemainingRoles] = useState([]);
     const [selectedRoleId, setSelectedRoleId] = useState(0);
+    const { fetchData } = useFetch();
 
-    const getLowerRoleUsers = async function () {
-        const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
-            method: "GET", headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-
-        });
-
-        if (!res.ok) return;
-
-        setLowerRoleUsers(await res.json());
+    const fetchLowerRoleUsers = async function () {
+        const data = await fetchData(`/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, "GET");
+        setLowerRoleUsers(data ?? []);
     }
 
-    const getAllRemainingRoles = async function (roleId) {
-        //getting all roles
-        const res = await fetch(`http://localhost:5109/api/User/GetAllRoles?roleId=${roleId}`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-        });
-        if (!res.ok) return;
-        setAllRemainingRoles(await res.json());
+    const fetchAllRemainingRoles = async function (roleId) {
+        const data = await fetchData(`/api/User/GetAllRoles?roleId=${roleId}`, "GET");
+        setAllRemainingRoles(data ?? []);
     }
 
     const handleUserSelection = function (e) {
@@ -42,7 +33,7 @@ function ChangeRoleOP() {
             setAllRemainingRoles([]);
             return;
         }
-        getAllRemainingRoles(selectedUser.roleId);
+        fetchAllRemainingRoles(selectedUser.roleId);
     }
 
     const handleUpdateClick = async function () {
@@ -56,27 +47,18 @@ function ChangeRoleOP() {
             newRoleId: selectedRoleId,
         }
 
-        const res = await fetch(`http://localhost:5109/api/User/ChangeRole`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(changeRoleDTO)
-        });
-
-        const data = await res.json();
-        console.log(data);
-        if (!res.ok) return;
-
-        toast.success("Role has changed");
-
-        setSelectedUser({});
-        setSelectedRoleId(0);
-        setLowerRoleUsers([]);
-        getLowerRoleUsers();
-        setAllRemainingRoles([]);
+        fetchData("/api/User/ChangeRole", "PUT", changeRoleDTO)
+            .then(() => {
+                setSelectedUser({});
+                setSelectedRoleId(0);
+                setLowerRoleUsers([]);
+                fetchLowerRoleUsers();
+                setAllRemainingRoles([]);
+            });
     }
 
     useEffect(() => {
-        getLowerRoleUsers();
+        fetchLowerRoleUsers();
     }, []);
 
     const rightPanel = (

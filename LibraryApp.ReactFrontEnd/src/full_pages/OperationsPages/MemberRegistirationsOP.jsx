@@ -3,48 +3,35 @@ import MemberOperationsCard from "../../Components/OperationsCards/MemberOperati
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 
 function MemberRegistirationsOP() {
 
     //TODO refactor code use usecontext for fetching and get all methods outside of our component function
     const [pendingUsers, setPendingUsers] = useState([]);
+    const { fetchData } = useFetch();
+
 
     const fetchRegistirations = async function () {
-        const res = await fetch("http://localhost:5109/api/User/MemberRegistirations", {
-            method: "GET", headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-
-        });
-        if (!res.ok) return;
-
-        setPendingUsers(await res.json());
+        const data = await fetchData("/api/User/MemberRegistirations", "GET");
+        setPendingUsers(data ?? []);
     }
 
     useEffect(() => {
         fetchRegistirations();
     }, []);
 
-    async function handleClick(user, isApproved) {
-
+    const handleClick = async (user, isApproved) => {
         const regisDTO = {
             userId: user.id,
             isApproved: isApproved,
         }
 
-        const res = await fetch("http://localhost:5109/api/User/SetRegistirationRequest", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(regisDTO),
-        });
-
-        if (!res.ok) return;
-
-        const data = await res.json();
-
-        if (isApproved) toast.success("Request approved");
-        else toast.error("Request rejected");
-
-        fetchRegistirations();
+        fetchData("/api/User/SetRegistirationRequest", "PUT", regisDTO)
+            .then(() => {
+                fetchRegistirations();
+            });
     }
 
     const rightPanel = (

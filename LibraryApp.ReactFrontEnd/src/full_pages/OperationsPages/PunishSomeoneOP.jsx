@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
 import GeneralOperationsCard from "../../Components/OperationsCards/GeneralOperationsCard";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 function PunishSomeoneOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
@@ -13,17 +14,11 @@ function PunishSomeoneOP() {
     const [finePerDay, setFinePerDay] = useState(0);
     const [details, setDetails] = useState("");
     const [totalFine, setTotalFine] = useState(0);
+    const { fetchData } = useFetch();
 
     const fetchLowerRoleUsers = async function () {
-        const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-
-        });
-
-        if (!res.ok) return;
-
-        setLowerRoleUsers(await res.json());
+        const data = await fetchData(`/api/User/GetUsersOfLowerRole?roleId=${user.roleId}&userId=${user.id}`, "GET");
+        setLowerRoleUsers(data ?? []);
     }
 
     useEffect(() => {
@@ -67,23 +62,16 @@ function PunishSomeoneOP() {
             details: details,
         }
 
-        const res = await fetch(`http://localhost:5109/api/User/SetPunishment`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(punishUserDTO),
-        });
-
-        const data = await res.json();
-        console.log(data);
-        if (!res.ok) return;
-        toast.success(selectedUser.isPunished ? "Updated." : "User punished");
-        setDelayedDays(0);
-        setFinePerDay(0);
-        setTotalFine(0);
-        setLowerRoleUsers([]);
-        setDetails("");
-        setSelectedUser();
-        fetchLowerRoleUsers();
+        fetchData("/api/User/SetPunishment", "PUT", punishUserDTO)
+            .then(() => {
+                setDelayedDays(0);
+                setFinePerDay(0);
+                setTotalFine(0);
+                setLowerRoleUsers([]);
+                setDetails("");
+                setSelectedUser();
+                fetchLowerRoleUsers();
+            });
     }
 
     const rightPanel = (

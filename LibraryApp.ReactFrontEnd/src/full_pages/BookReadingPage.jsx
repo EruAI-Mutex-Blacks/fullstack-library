@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../AccountOperations/UserContext";
+import { useFetch } from "../Context/FetchContext";
 
 function BookReadingPage() {
 
@@ -10,31 +11,27 @@ function BookReadingPage() {
     const [pageNum, setPageNum] = useState();
     const [pageContent, setPageContent] = useState("");
     const { user } = useUser();
+    const { fetchData } = useFetch();
 
-    const getBook = async function () {
-        const res = await fetch("http://localhost:5109/api/Book/GetBook?bookId=" + bookId, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+    const fetchBook = async function () {
+        fetchData("/api/Book/GetBook?bookId=" + bookId, "GET")
+            .then((book) => {
+                book.pages.sort((a, b) => a.pageNumber - b.pageNumber);
 
-        });
-        if (!res.ok) return;
-        const book = await res.json();
+                const isMemberOrAuthor = ["member", "author"].includes(user.roleName);
+                const isBorrowedByUser = book.borrowedById == user.id;
+                const isWrittenByUser = book.authorIds?.includes(user.id);
 
-        book.pages.sort((a, b) => a.pageNumber - b.pageNumber);
-
-        const isMemberOrAuthor = ["member", "author"].includes(user.roleName);
-        const isBorrowedByUser = book.borrowedById == user.id;
-        const isWrittenByUser = book.authorIds?.includes(user.id);
-
-        book.pages = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.pages : book.pages.slice(0, 3);
-        book.title = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.title : book.title + " [Preview]";
-        setBook(book);
-        setPageContent(book.pages[0].content);
-        setPageNum(book.pages[0].pageNumber);
+                book.pages = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.pages : book.pages.slice(0, 3);
+                book.title = !isMemberOrAuthor || isBorrowedByUser || isWrittenByUser ? book.title : book.title + " [Preview]";
+                setBook(book);
+                setPageContent(book.pages[0].content);
+                setPageNum(book.pages[0].pageNumber);
+            });
     }
 
     useEffect(() => {
-        getBook();
+        fetchBook();
     }, []);
 
     const handlePageClick = function (p) {

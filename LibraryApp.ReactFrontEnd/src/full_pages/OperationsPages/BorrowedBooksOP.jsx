@@ -4,41 +4,27 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 
 function BorrowedBooksOP() {
 
     const { user } = useUser();
     const [books, setBooks] = useState([]);
+    const { fetchData } = useFetch();
 
-    const getBorrowedBooks = async function () {
-        var response = await fetch("http://localhost:5109/api/Book/BorrowedBooks?userId=" + user.id, {
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-        });
-        var books = await response.json();
-        console.log(books);
-        setBooks(books);
+    const fetchBorrowedBooks = async function () {
+        const data = await fetchData("/api/Book/BorrowedBooks?userId=" + user.id, "GET");
+        setBooks(data ?? []);
     }
 
     useEffect(() => {
-        getBorrowedBooks();
+        fetchBorrowedBooks();
     }, []);
 
-    async function handleReturnClick(book) {
-        console.log(book.id);
-        const res = await fetch("http://localhost:5109/api/Book/ReturnBook", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-            },
-            body: JSON.stringify(book.id),
-        });
-
-        const data = await res.json();
-        if (!res.ok) return;
-        toast.success(data.message);
-        getBorrowedBooks();
+    const handleReturnClick = async (book) => {
+        const data = fetchData("/api/Book/ReturnBook", "PUT", book.id);
+        fetchBorrowedBooks();
     }
 
     const rightPanel = (

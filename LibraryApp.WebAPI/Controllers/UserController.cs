@@ -41,7 +41,7 @@ namespace fullstack_library.Controllers
             else
                 _userRepo.DeleteUser(user);
 
-            return Ok(new { message = "Operation done!" });
+            return Ok(new { message = userRegistirationDTO.IsApproved ? "Request approved." : "Request rejected" });
         }
 
         [HttpPut("SetPunishment")]
@@ -62,11 +62,11 @@ namespace fullstack_library.Controllers
                 Title = punishUserDTO.IsPunished ? "You are punished from library at " + DateTime.Now : "Your punishment removed.",
             });
 
-            return Ok(new { message = "Punishment status updated" });
+            return Ok(new { message = punishUserDTO.IsPunished ? "User punished." : "Punishment removed." });
         }
 
         [HttpPost("SendMessage")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult SendMessage(MessageDTO msg)
         {
             var sender = _userRepo.GetUserById(msg.SenderId);
@@ -83,11 +83,11 @@ namespace fullstack_library.Controllers
             };
             _msgRepo.CreateMessage(entity);
 
-            return Ok(new { Message = "Message has been sent" });
+            return Ok(new { Message = "Message has sent" });
         }
 
         [HttpGet("GetInbox")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult GetInbox([FromQuery] int userId)
         {
             var msgs = _msgRepo.GetMessagesByReceiverId(userId);
@@ -106,7 +106,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetUsersOfLowerOrEqualRole")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
@@ -123,7 +123,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetUsersOfLowerRole")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //designed like the higher the role the greater it's id
@@ -160,7 +160,7 @@ namespace fullstack_library.Controllers
         }
 
         [HttpGet("GetAllRoles")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult GetAllRoles([FromQuery] int roleId)
         {
             //designed like the higher the role the greater it's id
@@ -175,8 +175,8 @@ namespace fullstack_library.Controllers
             ));
         }
 
-        [HttpPost("UpdateMessageReadState")]
-        [Authorize(Policy="MemberOrHigherPolicy")]
+        [HttpPut("UpdateMessageReadState")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
         public IActionResult UpdateMessageReadState(MessageDTO readMsg)
         {
             var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == readMsg.Id);
@@ -198,7 +198,7 @@ namespace fullstack_library.Controllers
 
             user.RoleId = updateRoleDTO.NewRoleId;
             _userRepo.UpdateUser(user);
-            return Ok(new { Message = "Operation Done!" });
+            return Ok(new { Message = "User's role changed." });
         }
     }
 }

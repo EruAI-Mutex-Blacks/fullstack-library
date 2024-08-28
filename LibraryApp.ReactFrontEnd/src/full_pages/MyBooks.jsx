@@ -2,35 +2,25 @@ import { Link } from "react-router-dom";
 import { useUser } from "../AccountOperations/UserContext";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useFetch } from "../Context/FetchContext";
 
 function MyBooksOP() {
 
     const { user } = useUser();
     const [myBooks, setMyBooks] = useState([]);
+    const { fetchData } = useFetch();
 
     const fetchBooks = async function () {
-        const res = await fetch("http://localhost:5109/api/Book/GetBooksByAuthor?userId=" + user.id, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+        const data = await fetchData("/api/Book/GetBooksByAuthor?userId=" + user.id, "GET");
 
-        });
-
-        if (!res.ok) {
-            const ressss = await res.json();
-            console.log(ressss);
-            return;
-        }
-
-        var myBooks = await res.json();
-        var newMyBooks = myBooks.map(mb => ({
+        var newMyBooks = data?.map(mb => ({
             bookId: mb.bookId,
             oldBookName: mb.bookName,
             newBookName: mb.bookName,
             publishDate: mb.publishDate,
             status: mb.status,
         }));
-        setMyBooks(newMyBooks);
-        console.log(newMyBooks);
+        setMyBooks(newMyBooks ?? []);
     }
 
     useEffect(() => {
@@ -38,33 +28,17 @@ function MyBooksOP() {
     }, []);
 
     const handleRequestClick = async function (bookId) {
-        const res = await fetch("http://localhost:5109/api/Book/RequestPublishment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(bookId)
-        });
-
-        if (!res.ok) {
-            const data = await res.json();
-            console.log(data);
-            toast.error(data.message || "An error occured");
-            return;
-        }
-        toast.success("Request has sent");
-        await fetchBooks();
+        fetchData("/api/Book/RequestPublishment", "POST", bookId)
+            .then(() => {
+                fetchBooks();
+            });
     }
 
     const handleCreateClick = async function () {
-        const res = await fetch("http://localhost:5109/api/Book/CreateBook", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(user.id)
-        });
-
-        if (!res.ok) return;
-        const data = await res.json();
-        toast.success(data.message || "Created.");
-        await fetchBooks();
+        fetchData("/api/Book/CreateBook", "POST", user.id)
+            .then(() => {
+                fetchBooks();
+            });
     }
 
     const handleChangeClick = async function (book) {
@@ -80,17 +54,10 @@ function MyBooksOP() {
             status: book.status,
         }
 
-        const res = await fetch("http://localhost:5109/api/Book/UpdateBookName", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(bookDTO)
+        fetchData("/api/Book/UpdateBookName", "PUT", bookDTO)
+        .then(() => {
+            fetchBooks();
         });
-
-        const data = await res.json();
-        if (!res.ok) return;
-
-        toast.success(data.message);
-        await fetchBooks();
     }
 
     const handleTitleChange = function (book, e) {
@@ -120,7 +87,7 @@ function MyBooksOP() {
                                 <td className="px-6 py-4">{mb.status}</td>
                                 <td className="px-6 py-4">{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
                                 <td className="px-6 py-4">
-                                   
+
                                     {(mb.status !== "Published") && <>
                                         <div className="flex mb-2">
                                             <input type="text" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />

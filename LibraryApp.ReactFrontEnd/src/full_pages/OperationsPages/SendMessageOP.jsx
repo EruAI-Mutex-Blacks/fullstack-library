@@ -4,6 +4,7 @@ import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useUser } from '../../AccountOperations/UserContext'
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 
 function SendMessageOP() {
@@ -13,23 +14,17 @@ function SendMessageOP() {
     const [receiverId, setReceiverId] = useState(0);
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const { fetchData } = useFetch();
 
-    const getReceivers = async function () {
-        const res = await fetch(`http://localhost:5109/api/User/GetUsersOfLowerOrEqualRole?roleId=${user.roleId}&userId=${user.id}`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-
-        });
-        if (!res.ok) return;
-        setReceivers(await res.json());
+    const fetchReceivers = async function () {
+        const data = await fetchData(`/api/User/GetUsersOfLowerOrEqualRole?roleId=${user.roleId}&userId=${user.id}`, "GET");
+        setReceivers(data ?? []);
     }
 
     useEffect(() => {
-        getReceivers();
+        fetchReceivers();
         console.log(receivers);
     }, []);
-
-    //send message to selected one. fetch
 
     const handleSendClick = async function (e) {
         e.preventDefault();
@@ -46,21 +41,15 @@ function SendMessageOP() {
             details: message,
         }
 
-        const res = await fetch("http://localhost:5109/api/User/SendMessage", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(messageDTO),
-        });
-
-        if (!res.ok) return;
-        const data = await res.json();
-        setReceiverId(0);
-        setTitle("");
-        setMessage("");
-        toast.success("Message has sent");
+        fetchData("/api/User/SendMessage", "POST", messageDTO)
+            .then(() => {
+                setReceiverId(0);
+                setTitle("");
+                setMessage("");
+            });
     }
 
-    //consider adding security bc people can change value of option and we can send random person a msg
+    //TODO consider adding security bc people can change value of option and we can send random person a msg
     const rightPanel = (
         <form className="grow flex flex-col px-14 py-6">
             <div className="mb-3">

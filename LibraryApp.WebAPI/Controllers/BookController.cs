@@ -35,7 +35,7 @@ namespace fullstack_library.Controllers
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
             var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
-            if (request == null) return NotFound();
+            if (request == null) return NotFound(new { Message = "Request not found.f" });
 
             if (publishBookDTO.IsApproved)
             {
@@ -47,7 +47,7 @@ namespace fullstack_library.Controllers
             request.IsPending = false;
             await _bookPublishReqsRepo.UpdateRequest(request);
 
-            return Ok(new { message = "Operation done!" });
+            return Ok(new { message = publishBookDTO.IsApproved ? "Request approved." : "Request rejected." });
         }
 
         [HttpGet("BookPublishRequests")]
@@ -70,7 +70,7 @@ namespace fullstack_library.Controllers
         public IActionResult RequestPublishment([FromBody] int bookId)
         {
             var book = _bookRepo.GetBookById(bookId);
-            if (book == null) return NotFound();
+            if (book == null) return NotFound(new { Message = "Book not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Your book is already published." });
             if (_bookPublishReqsRepo.Requests.Any(bpr => bpr.IsPending && bpr.BookId == bookId))
                 return BadRequest(new { Message = "Your request is still active." });
@@ -144,7 +144,7 @@ namespace fullstack_library.Controllers
         public async Task<IActionResult> SetBorrowRequest(SetBorrowRequestDTO setBorrowRequestDTO)
         {
             var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
-            if (bookBorrowActivity == null) return NotFound();
+            if (bookBorrowActivity == null) return NotFound(new { Message = "Borrow request not found." });
 
             if (setBorrowRequestDTO.IsApproved)
             {
@@ -160,7 +160,7 @@ namespace fullstack_library.Controllers
                 await _bookBorrowRepo.DeleteBookBorrowActivity(bookBorrowActivity);
 
 
-            return Ok(new { Message = "Operation done!" });
+            return Ok(new { Message = setBorrowRequestDTO.IsApproved ? "Request approved." : "Request rejected" });
         }
 
         [HttpPost("BorrowBook")]
@@ -183,7 +183,7 @@ namespace fullstack_library.Controllers
                 ReturnDate = DateTime.Now.AddDays(14),
             };
             _bookBorrowRepo.CreateBookBorrowActivity(bba);
-            return Ok(new { Message = "Borrow request has been sent to staff. Please wait for approval." });
+            return Ok(new { Message = "Borrow request has sent to staff. Please wait for approval." });
         }
 
         [HttpGet("GetBook")]
@@ -210,7 +210,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "AuthorPolicy")]
         public IActionResult GetBooksByAuthor([FromQuery] int userId)
         {
-            if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound();
+            if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound(new { Message = "User not found." });
             var books = _bookRepo.Books
             .AsNoTracking()
             .Where(b => b.BookAuthors.Any(ba => ba.UserId == userId));
@@ -231,7 +231,7 @@ namespace fullstack_library.Controllers
         public IActionResult WritePage([FromBody] PageDTO pageDTO)
         {
             var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == pageDTO.BookId);
-            if (book == null) return NotFound();
+            if (book == null) return NotFound(new {Message="Book not found."});
             if (book.IsPublished) return BadRequest(new { Message = "Cannot add page to published book" });
             if (book.Pages.Any(p => p.PageNumber == pageDTO.PageNumber)) return BadRequest(new { Message = "There is a page with that number." });
 
@@ -249,7 +249,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "AuthorPolicy")]
         public IActionResult CreateBook([FromBody] int authorId)
         {
-            if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound();
+            if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound(new {Message="User not found."});
             _bookRepo.CreateBook(new Book
             {
                 IsBorrowed = false,
@@ -270,7 +270,7 @@ namespace fullstack_library.Controllers
         public IActionResult UpdateBookName(MyBooksDTO myBooksDTO)
         {
             var book = _bookRepo.Books.FirstOrDefault(b => b.Id == myBooksDTO.BookId);
-            if (book == null) return NotFound();
+            if (book == null) return NotFound(new {Message="Book not found."});
 
             book.Title = myBooksDTO.BookName;
             _bookRepo.UpdateBook(book);
@@ -282,10 +282,10 @@ namespace fullstack_library.Controllers
         public IActionResult ReturnBook([FromBody] int bookId)
         {
             var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).FirstOrDefault(b => b.Id == bookId);
-            if (book == null) return NotFound();
+            if (book == null) return NotFound(new {Message="Book not found."});
 
             var bba = book.BookBorrowActivities.FirstOrDefault(bba => !bba.IsReturned);
-            if (bba == null) return BadRequest();
+            if (bba == null) return BadRequest(new {Message="Borrow activity not found."});
 
             book.IsBorrowed = false;
             bba.IsReturned = true;

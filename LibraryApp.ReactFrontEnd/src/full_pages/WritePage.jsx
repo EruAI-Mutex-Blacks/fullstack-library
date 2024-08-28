@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useFetch } from "../Context/FetchContext";
 
 function WriteBook() {
     const location = useLocation();
@@ -8,18 +9,13 @@ function WriteBook() {
     const [book, setBook] = useState({});
     const [pageContent, setPageContent] = useState("");
     const [pageNum, setPageNum] = useState(0);
+    const { fetchData } = useFetch();
 
     const fetchBook = async function () {
-        const res = await fetch("http://localhost:5109/api/Book/GetBook?bookId=" + bookId, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
+        const data = await fetchData("/api/Book/GetBook?bookId=" + bookId, "GET");
 
-        });
-
-        if (!res.ok) return;
-        const data = await res.json();
-        data.pages.sort((a, b) => a.pageNumber - b.pageNumber);
-        setBook(data);
+        data?.pages?.sort((a, b) => a.pageNumber - b.pageNumber);
+        setBook(data ?? []);
     };
 
     useEffect(() => {
@@ -43,21 +39,12 @@ function WriteBook() {
             pageNumber: pageNum,
         };
 
-        const res = await fetch("http://localhost:5109/api/Book/WritePage", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(pageDTO),
-        });
-
-        if (!res.ok) {
-            const data = await res.json();
-            toast.error(data?.message ?? "An error occured");
-            return;
-        }
-        toast.success("Page saved");
-        setPageContent("");
-        setPageNum(0);
-        await fetchBook();
+        fetchData("/api/Book/WritePage", "POST", pageDTO)
+            .then(() => {
+                setPageContent("");
+                setPageNum(0);
+                fetchBook();
+            });
     };
 
     const handleFileSelection = function (e) {

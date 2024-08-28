@@ -3,24 +3,20 @@ import AuthorOperationsCard from "../../Components/OperationsCards/AuthorOperati
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify";
+import { useFetch } from "../../Context/FetchContext";
 
 function BookCreateReqOP() {
 
     const [requests, setRequests] = useState([]);
+    const { fetchData } = useFetch();
 
-    const getPendingRequests = async function () {
-        const response = await fetch("http://localhost:5109/api/Book/BookPublishRequests", {
-            method: "GET",
-            headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` }
-        });
-
-        const data = await response.json();
-        if (!response.ok) return;
-        setRequests(data);
+    const fetchPendingRequests = async function () {
+        const data = await fetchData("/api/Book/BookPublishRequests", "GET");
+        setRequests(data ?? []);
     }
 
     useEffect(() => {
-        getPendingRequests();
+        fetchPendingRequests();
     }, []);
 
     async function handleApproveRejectClick(requestId, isApproved) {
@@ -29,18 +25,7 @@ function BookCreateReqOP() {
             isApproved: isApproved,
         }
 
-        const response = await fetch("http://localhost:5109/api/Book/SetPublishing", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
-            body: JSON.stringify(publishBookDTO),
-        });
-
-        const data = await response.json();
-        console.log(data);
-        if (!response.ok) return;
-
-        if (isApproved) toast.success("Request approved");
-        else toast.error("Request rejected");
+        const data = await fetchData("/api/Book/SetPublishing", "PUT", publishBookDTO);
 
         const updatedRequests = requests.filter(r => r.id != requestId);
         setRequests(updatedRequests);
@@ -83,35 +68,6 @@ function BookCreateReqOP() {
                 </tbody>
             </table>
         </div>
-
-        // <div className="grow ">
-        //     <table className="min-w-full bg-white">
-        //         <thead className="">
-        //             <tr className="bg-gray-800 text-white border border-gray-300">
-        //                 <th className="border-collapse border-gray-300 py-2 px-4 text-left">Book Name</th>
-        //                 <th className="border-collapse border-gray-300 py-2 px-4 text-left">Authors</th>
-        //                 <th className="border-collapse border-gray-300 py-2 px-4 text-left">Request Date</th>
-        //                 <th className="border-collapse border-gray-300 py-2 px-4 text-left">Actions</th>
-        //             </tr>
-        //         </thead>
-        //         <tbody>
-        //             {requests.map((b, index) => (
-        //                 <tr key={index} className="">
-        //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">{b.bookName}</td>
-        //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">{b.authors.join(", ")}</td>
-        //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">{new Date(b.requestDate).toLocaleDateString("en-us")}</td>
-        //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">
-        //                         <ul className="flex justify-start">
-        //                             <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-100 text-gray-300">Read the book</Link></li>
-        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-100 text-gray-300">Approve</button></li>
-        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-white transition-all duration-100 text-gray-300">Reject</button></li>
-        //                         </ul>
-        //                     </td>
-        //                 </tr>
-        //             ))}
-        //         </tbody>
-        //     </table >
-        // </div>
     )
 
     return (<GeneralOperationsPage leftPanel={(<AuthorOperationsCard />)} rightPanel={rightPanel} />)
