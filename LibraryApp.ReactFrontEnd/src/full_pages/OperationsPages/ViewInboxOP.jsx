@@ -62,7 +62,7 @@ function ViewInboxOP() {
     }
     //FIXME long compound words breaks the style of title etc.
     const rightPanel = (
-        <div className="flex flex-col grow px-10 pt-3 pb-8 text-gray-100 h-96">
+        <div className="flex flex-col grow px-10 pt-3 pb-8 text-gray-100">
             <h6 className="text-start ms-5 mb-1 font-bold ">[ {messages.filter(m => !m.isReceiverRead).length} unread messages ]</h6>
             <div className="grid grid-cols-4 container p-0 grow h-full">
                 <div className="bg-gray-700 col-span-1 me-2 p-2 rounded overflow-y-auto" >

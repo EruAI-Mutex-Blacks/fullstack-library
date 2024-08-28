@@ -87,47 +87,45 @@ function PunishSomeoneOP() {
     }
 
     const rightPanel = (
-        <div className="flex-fill">
-            <div className="mb-3 border-bottom border-dark p-3 border rounded">
-                <label htmlFor="sendingTo" className="form-label">Select user to view punishment status</label>
-                <select id="sendingTo" className="form-select" onChange={e => handleSelectionChange(e)}>
+        <div className="grow flex flex-col justify-start px-12 py-4">
+            <div className="mb-3 p-3 border rounded">
+                <label htmlFor="sendingTo" className="block text-white font-medium mb-1">Select user to view punishment status</label>
+                <select id="sendingTo" className="px-4 py-2 bg-gray-700 text-white block w-full focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2 rounded" onChange={e => handleSelectionChange(e)}>
                     <option value="">Select someone</option>
                     {lowerRoleUsers.map((lru, index) => (
                         <option key={index} value={lru.id}>{lru.name + " - " + lru.roleName}</option>
                     ))}
                 </select>
             </div>
-            <div className="row m-0 p-0">
-                <div className="col border border-dark rounded p-3 me-2">
-                    <h5 className="border-bottom border-dark pb-1">Punishment of {selectedUser?.name}</h5>
-                    <form>
-                        <div className="d-flex flex-fill">
-                            <div className="my-3 mb-2 flex-fill align-self-center">
-                                <label htmlFor="isPunished" className="form-label  me-2">Is user already punished?</label>
-                                <input type="checkbox" id="isPunished" name="isPunished" className="form-check-input" checked={selectedUser?.isPunished ?? false} onChange={e => selectedUser?.isPunished} />
+            <div className="grow border rounded p-3 flex">
+                <div className="flex flex-col grow">
+                    <h5 className="border-b pb-1 text-white font-bold">Punishment of {selectedUser?.name}</h5>
+                    <form className="flex flex-col grow">
+                        <div className="flex mb-3">
+                            <div className="my-3 mb-2 grow flex">
+                                <label htmlFor="isPunished" className="text-white font-medium mb-1 me-2">Is user already punished?</label>
+                                <input type="checkbox" id="isPunished" name="isPunished" className="mt-1 w-4 h-4 text-blue-600  focus:ring-blue-700 ring-offset-gray-800 focus:ring-2" checked={selectedUser?.isPunished ?? false} onChange={e => selectedUser?.isPunished} />
                             </div>
                         </div>
-                        <div className="my-3 row">
-                            <div className="align-self-center col text-start pe-0">
-                                <label className="form-label" htmlFor="delayedDays">Delayed days</label>
-                                <input id="delayedDays" value={delayedDays} className="form-control d-inline" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
+                        <div className="mb-3 flex space-x-5 justify-between">
+                            <div className="self-center text-start">
+                                <label className="text-white font-medium mb-1" htmlFor="delayedDays">Delayed days</label>
+                                <input id="delayedDays" value={delayedDays} className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
                             </div>
-                            <div className=" col text-center align-self-center">
-                                <label className="form-label" htmlFor="finePerDay">Fine amount per day ($)</label>
-                                <input id="finePerDay" className="form-control d-inline" type="number" min={0} step={0.1} value={finePerDay} onChange={e => handleInputChange(e, setFinePerDay)} />
+                            <div className="text-center self-center">
+                                <label className="text-white font-medium mb-1" htmlFor="finePerDay">Fine amount per day ($)</label>
+                                <input id="finePerDay" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" min={0} step={0.1} value={finePerDay} onChange={e => handleInputChange(e, setFinePerDay)} />
                             </div>
-                            <div className="col align-self-center text-end">
-                                <label htmlFor="fineAmount" className="form-label"><b>User's final total fine</b></label>
-                                <input id="finePerDay" className="form-control" type="number" value={totalFine} onChange={e => setTotalFine(e.target.value)} min={0} step={0.1} />
-                            </div>
-                        </div>
-                        <div className="mb-0">
-                            <label htmlFor="message" className="form-label">Cause & details of punishment</label>
-                            <div className="d-flex align-items-center">
-                                <textarea value={details} type="text" className="form-control me-2" rows={2} style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
-                                <button onClick={(e) => { handleUpdateClick(e) }} className="btn btn-danger py-2 px-4">{selectedUser?.isPunished ? "Update" : "Punish"}</button>
+                            <div className="self-center text-end">
+                                <label htmlFor="fineAmount" className="text-white mb-1 font-bold">User's final total fine</label>
+                                <input id="finePerDay" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" value={totalFine} onChange={e => setTotalFine(e.target.value)} min={0} step={0.1} />
                             </div>
                         </div>
+                        <div className="mb-3 grow flex flex-col">
+                            <label htmlFor="message" className="block text-white font-medium mb-1">Cause & details of punishment</label>
+                            <textarea value={details} type="text" className="grow px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2 me-2" style={{ resize: "none" }} onChange={e => handleInputChange(e, setDetails)}></textarea>
+                        </div>
+                        <button onClick={(e) => { handleUpdateClick(e) }} className={`self-end border border-transparent inline-block rounded px-6 py-3 bg-${selectedUser?.isPunished ? "green" : "red"}-700 hover:bg-${selectedUser?.isPunished ? "green" : "red"}-800 hover:ring-${selectedUser?.isPunished ? "green" : "red"}-500 hover:ring-2 transition-all duration-100 text-white active:bg-${selectedUser?.isPunished ? "green" : "red"}-900`}>{selectedUser?.isPunished ? "Update" : "Punish"}</button>
                     </form>
                 </div>
             </div>

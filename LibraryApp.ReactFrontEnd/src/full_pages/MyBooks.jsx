@@ -40,7 +40,7 @@ function MyBooksOP() {
     const handleRequestClick = async function (bookId) {
         const res = await fetch("http://localhost:5109/api/Book/RequestPublishment", {
             method: "POST",
-            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(bookId)
         });
 
@@ -57,7 +57,7 @@ function MyBooksOP() {
     const handleCreateClick = async function () {
         const res = await fetch("http://localhost:5109/api/Book/CreateBook", {
             method: "POST",
-            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(user.id)
         });
 
@@ -82,7 +82,7 @@ function MyBooksOP() {
 
         const res = await fetch("http://localhost:5109/api/Book/UpdateBookName", {
             method: "PUT",
-            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(bookDTO)
         });
 
@@ -98,38 +98,38 @@ function MyBooksOP() {
     }
 
     return (
-        <div className="container ">
-            <div className="d-flex flex-row justify-content-between border-bottom border-dark align-items-end">
-                <h1 className="pt-4">My Books</h1>
-                <button onClick={handleCreateClick} className="btn btn-success mb-2">Create a book</button>
+        <div className="container px-16 mx-auto flex flex-col text-white">
+            <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-gray-300 items-end">
+                <h1 className="text-3xl ">My Books</h1>
+                <button onClick={handleCreateClick} className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900">Create a book</button>
             </div>
-            <div className="row py-2">
-                <table className="table table-bordered table-striped">
-                    <thead>
+            <div class="overflow-x-auto bg-gray-800 rounded">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-400">
+                    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                         <tr>
-                            <th>Book Name</th>
-                            <th>Status</th>
-                            <th>Publish Date</th>
-                            <th>Actions</th>
+                            <th className="px-6 py-4">Book Name</th>
+                            <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4">Publish Date</th>
+                            <th className="px-6 py-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {myBooks.map((mb, index) => (
                             <tr key={index}>
-                                <td>{mb.oldBookName}</td>
-                                <td>{mb.status}</td>
-                                <td>{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
-                                <td className="">
-                                    <Link className="btn btn-success me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
+                                <td className="px-6 py-4 font-medium whitespace-nowrap text-white">{mb.oldBookName}</td>
+                                <td className="px-6 py-4">{mb.status}</td>
+                                <td className="px-6 py-4">{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
+                                <td className="px-6 py-4">
+                                   
                                     {(mb.status !== "Published") && <>
-                                        <Link className="btn btn-success me-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
-                                        <button className="btn btn-success me-2" onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
-                                        {/* <button className="btn btn-success me-2">Delete</button> */}
-                                        <div className="input-group w-75 mt-2">
-                                            <input type="text" className="form-control" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
-                                            <button className="btn btn-success me-2" onClick={() => handleChangeClick(mb)}>Change</button>
+                                        <div className="flex mb-2">
+                                            <input type="text" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
+                                            <button className="border border-transparent inline-block rounded-e px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={() => handleChangeClick(mb)}>Change</button>
                                         </div>
+                                        <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
+                                        <button className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
                                     </>}
+                                    <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
                                 </td>
                             </tr>
                         ))}

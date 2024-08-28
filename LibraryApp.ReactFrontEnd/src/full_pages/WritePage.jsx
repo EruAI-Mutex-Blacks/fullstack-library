@@ -45,7 +45,7 @@ function WriteBook() {
 
         const res = await fetch("http://localhost:5109/api/Book/WritePage", {
             method: "POST",
-            headers: { "Content-Type": "application/json",Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}` },
             body: JSON.stringify(pageDTO),
         });
 
@@ -74,30 +74,30 @@ function WriteBook() {
     }
 
     return (
-        <div className="d-flex flex-column flex-fill align-items-center">
-            <h3 className="mb-2 mt-4 p-0">{book?.title}</h3>
-            <div className="mb-5 p-2 bg-light rounded d-flex text-center flex-fill container">
-                <div className="flex-fill col-9">
-                    <div className="d-flex justify-content-center align-items-center bg-success-subtle border-bottom border-dark pt-3 pb-2 rounded mb-2">
-                        <div className="d-flex align-items-center">
-                            <h5>Page</h5><input type="number" className="ms-4 form-control d-inline" min={0} placeholder="Enter the page number" value={pageNum} onChange={e => setPageNum(e.target.value)} />
+        <div className="flex flex-col container mx-auto px-16  grow items-center text-gray-200">
+            <h3 className="mb-2 mt-4 p-0 text-3xl">{book?.title}</h3>
+            <div className="mb-5 p-2 bg-gray-500 rounded flex text-center grow container">
+                <div className="grow flex flex-col col-9">
+                    <div className="flex justify-center items-center bg-gray-600 border-b border-gray-300 pt-3 pb-2 rounded mb-2">
+                        <div className="flex items-center">
+                            <h5 className="text-xl">Page</h5><input type="number" className="ms-4 px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" min={0} placeholder="Enter the page number" value={pageNum} onChange={e => setPageNum(e.target.value)} />
                         </div>
                     </div>
-                    <div className="bg-success-subtle rounded d-flex mb-2">
-                        <textarea className="rounded flex-fill bg-success-subtle px-4 py-3" placeholder="Enter the content of page" rows={9} maxLength={1250} style={{ resize: "none" }} onChange={e => setPageContent(e.target.value)} value={pageContent}></textarea>
+                    <div className="rounded flex mb-2 grow ">
+                        <textarea className="px-4 py-2 w-full bg-gray-700 grow text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter the content of page" maxLength={1250} style={{ resize: "none" }} onChange={e => setPageContent(e.target.value)} value={pageContent}></textarea>
                     </div>
-                    <div className="d-flex justify-content-end">
-                        <label className="align-self-center me-2" htmlFor="fileUpload">Import text from .txt file:</label>
-                        <input class="form-control w-50 me-2" id="fileUpload" type="file" onChange={e => handleFileSelection(e)} accept=".txt" />
-                        <button className="btn btn-success px-5" onClick={handleSaveClick}>Save</button>
+                    <div className="flex justify-end ">
+                        <label className="self-center me-2 hover:cursor-pointer" htmlFor="fileUpload">Import text from .txt file:</label>
+                        <input class="p-1 bg-gray-600 rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-gray-700 self-center me-2" id="fileUpload" type="file" onChange={e => handleFileSelection(e)} accept=".txt" />
+                        <button className="border border-transparent inline-block rounded px-6 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 self-end" onClick={handleSaveClick}>Save</button>
                     </div>
                 </div>
 
-                <div className="col-3 ps-2">
-                    <div className="d-flex justify-content-center bg-success-subtle border-bottom border-dark px-3 pt-4 pb-1 rounded mb-2">
-                        <h5>Current pages</h5>
+                <div className="ps-2">
+                    <div className="flex text-xl bg-gray-600 border-b border-gray-300 px-3 pt-4 pb-4 rounded mb-2">
+                        <h5 className="">Current pages</h5>
                     </div>
-                    <div className="d-flex justify-content-center flex-wrap p-3 bg-success-subtle rounded">
+                    <div className="flex justify-center flex-wrap p-3 bg-gray-600 rounded">
                         {book?.pages?.map((p, index) => (
                             <p key={index} className="border border-dark rounded px-2 py-0 me-2 mb-2">{p.pageNumber}</p>
                         ))}

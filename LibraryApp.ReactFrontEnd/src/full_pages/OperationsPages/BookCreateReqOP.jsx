@@ -73,9 +73,9 @@ function BookCreateReqOP() {
                             <td className="px-6 py-4">{new Date(b.requestDate).toLocaleDateString("en-us")}</td>
                             <td className="px-6 py-4">
                                 <ul className="flex justify-start">
-                                    <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-300 text-gray-300 active:bg-green-950">Read the book</Link></li>
-                                    <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-300 text-gray-300 active:bg-green-950">Approve</button></li>
-                                    <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-300 text-gray-300 active:bg-red-950">Reject</button></li>
+                                    <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Read the book</Link></li>
+                                    <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</button></li>
+                                    <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</button></li>
                                 </ul>
                             </td>
                         </tr>
@@ -102,9 +102,9 @@ function BookCreateReqOP() {
         //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">{new Date(b.requestDate).toLocaleDateString("en-us")}</td>
         //                     <td className="border-e border-collapse border-gray-300 py-2 px-4 text-left">
         //                         <ul className="flex justify-start">
-        //                             <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-300 text-gray-300">Read the book</Link></li>
-        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-300 text-gray-300">Approve</button></li>
-        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-white transition-all duration-300 text-gray-300">Reject</button></li>
+        //                             <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-100 text-gray-300">Read the book</Link></li>
+        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-white transition-all duration-100 text-gray-300">Approve</button></li>
+        //                             <li className="me-2"><button onClick={() => { handleApproveRejectClick(b.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-white transition-all duration-100 text-gray-300">Reject</button></li>
         //                         </ul>
         //                     </td>
         //                 </tr>

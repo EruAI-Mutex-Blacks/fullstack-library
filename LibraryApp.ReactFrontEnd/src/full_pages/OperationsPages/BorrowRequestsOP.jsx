@@ -74,8 +74,8 @@ function BorrowRequestsOP() {
                             <td className="px-6 py-4">{new Date(b.returnDate).toLocaleDateString("en-us")}</td>
                             <td className="px-6 py-4">
                                 <ul className="flex justify-start">
-                                    <li className="me-2"><Link onClick={() => { handleClick(true, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-300 text-gray-300 active:bg-green-950">Approve</Link></li>
-                                    <li className="me-2"><Link onClick={() => { handleClick(false, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-300 text-gray-300 active:bg-red-950">Reject</Link></li>
+                                    <li className="me-2"><Link onClick={() => { handleClick(true, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</Link></li>
+                                    <li className="me-2"><Link onClick={() => { handleClick(false, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</Link></li>
                                 </ul>
                             </td>
                         </tr>

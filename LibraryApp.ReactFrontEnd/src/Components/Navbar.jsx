@@ -14,20 +14,20 @@ function Navbar() {
         topRightLinks = (
             <>
                 <li>
-                    <Link className="nav-link active" aria-current="page" to="/Login">Login</Link>
+                    <Link className=" hover:bg-gray-400/10 rounded p-3 transition-all duration-100" aria-current="page" to="/Login">Login</Link>
                 </li>
                 <li>
-                    <Link className="nav-link active" aria-current="page" to="/Register">Register</Link>
+                    <Link className=" hover:bg-gray-400/10 rounded p-3 transition-all duration-100" aria-current="page" to="/Register">Register</Link>
                 </li>
             </>);
     } else {
         topRightLinks = (
             <>
                 <li>
-                    <Link className='nav-link active disabled' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
+                    <Link className='cursor-default p-3' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
                 </li>
                 <li>
-                    <Link className='nav-link active' aria-current="page" to="/" onClick={handleLogoutClick}>Logout</Link>
+                    <Link className=' hover:bg-gray-400/10 rounded p-3 transition-all duration-100' aria-current="page" to="/" onClick={handleLogoutClick}>Logout</Link>
                 </li>
             </>
         )
@@ -41,17 +41,17 @@ function Navbar() {
                     <li className=''>
                         <ul className='flex'>
                             <li className="">
-                                <Link className="hover:bg-gray-400/10 rounded p-3 transition-all duration-300" to="/">Home</Link>
+                                <Link className="hover:bg-gray-400/10 rounded p-3 transition-all duration-100" to="/">Home</Link>
                             </li>
                             <li className="">
                                 {
-                                    (user?.roleName === "author") && (<Link className="" to="/MyBooks">My books</Link>)
+                                    (user?.roleName === "author") && (<Link className="hover:bg-gray-400/10 rounded p-3 transition-all duration-100" to="/MyBooks">My books</Link>)
                                 }
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <ul className='flex flex-row justify-evenly space-x-4'>
+                        <ul className='flex flex-row justify-evenly'>
                             {topRightLinks}
                         </ul>
                     </li>

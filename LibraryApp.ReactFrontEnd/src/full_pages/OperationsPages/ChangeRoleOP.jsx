@@ -80,27 +80,27 @@ function ChangeRoleOP() {
     }, []);
 
     const rightPanel = (
-        <div className="flex-fill">
-            <div className="mb-3">
-                <label htmlFor="userToChange" className="form-label">Select user</label>
-                <select name="userToChange" id="userToChange" className="form-select" onChange={e => handleUserSelection(e)}>
+        <div className="grow flex flex-col justify-start items-center px-12 py-5">
+            <div className="mb-3 w-full">
+                <label htmlFor="userToChange" className="block text-white font-medium mb-1">Select user</label>
+                <select name="userToChange" id="userToChange" className="px-4 py-2 bg-gray-700 text-white block w-full focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2 rounded" onChange={e => handleUserSelection(e)}>
                     <option value="">Select someone</option>
                     {lowerRoleUsers.map((lru, index) => (
                         <option key={index} value={lru.id}>{lru.name + " - " + lru.roleName}</option>
                     ))}
                 </select>
             </div>
-            <div className="mb-3">
-                <label htmlFor="role" className="form-label">Role</label>
-                <select name="role" id="role" className="form-select" onChange={e => setSelectedRoleId(e.target.value)}>
+            <div className="mb-7 w-full">
+                <label htmlFor="role" className="block text-white font-medium mb-1">Role</label>
+                <select name="role" id="role" className="px-4 py-2 bg-gray-700 text-white block w-full focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2 rounded" onChange={e => setSelectedRoleId(e.target.value)}>
                     <option value="">Select another role</option>
                     {allRemainingRoles.map((arr, index) => (
                         <option key={index} value={arr?.id}>{arr?.name}</option>
                     ))}
                 </select>
             </div>
-            <div className="mb-3 d-flex justify-content-end">
-                <button onClick={handleUpdateClick} className="btn btn-success">Update</button>
+            <div className="mb-3 self-end">
+                <button onClick={handleUpdateClick} className="border border-transparent inline-block rounded px-6 py-3 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900">Update</button>
             </div>
         </div>
     );

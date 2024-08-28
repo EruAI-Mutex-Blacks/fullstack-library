@@ -11,7 +11,7 @@ function MemberOperationsCard() {
                 <CardLink url="/BorrowRequests" text="See pending borrow requests" />
             </li>
             <li className="">
-                <CardLink url="MemberRegistirations" text="See pending member registirations" />
+                <CardLink url="/MemberRegistirations" text="See pending member registirations" />
             </li>
         </>
     )

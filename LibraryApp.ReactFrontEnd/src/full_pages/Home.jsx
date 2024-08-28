@@ -13,7 +13,7 @@ function Home() {
     let mainContent = "";
 
     if (!user)
-        mainContent = (<div className='grow self-center text-center'>
+        mainContent = (<div className='grow self-center text-center text-gray-300'>
             <div>
                 <h1 className='text-4xl mb-4'>Welcome to the library</h1>
                 <p>Please <b>login or register</b> to our library from the <b>top right corner</b> to be able to do any kind of operations.</p>

@@ -19,7 +19,7 @@ function BookReadingPage() {
         });
         if (!res.ok) return;
         const book = await res.json();
-        
+
         book.pages.sort((a, b) => a.pageNumber - b.pageNumber);
 
         const isMemberOrAuthor = ["member", "author"].includes(user.roleName);
@@ -43,24 +43,24 @@ function BookReadingPage() {
     }
 
     return (
-        <div className="d-flex flex-column flex-fill align-items-center">
-            <h2 className="mb-0 mt-4 p-0">{book.title}</h2>
-            <div className="container mb-5 mt-4 p-2 bg-light rounded d-flex text-center flex-fill">
-                <div className="col-9 pe-2">
-                    <div className="d-flex justify-content-center bg-success-subtle border-bottom border-dark px-3 pt-3 rounded mb-2">
+        <div className=" px-16 flex flex-col grow items-center text-gray-200">
+            <h2 className="mb-0 mt-4 p-0 text-3xl">{book.title}</h2>
+            <div className="container mb-5 mt-4 p-2 bg-gray-500 rounded flex text-center grow">
+                <div className="w-5/6 pe-2">
+                    <div className="flex justify-center text-xl bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-1 rounded mb-2">
                         <h5>Page {pageNum}</h5>
                     </div>
-                    <div className="p-3 bg-success-subtle rounded">
+                    <div className="p-3 bg-gray-600 rounded">
                         <p>{pageContent}</p>
                     </div>
                 </div>
-                <div className="col-3 ps-2">
-                    <div className="d-flex justify-content-center bg-success-subtle border-bottom border-dark px-3 pt-3 pb-0 rounded mb-2">
+                <div className="w-1/6 ps-2">
+                    <div className="flex justify-center bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-2 rounded mb-2">
                         <h4>Pages</h4>
                     </div>
-                    <div className="d-flex justify-content-center flex-wrap p-3 bg-success-subtle rounded">
+                    <div className="flex justify-center p-3 flex-wrap bg-gray-600 rounded">
                         {book?.pages?.map((p, index) => (
-                            <button key={index} className="btn btn-success me-2 mb-2" onClick={() => handlePageClick(p)}>{p.pageNumber}</button>
+                            <button key={index} className="border border-transparent rounded px-3 py-1 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 active:bg-green-900 me-2 mb-2" onClick={() => handlePageClick(p)}>{p.pageNumber}</button>
                         ))}
                     </div>
                 </div>
