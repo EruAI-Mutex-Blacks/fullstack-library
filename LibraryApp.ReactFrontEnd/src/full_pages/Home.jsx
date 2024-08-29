@@ -4,8 +4,7 @@ import MemberOperationsCard from '../Components/OperationsCards/MemberOperations
 import GeneralOperationsCard from '../Components/OperationsCards/GeneralOperationsCard.jsx';
 import AuthorOperationsCard from '../Components/OperationsCards/AuthorOperationsCard.jsx';
 import { useUser } from '../AccountOperations/UserContext.jsx';
-
-//TODO make mobile first
+import StaffOfMonthCard from '../Components/StaffOfMonthCard.jsx';
 
 function Home() {
     const { user } = useUser();
@@ -41,6 +40,7 @@ function Home() {
             <div className="grid grid-cols-1 gap-12 p-10 container lg:my-10 xl:my-10 lg:mx-24 xl:mx-24 lg:grid-cols-2 xl:grid-cols-3">
                 {(["member", "staff", "manager", "author"].includes(user.roleName)) && (
                     <>
+                        <StaffOfMonthCard />
                         <BookOperationsCard />
                         <MessageOperationsCard />
                     </>

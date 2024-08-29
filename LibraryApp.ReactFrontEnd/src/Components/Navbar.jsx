@@ -35,7 +35,7 @@ function Navbar() {
 
     return (
         <nav className="bg-gray-800 text-white">
-            <div className="mx-auto flex items-center justify-between px-4 py-2 lg:py-1 lg:px-10 ">
+            <div className="mx-auto flex items-center justify-between px-4 py-2 lg:py-4 lg:px-10 ">
                 <Link className="text-xl font-bold" to="/">Navbar</Link>
                 <ul className="items-center justify-between space-x-14 lg:space-x-0 xl:space-x-0 px-2 lg:px-5 xl:px-5 pt-1 w-full flex flex-row">
                     <li className=''>

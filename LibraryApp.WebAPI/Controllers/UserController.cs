@@ -210,5 +210,20 @@ namespace fullstack_library.Controllers
             await _userRepo.UpdateUserAsync(user);
             return Ok(new { Message = "User's role changed." });
         }
+
+        [HttpGet("GetStaffOfMonth")]
+        [Authorize(Policy = "MemberOrHigherPolicy")]
+        public async Task<IActionResult> GetStaffOfMonth()
+        {
+            var maxScore = await _userRepo.Users.Where(u => u.RoleId == 3).MaxAsync(u => u.MonthlyScore);
+            var staff = await _userRepo.Users.FirstOrDefaultAsync(u => u.RoleId == 3 && u.MonthlyScore == maxScore);
+
+            return Ok(new UserDTO{
+                BirthDate = staff!.BirthDate,
+                Gender = staff.Gender,
+                Name = staff.Name,
+                Surname = staff.Surname,
+            });
+        }
     }
 }
