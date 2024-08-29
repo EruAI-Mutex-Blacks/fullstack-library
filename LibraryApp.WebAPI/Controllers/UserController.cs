@@ -195,7 +195,7 @@ namespace fullstack_library.Controllers
 
             await _msgRepo.UpdateMessageAsync(msg);
 
-            return Ok(new { Message = "Message updated" });
+            return Ok();
         }
 
         [HttpPut("ChangeRole")]

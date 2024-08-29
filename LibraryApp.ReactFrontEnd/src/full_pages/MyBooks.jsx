@@ -3,6 +3,7 @@ import { useUser } from "../AccountOperations/UserContext";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useFetch } from "../Context/FetchContext";
+import DefaultTableTemplate from "../Components/DefaultTableTemplate";
 
 function MyBooksOP() {
 
@@ -55,54 +56,45 @@ function MyBooksOP() {
         }
 
         fetchData("/api/Book/UpdateBookName", "PUT", bookDTO)
-        .then(() => {
-            fetchBooks();
-        });
+            .then(() => {
+                fetchBooks();
+            });
     }
 
     const handleTitleChange = function (book, e) {
         book.newBookName = e.target.value;
     }
 
+    //FIXME Author ile giriş yapınca ekran küçülüyor navbardaki elementlerden kaynaklanıyor p-3 yapınca artıyor çünkü
+    //TODO hocanın attığı görevlere tekrar bak kalanları yap
+    //TODO logged out navbar
+
+    const headersArray = ["Book name", "Status", "Publish date", "Actions"];
+    const datasArray = myBooks.map(mb => [
+        mb.oldBookName,
+        mb.status,
+        new Date(mb.publishDate).toLocaleDateString("en-us"),
+        (<>
+            {(mb.status !== "Published") && <>
+                <div className="flex mb-2">
+                    <input type="text" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
+                    <button className="border border-transparent inline-block rounded-e px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={() => handleChangeClick(mb)}>Change</button>
+                </div>
+                <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
+                <button className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
+            </>}
+            <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
+        </>),
+    ]);
+
+
     return (
-        <div className="container px-16 mx-auto flex flex-col text-white">
+        <div className="container lg:px-16 mx-auto grow w-full flex flex-col text-white">
             <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-gray-300 items-end">
-                <h1 className="text-3xl ">My Books</h1>
+                <h1 className="text-3xl ms-2">My Books</h1>
                 <button onClick={handleCreateClick} className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900">Create a book</button>
             </div>
-            <div class="overflow-x-auto bg-gray-800 rounded">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-400">
-                    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
-                        <tr>
-                            <th className="px-6 py-4">Book Name</th>
-                            <th className="px-6 py-4">Status</th>
-                            <th className="px-6 py-4">Publish Date</th>
-                            <th className="px-6 py-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {myBooks.map((mb, index) => (
-                            <tr key={index}>
-                                <td className="px-6 py-4 font-medium whitespace-nowrap text-white">{mb.oldBookName}</td>
-                                <td className="px-6 py-4">{mb.status}</td>
-                                <td className="px-6 py-4">{new Date(mb.publishDate).toLocaleDateString("en-us")}</td>
-                                <td className="px-6 py-4">
-
-                                    {(mb.status !== "Published") && <>
-                                        <div className="flex mb-2">
-                                            <input type="text" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
-                                            <button className="border border-transparent inline-block rounded-e px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={() => handleChangeClick(mb)}>Change</button>
-                                        </div>
-                                        <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
-                                        <button className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
-                                    </>}
-                                    <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray} />
         </div>
     )
 }

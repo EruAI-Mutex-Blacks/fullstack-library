@@ -50,7 +50,7 @@ function Login() {
     };
 
     return (
-        <div className="grow flex justify-center items-center my-5">
+        <div className="grow flex justify-center items-center p-10 my-5">
             <div className="bg-gray-500 p-3 rounded">
                 <form className='flex flex-col'>
                     <div className="mb-3">

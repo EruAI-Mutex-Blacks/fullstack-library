@@ -4,7 +4,7 @@ import HomeGeneralOperationsCard from "../../Components/OperationsCards/HomeGene
 function GeneralOperationsPage(props) {
     return (
         <div className="flex grow">
-            <div className="w-1/6">
+            <div className="hidden lg:block xl:block lg:w-1/6 xl:w-1/6">
                 {props.leftPanel}
             </div>
             <div className="flex grow">

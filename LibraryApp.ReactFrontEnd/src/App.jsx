@@ -27,6 +27,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { FetchProvider } from './Context/FetchContext.jsx'
 
+import bgImg from "./assets/background.jpg";
+
 function App() {
   return (
     <BrowserRouter>
@@ -46,7 +48,7 @@ function App() {
         <FetchProvider>
           <UserProvider>
             <div className="flex flex-col min-h-screen">
-              <header>
+              <header className=''>
                 <Navbar />
               </header>
               <main className="flex grow bg-gray-600">

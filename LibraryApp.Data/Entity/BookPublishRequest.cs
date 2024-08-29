@@ -14,6 +14,6 @@ namespace LibraryApp.Data.Entity
         public DateTime RequestDate { get; set; }
         public bool IsPending { get; set; }
 
-        public Book Book { get; set; }
+        public Book Book { get; set; } = null!;
     }
 }
