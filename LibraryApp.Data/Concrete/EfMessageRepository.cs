@@ -24,7 +24,6 @@ namespace LibraryApp.Data.Concrete
             await _context.SaveChangesAsync();
         }
 
-        //TODO Make every list returning method queryable returning method and delete getmethods as property is public 
         public async Task<List<Message>> GetMessagesByReceiverIdAsync(int receiverId)
         {
             return await _context.Messages.Where(m => m.ReceiverId == receiverId).Include(m => m.Sender).ToListAsync();
