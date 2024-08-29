@@ -21,6 +21,9 @@ namespace fullstack_library.Controllers
         private readonly IUserRepository _userRepo;
         private readonly IBookPublishRequestRepository _bookPublishReqsRepo;
 
+        private const float _finePerDay = 2f; //when user returns book
+        private const int _maxResponseDelay = 1; //as days. how many days staff can delay the request
+
         public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository, IPageRepository pageRepository)
         {
             _bookRepo = bookRepo;
@@ -35,12 +38,17 @@ namespace fullstack_library.Controllers
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
             var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
-            if (request == null) return NotFound(new { Message = "Request not found.f" });
+            if (request == null) return NotFound(new { Message = "Request not found." });
+
+            var manager = await _userRepo.GetUserByIdAsync(publishBookDTO.ManagerId);
+            if (manager == null) return NotFound(new { Message = "Manager not found" });
+
+            manager.MonthlyScore += request.RequestDate.AddDays(_maxResponseDelay) >= DateTime.UtcNow ? 1 : -1;
 
             if (publishBookDTO.IsApproved)
             {
                 request.Book.IsPublished = true;
-                request.Book.PublishDate = DateTime.Now;
+                request.Book.PublishDate = DateTime.UtcNow;
                 await _bookRepo.UpdateBookAsync(request.Book);
             }
 
@@ -79,7 +87,7 @@ namespace fullstack_library.Controllers
             {
                 BookId = bookId,
                 IsPending = true,
-                RequestDate = DateTime.Now,
+                RequestDate = DateTime.UtcNow,
             });
             return Ok(new { Message = "Request has sent" });
         }
@@ -146,10 +154,18 @@ namespace fullstack_library.Controllers
             var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
             if (bookBorrowActivity == null) return NotFound(new { Message = "Borrow request not found." });
 
+            var staff = await _userRepo.GetUserByIdAsync(setBorrowRequestDTO.StaffId);
+            if (staff == null) return NotFound(new { Message = "Staff not found" });
+
+            staff.MonthlyScore += bookBorrowActivity.BorrowDate.AddDays(_maxResponseDelay) >= DateTime.UtcNow ? 1 : -1;
+
             if (setBorrowRequestDTO.IsApproved)
             {
                 bookBorrowActivity.IsApproved = true;
                 bookBorrowActivity.Book.IsBorrowed = true;
+                TimeSpan responseDelay = DateTime.UtcNow - bookBorrowActivity.BorrowDate;
+                bookBorrowActivity.BorrowDate = DateTime.UtcNow;
+                bookBorrowActivity.ReturnDate = bookBorrowActivity.ReturnDate.AddDays(Math.Abs(responseDelay.Days));
                 await _bookBorrowRepo.UpdateBookBorrowActivityAsync(bookBorrowActivity);
 
                 //delete other waiting requests for same book
@@ -158,7 +174,6 @@ namespace fullstack_library.Controllers
             }
             else
                 await _bookBorrowRepo.DeleteBookBorrowActivityAsync(bookBorrowActivity);
-
 
             return Ok(new { Message = setBorrowRequestDTO.IsApproved ? "Request approved." : "Request rejected" });
         }
@@ -178,9 +193,9 @@ namespace fullstack_library.Controllers
             {
                 BookId = borrowBookDTO.BookId,
                 UserId = borrowBookDTO.UserId,
-                BorrowDate = DateTime.Now,
+                BorrowDate = DateTime.UtcNow,
                 IsApproved = false,
-                ReturnDate = DateTime.Now.AddDays(14),
+                ReturnDate = DateTime.UtcNow.AddDays(14),
             };
             await _bookBorrowRepo.CreateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Borrow request has sent to staff. Please wait for approval." });
@@ -205,6 +220,7 @@ namespace fullstack_library.Controllers
             });
         }
 
+        //TODO cover of book & photo of staff etc. change from profile page
         //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]
         [Authorize(Policy = "AuthorPolicy")]
@@ -282,7 +298,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> ReturnBook([FromBody] int bookId)
         {
-            var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).FirstOrDefault(b => b.Id == bookId);
+            var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).ThenInclude(bba => bba.User).FirstOrDefault(b => b.Id == bookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
 
             var bba = book.BookBorrowActivities.FirstOrDefault(bba => !bba.IsReturned);
@@ -290,9 +306,13 @@ namespace fullstack_library.Controllers
 
             book.IsBorrowed = false;
             bba.IsReturned = true;
+            bba.User.MonthlyScore += bba.ReturnDate >= DateTime.UtcNow ? 1 : -1;
+            //TODO punish user here auto
             await _bookRepo.UpdateBookAsync(book);
             await _bookBorrowRepo.UpdateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Book returned." });
         }
     }
 }
+
+//FIXME staff cannot  punish members 

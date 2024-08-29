@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useFetch } from "../../Context/FetchContext";
 import DefaultTableTemplate from "../../Components/DefaultTableTemplate";
+import { useUser } from "../../AccountOperations/UserContext";
 
 
 function MemberRegistirationsOP() {
     const [pendingUsers, setPendingUsers] = useState([]);
     const { fetchData } = useFetch();
-
+    const { loggedInUser } = useUser();
 
     const fetchRegistirations = async function () {
         const data = await fetchData("/api/User/MemberRegistirations", "GET");
@@ -21,10 +22,11 @@ function MemberRegistirationsOP() {
         fetchRegistirations();
     }, []);
 
-    const handleClick = async (user, isApproved) => {
+    const handleApproveRejectClick = async (user, isApproved) => {
         const regisDTO = {
             userId: user.id,
             isApproved: isApproved,
+            staffId: loggedInUser.id,
         }
 
         fetchData("/api/User/SetRegistirationRequest", "PUT", regisDTO)
@@ -40,8 +42,8 @@ function MemberRegistirationsOP() {
         pu.gender,
         new Date(pu.birthDate).toLocaleDateString("en-us"),
         (<ul className="flex justify-start">
-            <li className="me-2"><Link onClick={() => { handleClick(pu, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</Link></li>
-            <li className="me-2"><Link onClick={() => { handleClick(pu, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</Link></li>
+            <li className="me-2"><Link onClick={() => { handleApproveRejectClick(pu, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</Link></li>
+            <li className="me-2"><Link onClick={() => { handleApproveRejectClick(pu, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</Link></li>
         </ul>),
     ]);
 

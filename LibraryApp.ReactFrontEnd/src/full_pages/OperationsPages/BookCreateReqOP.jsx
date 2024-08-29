@@ -5,11 +5,13 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify";
 import { useFetch } from "../../Context/FetchContext";
 import DefaultTableTemplate from "../../Components/DefaultTableTemplate";
+import { useUser } from "../../AccountOperations/UserContext";
 
 function BookCreateReqOP() {
 
     const [requests, setRequests] = useState([]);
     const { fetchData } = useFetch();
+    const { user } = useUser();
 
     const fetchPendingRequests = async function () {
         const data = await fetchData("/api/Book/BookPublishRequests", "GET");
@@ -24,6 +26,7 @@ function BookCreateReqOP() {
         const publishBookDTO = {
             requestId: requestId,
             isApproved: isApproved,
+            managerId: user.id,
         }
 
         const data = await fetchData("/api/Book/SetPublishing", "PUT", publishBookDTO);
@@ -45,7 +48,7 @@ function BookCreateReqOP() {
     ]);
 
     const rightPanel = (
-        <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray}/>
+        <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray} />
     )
 
     return (<GeneralOperationsPage leftPanel={(<AuthorOperationsCard />)} rightPanel={rightPanel} />)

@@ -26,16 +26,24 @@ namespace fullstack_library.Controllers
             _roleRepo = roleRepo;
         }
 
+        //TODO encrypt password when saving to db
+
         [HttpPut("SetRegistirationRequest")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
-        public async Task<IActionResult> ApproveRegistiration(UserRegistirationDTO userRegistirationDTO)
+        public async Task<IActionResult> SetRegistirationRequest(UserRegistirationDTO userRegistirationDTO)
         {
             var user = await _userRepo.GetUserByIdAsync(userRegistirationDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
 
+            var staff = await _userRepo.GetUserByIdAsync(userRegistirationDTO.StaffId);
+            if (staff == null) return NotFound(new { message = "Staff not found" });
+
+            staff.MonthlyScore += user.AccountCreationDate.AddDays(1) >= DateTime.UtcNow ? 1 : -1;
+
             if (userRegistirationDTO.IsApproved)
             {
                 user.RoleId++;
+                user.AccountCreationDate = DateTime.UtcNow;
                 await _userRepo.UpdateUserAsync(user);
             }
             else
@@ -61,7 +69,7 @@ namespace fullstack_library.Controllers
                 ReceiverId = user.Id,
                 Details = punishUserDTO.IsPunished ? punishUserDTO.Details : "Your punishment removed. Thanks for being good boy.",
                 SenderId = punishUserDTO.PunisherId,
-                Title = punishUserDTO.IsPunished ? "You are punished from library at " + DateTime.Now : "Your punishment removed.",
+                Title = punishUserDTO.IsPunished ? "You are punished from library at " + DateTime.UtcNow : "Your punishment removed.",
             });
 
             return Ok(new { message = punishUserDTO.IsPunished ? "User punished." : "Punishment removed." });

@@ -15,6 +15,12 @@ namespace LibraryApp.Data.Entity
         public char Gender { get; set; }
         public bool IsPunished { get; set; }
         public float FineAmount { get; set; }
+        public int MonthlyScore { get; set; }
+        [Column(TypeName = "DATE")]
+        public DateTime ScoreLastResetDate { get; set; }
+        [Column(TypeName = "DATE")]
+        public DateTime AccountCreationDate { get; set; }
+
 
         public Role Role { get; set; } = null!;
         public List<BookAuthor> BookAuthors { get; set; } = new();

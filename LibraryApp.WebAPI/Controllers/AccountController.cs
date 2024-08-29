@@ -50,6 +50,13 @@ namespace fullstack_library.Controllers
                 Username = user.Username,
             };
 
+            if(DateTime.UtcNow.Day == 1 && user.ScoreLastResetDate.Date != DateTime.UtcNow.Date)
+            {
+                await _userRepo.ResetMonthlyScore();
+                user.ScoreLastResetDate = DateTime.UtcNow;
+                await _userRepo.UpdateUserAsync(user);
+            }
+
             string token = GenerateJWT(user);
 
             return Ok(new
@@ -72,6 +79,7 @@ namespace fullstack_library.Controllers
                 BirthDate = registerDTO.BirthDate,
                 Gender = registerDTO.Gender,
                 RoleId = 1,
+                AccountCreationDate = DateTime.UtcNow,
             });
             return Ok(new { message = "User registered" });
         }

@@ -9,5 +9,6 @@ namespace fullstack_library.DTO
     {
         public int UserId { get; set; }
         public bool IsApproved { get; set; }
+        public int StaffId { get; set; }
     }
 }

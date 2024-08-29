@@ -40,5 +40,12 @@ namespace LibraryApp.Data.Concrete
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task ResetMonthlyScore()
+        {
+            await _context.Users.ForEachAsync(u => u.MonthlyScore = 0);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

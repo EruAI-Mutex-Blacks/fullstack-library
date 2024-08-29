@@ -26,7 +26,7 @@ function BookOperationsCard({ onSearch }) {
     //TODO üstlere de mesaj atılabilmesi
     //TODO profile page of authors
     //TODO Book covers
-    //TODO better design
+    //TODO better design mobile first
     //TODO animations
  
     const items = (
