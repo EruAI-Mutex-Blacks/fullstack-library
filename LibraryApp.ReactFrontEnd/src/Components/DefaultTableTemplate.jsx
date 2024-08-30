@@ -3,9 +3,9 @@
 
 function DefaultTableTemplate(props) {
 
-    return (<div class="grow w-screen lg:w-full overflow-x-auto bg-gray-800 border border-gray-300">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-400">
-            <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+    return (<div className="grow w-screen lg:w-full overflow-x-auto bg-gray-800 border border-gray-300">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-400">
+            <thead className="text-xs uppercase bg-gray-700 text-gray-400">
                 <tr>
                     {props.headersArray.map((hc, index) => (
                         <th key={index} className="px-6 py-4">{hc}</th>

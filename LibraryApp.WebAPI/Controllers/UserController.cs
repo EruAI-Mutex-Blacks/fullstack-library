@@ -215,14 +215,37 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> GetStaffOfMonth()
         {
-            var maxScore = await _userRepo.Users.Where(u => u.RoleId == 3).MaxAsync(u => u.MonthlyScore);
-            var staff = await _userRepo.Users.FirstOrDefaultAsync(u => u.RoleId == 3 && u.MonthlyScore == maxScore);
+            var currentTop3Staff = await _userRepo.Users.Where(u => u.RoleId == 3).OrderByDescending(u => u.MonthlyScore).Take(3).ToListAsync();
+            var staffOfPrevMonth = await _userRepo.Users.FirstOrDefaultAsync(u => u.IsStaffOfPreviousMonth);
 
-            return Ok(new UserDTO{
-                BirthDate = staff!.BirthDate,
-                Gender = staff.Gender,
-                Name = staff.Name,
-                Surname = staff.Surname,
+            if (DateTime.UtcNow.Day == 1 && (currentTop3Staff[0]?.ScoreLastResetDate.Date != DateTime.UtcNow.Date))
+            {
+                var newStaffOfPrevMonth = currentTop3Staff[0];
+                await _userRepo.ResetMonthlyScores();
+                newStaffOfPrevMonth.IsStaffOfPreviousMonth = true;
+                await _userRepo.UpdateUserAsync(newStaffOfPrevMonth);
+            }
+
+            if (staffOfPrevMonth == null) return BadRequest(new { Message = "There is no selected staff of previous month" });
+
+            return Ok(new StaffOfMonthDTO
+            {
+                StaffOfPrevMonth = new UserDTO
+                {
+                    BirthDate = staffOfPrevMonth!.BirthDate,
+                    Gender = staffOfPrevMonth.Gender,
+                    Name = staffOfPrevMonth.Name,
+                    Surname = staffOfPrevMonth.Surname,
+                    MonthlyScore = staffOfPrevMonth.MonthlyScore,
+                },
+                CurrentTop3Staff = currentTop3Staff.Select(ct3s => new UserDTO
+                {
+                    BirthDate = ct3s.BirthDate,
+                    Gender = ct3s.Gender,
+                    Name = ct3s.Name,
+                    Surname = ct3s.Surname,
+                    MonthlyScore = ct3s.MonthlyScore,
+                }).ToList(),
             });
         }
     }

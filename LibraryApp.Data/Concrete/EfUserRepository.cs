@@ -41,9 +41,14 @@ namespace LibraryApp.Data.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task ResetMonthlyScore()
+        public async Task ResetMonthlyScores()
         {
-            await _context.Users.ForEachAsync(u => u.MonthlyScore = 0);
+            await _context.Users.ForEachAsync(u =>
+            {
+                u.MonthlyScore = 0;
+                u.IsStaffOfPreviousMonth = false;
+                u.ScoreLastResetDate = DateTime.UtcNow;
+            });
             await _context.SaveChangesAsync();
         }
 

@@ -17,6 +17,7 @@ namespace fullstack_library.DTO
         public char Gender { get; set; }
         public bool IsPunished { get; set; }
         public float FineAmount { get; set; }
+        public int MonthlyScore { get; set; }
 
     }
 }

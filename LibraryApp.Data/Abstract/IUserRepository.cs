@@ -14,6 +14,6 @@ namespace LibraryApp.Data.Abstract
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);
-        Task ResetMonthlyScore();
+        Task ResetMonthlyScores();
     }
 }

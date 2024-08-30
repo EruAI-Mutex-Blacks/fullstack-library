@@ -16,6 +16,7 @@ namespace LibraryApp.Data.Entity
         public bool IsPunished { get; set; }
         public float FineAmount { get; set; }
         public int MonthlyScore { get; set; }
+        public bool IsStaffOfPreviousMonth { get; set; }
         [Column(TypeName = "DATE")]
         public DateTime ScoreLastResetDate { get; set; }
         [Column(TypeName = "DATE")]
