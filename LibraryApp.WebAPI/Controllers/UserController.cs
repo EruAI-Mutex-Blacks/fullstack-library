@@ -115,13 +115,16 @@ namespace fullstack_library.Controllers
             }));
         }
 
-        [HttpGet("GetUsersOfLowerOrEqualRole")]
+        [HttpGet("GetUsersOfLowerUpperRole")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public async Task<IActionResult> GetUsersOfLowerOrEqualRole([FromQuery] int roleId, [FromQuery] int userId)
+        public async Task<IActionResult> GetUsersOfLowerUpperRole([FromQuery] int roleId, [FromQuery] int userId)
         {
-            //designed like the higher the role the greater it's id
-            //return lower or same roles
-            var users = await _userRepo.Users.Where(u => u.RoleId <= roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).ToListAsync();
+            //FOR MESSAGING
+            //designed like the higher the role the greater it's id. could be much better designed with different system. maybe like roleImportance column for role table instead of id so we can see author and user as same importance level role.
+            //1-pending 2-member 3-author 4-staff 5-manager
+            int[] rolesToMessage = roleId == 2 ? [4] : roleId == 3 ? [4, 5] : roleId == 4 ? [2, 3, 5] : roleId == 5 ? [3, 4] : [0];
+
+            var users = await _userRepo.Users.Where(u => u.RoleId != 1 && u.Id != userId && rolesToMessage.Contains(u.RoleId)).Include(u => u.Role).ToListAsync();
 
             return Ok(users.Select(u => new
             {
@@ -136,6 +139,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
         {
+            //FOR PUNISHING
             //designed like the higher the role the greater it's id
             //return lower roles
             var users = await _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).ToListAsync();

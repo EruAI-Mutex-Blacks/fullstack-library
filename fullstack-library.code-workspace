@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "LibraryApp.Data"
+		},
+		{
+			"path": "LibraryApp.ReactFrontEnd"
+		},
+		{
+			"path": "LibraryApp.WebAPI"
+		},
+	],
+	"settings": {}
+}

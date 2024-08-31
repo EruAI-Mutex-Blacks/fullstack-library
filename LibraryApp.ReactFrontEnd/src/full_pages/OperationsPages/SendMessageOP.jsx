@@ -17,7 +17,7 @@ function SendMessageOP() {
     const { fetchData } = useFetch();
 
     const fetchReceivers = async function () {
-        const data = await fetchData(`/api/User/GetUsersOfLowerOrEqualRole?roleId=${user.roleId}&userId=${user.id}`, "GET");
+        const data = await fetchData(`/api/User/GetUsersOfLowerUpperRole?roleId=${user.roleId}&userId=${user.id}`, "GET");
         setReceivers(data ?? []);
     }
 
