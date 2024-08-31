@@ -66,7 +66,7 @@ namespace fullstack_library.Controllers
             if (punishUserDTO.IsPunished) user.MonthlyScore = 0;
 
             await _userRepo.UpdateUserAsync(user);
-            
+
             await _msgRepo.CreateMessageAsync(new Message
             {
                 ReceiverId = user.Id,
@@ -222,8 +222,8 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> GetStaffOfMonth()
         {
-            var currentTop3Staff = await _userRepo.Users.Where(u => u.RoleId == 3).OrderByDescending(u => u.MonthlyScore).Take(3).ToListAsync();
-            var staffOfPrevMonth = await _userRepo.Users.FirstOrDefaultAsync(u => u.IsStaffOfPreviousMonth);
+            var currentTop3Staff = await _userRepo.Users.Where(u => u.RoleId == 4).OrderByDescending(u => u.MonthlyScore).Take(3).ToListAsync();
+            var staffOfPrevMonth = await _userRepo.Users.FirstOrDefaultAsync(u => u.RoleId == 4 && u.IsStaffOfPreviousMonth);
 
             if (DateTime.UtcNow.Day == 1 && (currentTop3Staff[0]?.ScoreLastResetDate.Date != DateTime.UtcNow.Date))
             {

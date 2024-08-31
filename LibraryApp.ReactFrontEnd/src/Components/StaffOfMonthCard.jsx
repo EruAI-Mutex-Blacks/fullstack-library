@@ -14,9 +14,6 @@ function StaffOfMonthCard() {
         console.log(staffOfMonthDTO);
     }
 
-    //FIXME currently i am not integrating staff of month instead i integrated a top board like who has most point, show him. instead do 2 column. 1 big column shows past month's staff, small column shows name + score of top 3 of current month.
-    //FIXME send score to frontend too to if it is 0 make it no winner past month
-
     useEffect(() => {
         fetchStaffOfMonth();
     }, []);
@@ -44,8 +41,8 @@ function StaffOfMonthCard() {
                             <h6 className="text-md border-b pb-1 pt-10 mb-2 text-gray-300">Current Month's Top 3</h6>
                             <ul className="flex flex-col items-start">
                                 <li className="text-sm text-gray-300">1-) {staffOfMonthDTO?.currentTop3Staff[0]?.name + " " + staffOfMonthDTO?.currentTop3Staff[0]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[0]?.monthlyScore}</li>
-                                <li className="text-sm text-gray-300">2-) {staffOfMonthDTO?.currentTop3Staff[1]?.name + " " + staffOfMonthDTO?.currentTop3Staff[1]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[0]?.monthlyScore}</li>
-                                <li className="text-sm text-gray-300">3-) {staffOfMonthDTO?.currentTop3Staff[1]?.name + " " + staffOfMonthDTO?.currentTop3Staff[2]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[0]?.monthlyScore}</li>
+                                <li className="text-sm text-gray-300">2-) {staffOfMonthDTO?.currentTop3Staff[1]?.name + " " + staffOfMonthDTO?.currentTop3Staff[1]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[1]?.monthlyScore}</li>
+                                <li className="text-sm text-gray-300">3-) {staffOfMonthDTO?.currentTop3Staff[2]?.name + " " + staffOfMonthDTO?.currentTop3Staff[2]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[2]?.monthlyScore}</li>
                             </ul>
                         </>)}
                 </div>
