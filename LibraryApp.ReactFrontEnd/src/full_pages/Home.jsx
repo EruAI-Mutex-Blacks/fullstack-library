@@ -22,16 +22,17 @@ function Home() {
             </div>
         </div>);
     else if (user.isPunished)
-        mainContent = (<div className='grow  p-10 self-center text-center'>
+        mainContent = (<div className='grow  p-10 self-center text-center text-gray-300'>
             <div>
-                <h1>Welcome to the library</h1>
+                <h1 className='text-4xl mb-4'>Welcome to the library</h1>
                 <p>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
+                <CardLink url="/ViewInbox" text="View inbox" />
             </div>
         </div>)
     else if (user.roleName === "pendingUser")
-        mainContent = (<div className='grow p-10 self-center text-center'>
+        mainContent = (<div className='grow p-10 self-center text-center text-gray-300'>
             <div>
-                <h1>Welcome to the library</h1>
+                <h1 className='text-4xl mb-4'>Welcome to the library</h1>
                 <p>Please wait for your account <b>approval</b>. Our personnel will check soon.</p>
             </div>
         </div>)
