@@ -5,6 +5,7 @@ import GeneralOperationsCard from '../Components/OperationsCards/GeneralOperatio
 import AuthorOperationsCard from '../Components/OperationsCards/AuthorOperationsCard.jsx';
 import { useUser } from '../AccountOperations/UserContext.jsx';
 import StaffOfMonthCard from '../Components/StaffOfMonthCard.jsx';
+import CardLink from '../Components/CardLink.jsx';
 
 function Home() {
     const { user } = useUser();
@@ -25,8 +26,8 @@ function Home() {
         mainContent = (<div className='grow  p-10 self-center text-center text-gray-300'>
             <div>
                 <h1 className='text-4xl mb-4'>Welcome to the library</h1>
-                <p>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
-                <CardLink url="/ViewInbox" text="View inbox" />
+                <p className='mb-4'>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
+                <CardLink url="/ViewInbox" text="View inbox to see details" />
             </div>
         </div>)
     else if (user.roleName === "pendingUser")

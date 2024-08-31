@@ -151,22 +151,22 @@ namespace LibraryApp.Data.Entity
             );
 
             modelBuilder.Entity<User>().HasData(
-                 new User { Id = 1, Name = "Alice", Surname = "Smith", Username = "alice", Password = "123", BirthDate = new DateTime(1990, 1, 1), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 1 },
-                new User { Id = 2, Name = "Bob", Surname = "Johnson", Username = "bobby", Password = "123", BirthDate = new DateTime(1985, 2, 2), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 2 },
-                new User { Id = 3, Name = "Carol", Surname = "Williams", Username = "carol", Password = "123", BirthDate = new DateTime(1992, 3, 3), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 3 },
-                new User { Id = 4, Name = "Dave", Surname = "Brown", Username = "dave1", Password = "123", BirthDate = new DateTime(1980, 4, 4), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4 },
-                new User { Id = 5, Name = "Eve", Surname = "Jones", Username = "eve01", Password = "123", BirthDate = new DateTime(1995, 5, 5), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 5 },
-                new User { Id = 6, Name = "Frank", Surname = "Miller", Username = "frank", Password = "123", BirthDate = new DateTime(1987, 6, 6), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 1 },
-                new User { Id = 7, Name = "Grace", Surname = "Wilson", Username = "grace", Password = "123", BirthDate = new DateTime(1993, 7, 7), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 2 },
-                new User { Id = 8, Name = "Henry", Surname = "Moore", Username = "henry", Password = "123", BirthDate = new DateTime(1988, 8, 8), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 3 },
-                new User { Id = 9, Name = "Ivy", Surname = "Taylor", Username = "ivy99", Password = "123", BirthDate = new DateTime(1994, 9, 9), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 4 },
-                new User { Id = 10, Name = "Jack", Surname = "Anderson", Username = "jack1", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
+                 new User { Id = 1, Name = "Alice", Surname = "Smith", Username = "alice", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1990, 1, 1), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 1 },
+                new User { Id = 2, Name = "Bob", Surname = "Johnson", Username = "bobby", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1985, 2, 2), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 2 },
+                new User { Id = 3, Name = "Carol", Surname = "Williams", Username = "carol", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1992, 3, 3), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 3 },
+                new User { Id = 4, Name = "Dave", Surname = "Brown", Username = "dave1", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1980, 4, 4), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4 },
+                new User { Id = 5, Name = "Eve", Surname = "Jones", Username = "eve01", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1995, 5, 5), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 5 },
+                new User { Id = 6, Name = "Frank", Surname = "Miller", Username = "frank", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1987, 6, 6), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 1 },
+                new User { Id = 7, Name = "Grace", Surname = "Wilson", Username = "grace", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1993, 7, 7), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 2 },
+                new User { Id = 8, Name = "Henry", Surname = "Moore", Username = "henry", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1988, 8, 8), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 3 },
+                new User { Id = 9, Name = "Ivy", Surname = "Taylor", Username = "ivy99", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1994, 9, 9), Gender = 'F', IsPunished = false, FineAmount = 0, RoleId = 4 },
+                new User { Id = 10, Name = "Jack", Surname = "Anderson", Username = "jack1", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
 
-                new User { Id = 11, Name = "NameOfManager", Surname = "Anderson", Username = "manager", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
-                new User { Id = 12, Name = "NameOfStaff", Surname = "Anderson", Username = "staff", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4 },
-                new User { Id = 13, Name = "NameOfAuthor", Surname = "Anderson", Username = "author", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 3 },
-                new User { Id = 14, Name = "NameOfMember", Surname = "Anderson", Username = "member", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 2 },
-                new User { Id = 15, Name = "NameOfPending", Surname = "Anderson", Username = "pending", Password = "123", BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 1 }
+                new User { Id = 11, Name = "NameOfManager", Surname = "Anderson", Username = "manager", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
+                new User { Id = 12, Name = "NameOfStaff", Surname = "Anderson", Username = "staff", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4 },
+                new User { Id = 13, Name = "NameOfAuthor", Surname = "Anderson", Username = "author", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 3 },
+                new User { Id = 14, Name = "NameOfMember", Surname = "Anderson", Username = "member", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 2 },
+                new User { Id = 15, Name = "NameOfPending", Surname = "Anderson", Username = "pending", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 1 }
             );
 
             modelBuilder.Entity<Message>().HasData(
