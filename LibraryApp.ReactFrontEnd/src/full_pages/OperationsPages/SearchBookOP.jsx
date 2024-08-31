@@ -19,8 +19,6 @@ function SearchBookOP() {
         setBooks(data ?? []);
     };
 
-    //FIXME cannot send multiple borrow requests
-
     useEffect(() => {
         onSearch(bookName);
     }, [])

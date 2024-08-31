@@ -190,7 +190,8 @@ namespace fullstack_library.Controllers
             var book = await _bookRepo.GetBookByIdAsync(borrowBookDTO.BookId);
             if (book == null) return NotFound(new { Message = "Book could not found" });
             if (book.IsBorrowed) return BadRequest(new { Message = "Book already borrowed" });
-            if (_bookBorrowRepo.BookBorrowActivities.Any(bba => !bba.IsApproved && bba.UserId == borrowBookDTO.UserId)) return BadRequest(new { Message = "You already requested one book. Please wait for approval before you request more." });
+
+            if (_bookBorrowRepo.BookBorrowActivities.Any(bba => !bba.IsApproved && bba.BookId == borrowBookDTO.BookId && bba.UserId == borrowBookDTO.UserId)) return BadRequest(new { Message = "You already requested that book. Please wait for approval." });
 
             BookBorrowActivity bba = new()
             {
