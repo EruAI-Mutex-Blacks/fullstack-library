@@ -19,18 +19,21 @@ namespace fullstack_library.Controllers
         private readonly IPageRepository _pageRepo;
         private readonly IBookBorrowActivityRepository _bookBorrowRepo;
         private readonly IUserRepository _userRepo;
+        private readonly IMessageRepository _msgRepo;
         private readonly IBookPublishRequestRepository _bookPublishReqsRepo;
+
 
         private const float _finePerDay = 2f; //when user returns book
         private const int _maxResponseDelay = 1; //as days. how many days staff can delay the request
 
-        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository, IPageRepository pageRepository)
+        public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository, IPageRepository pageRepository, IMessageRepository messageRepository)
         {
             _bookRepo = bookRepo;
             _bookBorrowRepo = bookBorrowRepo;
             _userRepo = userRepo;
             _bookPublishReqsRepo = bookPublishRequestRepository;
             _pageRepo = pageRepository;
+            _msgRepo = messageRepository;
         }
 
         [HttpPut("SetPublishing")]
@@ -306,8 +309,24 @@ namespace fullstack_library.Controllers
 
             book.IsBorrowed = false;
             bba.IsReturned = true;
-            bba.User.MonthlyScore += bba.ReturnDate >= DateTime.UtcNow ? 1 : -1;
-            //TODO punish user here auto
+
+            bba.User.MonthlyScore += bba.ReturnDate >= DateTime.UtcNow ? 1 : -bba.User.MonthlyScore;
+
+            if (DateTime.UtcNow > bba.ReturnDate)
+            {
+                bba.User.IsPunished = true;
+                bba.User.FineAmount = Math.Abs((DateTime.UtcNow - bba.ReturnDate).Days) * 1;
+                await _msgRepo.CreateMessageAsync(new Message
+                {
+                    ReceiverId = bba.User.Id,
+                    Details = "You are punished from library by returning book late. Please pay your fine to re-open your account.",
+                    SenderId = 0,
+                    Title = "You are punished from library at " + DateTime.UtcNow,
+                });
+            }
+
+            //FIXME showing authors instead of staff
+            //FIXME when users return book early it scores every user.
             await _bookRepo.UpdateBookAsync(book);
             await _bookBorrowRepo.UpdateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Book returned." });

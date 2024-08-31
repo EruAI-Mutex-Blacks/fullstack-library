@@ -63,7 +63,10 @@ namespace fullstack_library.Controllers
             user.FineAmount = punishUserDTO.FineAmount;
             user.IsPunished = punishUserDTO.IsPunished;
 
+            if (punishUserDTO.IsPunished) user.MonthlyScore = 0;
+
             await _userRepo.UpdateUserAsync(user);
+            
             await _msgRepo.CreateMessageAsync(new Message
             {
                 ReceiverId = user.Id,
