@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using BCrypt.Net;
 
 namespace fullstack_library.Controllers
 {
@@ -34,7 +35,7 @@ namespace fullstack_library.Controllers
         {
             var user = await _userRepo.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Username == loginDTO.Username);
             if (user == null) return NotFound(new { message = "Username not found" });
-            if (user.Password != loginDTO.Password) return StatusCode(401, new { message = "Password is incorrect" });
+            if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password)) return StatusCode(401, new { message = "Password is incorrect" });
 
             UserDTO userDTO = new UserDTO
             {
@@ -68,7 +69,7 @@ namespace fullstack_library.Controllers
                 Name = registerDTO.Name,
                 Surname = registerDTO.Surname,
                 Username = registerDTO.Username,
-                Password = registerDTO.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(registerDTO.Password),
                 BirthDate = registerDTO.BirthDate,
                 Gender = registerDTO.Gender,
                 RoleId = 1,

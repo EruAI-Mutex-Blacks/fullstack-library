@@ -66,7 +66,6 @@ function MyBooksOP() {
     }
 
     //FIXME Author ile giriş yapınca ekran küçülüyor navbardaki elementlerden kaynaklanıyor p-3 yapınca artıyor çünkü
-    //TODO hocanın attığı görevlere tekrar bak kalanları yap
     //TODO logged out navbar
 
     const headersArray = ["Book name", "Status", "Publish date", "Actions"];
