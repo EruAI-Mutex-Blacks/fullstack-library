@@ -198,7 +198,7 @@ namespace fullstack_library.Controllers
                 UserId = borrowBookDTO.UserId,
                 BorrowDate = DateTime.UtcNow,
                 IsApproved = false,
-                ReturnDate = DateTime.UtcNow.AddDays(14),
+                ReturnDate = DateTime.UtcNow.AddDays(user.MonthlyScore == 0 ? 14 : 21),
             };
             await _bookBorrowRepo.CreateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Borrow request has sent to staff. Please wait for approval." });
@@ -318,15 +318,13 @@ namespace fullstack_library.Controllers
                 bba.User.FineAmount = Math.Abs((DateTime.UtcNow - bba.ReturnDate).Days) * 1;
                 await _msgRepo.CreateMessageAsync(new Message
                 {
-                    ReceiverId = bba.User.Id,
+                    ReceiverId = bba.UserId,
                     Details = "You are punished from library by returning book late. Please pay your fine to re-open your account.",
-                    SenderId = 0,
+                    SenderId = bba.UserId,
                     Title = "You are punished from library at " + DateTime.UtcNow,
                 });
             }
 
-            //FIXME showing authors instead of staff
-            //FIXME when users return book early it scores every user.
             await _bookRepo.UpdateBookAsync(book);
             await _bookBorrowRepo.UpdateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Book returned." });
