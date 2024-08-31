@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using BCrypt.Net;
+using LibraryApp.WebAPI.Utils;
 
 namespace fullstack_library.Controllers
 {
@@ -21,12 +22,15 @@ namespace fullstack_library.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
+        private readonly ISettingRepository _settingRepo;
+        
         readonly IConfiguration _config;
 
-        public AccountController(IUserRepository userRepo, IConfiguration config)
+        public AccountController(IUserRepository userRepo, IConfiguration config, ISettingRepository settingRepository)
         {
             _userRepo = userRepo;
             _config = config;
+            _settingRepo = settingRepository;
         }
 
         [HttpPost("Login")]
@@ -52,6 +56,8 @@ namespace fullstack_library.Controllers
             };
 
             string token = GenerateJWT(user);
+
+            SettingsHelper.InitSettingsFromDb(_settingRepo);
 
             return Ok(new
             {

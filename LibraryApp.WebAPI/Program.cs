@@ -42,6 +42,7 @@ builder.Services.AddScoped<IRoleRepository, EfRoleRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<IMessageRepository, EfMessageRepository>();
 builder.Services.AddScoped<IBookPublishRequestRepository, EfBookPublishRequestRepository>();
+builder.Services.AddScoped<ISettingRepository, EfSettingRepository>();
 
 builder.Services.AddAuthentication(x =>
 {

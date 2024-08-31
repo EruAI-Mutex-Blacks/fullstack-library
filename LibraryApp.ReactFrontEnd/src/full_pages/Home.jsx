@@ -10,7 +10,7 @@ import CardLink from '../Components/CardLink.jsx';
 function Home() {
     const { user } = useUser();
 
-    //TODO homepage with search bar and latest books. people who did not log in can do some operations.
+    //TODO homepage with search bar and latest books. people who did not log in can do some operations like searching.
     //better color palette
 
     let mainContent = "";

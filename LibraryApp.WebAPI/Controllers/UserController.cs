@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using LibraryApp.WebAPI.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,6 @@ namespace fullstack_library.Controllers
             _roleRepo = roleRepo;
         }
 
-        //TODO encrypt password when saving to db
-
         [HttpPut("SetRegistirationRequest")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
         public async Task<IActionResult> SetRegistirationRequest(UserRegistirationDTO userRegistirationDTO)
@@ -38,7 +37,7 @@ namespace fullstack_library.Controllers
             var staff = await _userRepo.GetUserByIdAsync(userRegistirationDTO.StaffId);
             if (staff == null) return NotFound(new { message = "Staff not found" });
 
-            staff.MonthlyScore += user.AccountCreationDate.AddDays(1) >= DateTime.UtcNow ? 1 : -1;
+            staff.MonthlyScore += user.AccountCreationDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
             if (userRegistirationDTO.IsApproved)
             {
@@ -245,13 +244,13 @@ namespace fullstack_library.Controllers
                     Surname = staffOfPrevMonth.Surname,
                     MonthlyScore = staffOfPrevMonth.MonthlyScore,
                 },
-                CurrentTop3Staff = currentTop3Staff.Select(ct3s => new UserDTO
+                CurrentTop3Staff = currentTop3Staff.Select(staff => new UserDTO
                 {
-                    BirthDate = ct3s.BirthDate,
-                    Gender = ct3s.Gender,
-                    Name = ct3s.Name,
-                    Surname = ct3s.Surname,
-                    MonthlyScore = ct3s.MonthlyScore,
+                    BirthDate = staff.BirthDate,
+                    Gender = staff.Gender,
+                    Name = staff.Name,
+                    Surname = staff.Surname,
+                    MonthlyScore = staff.MonthlyScore,
                 }).ToList(),
             });
         }

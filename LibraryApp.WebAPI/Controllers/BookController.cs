@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using fullstack_library.DTO;
 using LibraryApp.Data.Abstract;
 using LibraryApp.Data.Entity;
+using LibraryApp.WebAPI.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +22,6 @@ namespace fullstack_library.Controllers
         private readonly IUserRepository _userRepo;
         private readonly IMessageRepository _msgRepo;
         private readonly IBookPublishRequestRepository _bookPublishReqsRepo;
-
-
-        private const float _finePerDay = 2f; //when user returns book
-        private const int _maxResponseDelay = 1; //as days. how many days staff can delay the request
 
         public BookController(IBookRepository bookRepo, IBookBorrowActivityRepository bookBorrowRepo, IUserRepository userRepo, IBookPublishRequestRepository bookPublishRequestRepository, IPageRepository pageRepository, IMessageRepository messageRepository)
         {
@@ -46,7 +43,7 @@ namespace fullstack_library.Controllers
             var manager = await _userRepo.GetUserByIdAsync(publishBookDTO.ManagerId);
             if (manager == null) return NotFound(new { Message = "Manager not found" });
 
-            manager.MonthlyScore += request.RequestDate.AddDays(_maxResponseDelay) >= DateTime.UtcNow ? 1 : -1;
+            manager.MonthlyScore += request.RequestDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
             if (publishBookDTO.IsApproved)
             {
@@ -160,7 +157,7 @@ namespace fullstack_library.Controllers
             var staff = await _userRepo.GetUserByIdAsync(setBorrowRequestDTO.StaffId);
             if (staff == null) return NotFound(new { Message = "Staff not found" });
 
-            staff.MonthlyScore += bookBorrowActivity.BorrowDate.AddDays(_maxResponseDelay) >= DateTime.UtcNow ? 1 : -1;
+            staff.MonthlyScore += bookBorrowActivity.BorrowDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
             if (setBorrowRequestDTO.IsApproved)
             {
@@ -199,7 +196,7 @@ namespace fullstack_library.Controllers
                 UserId = borrowBookDTO.UserId,
                 BorrowDate = DateTime.UtcNow,
                 IsApproved = false,
-                ReturnDate = DateTime.UtcNow.AddDays(user.MonthlyScore == 0 ? 14 : 21),
+                ReturnDate = DateTime.UtcNow.AddDays(user.MonthlyScore == 0 ? SettingsHelper.DefaultBorrowDuration : SettingsHelper.ExtraDurationForReturningFast),
             };
             await _bookBorrowRepo.CreateBookBorrowActivityAsync(bba);
             return Ok(new { Message = "Borrow request has sent to staff. Please wait for approval." });
@@ -316,7 +313,7 @@ namespace fullstack_library.Controllers
             if (DateTime.UtcNow > bba.ReturnDate)
             {
                 bba.User.IsPunished = true;
-                bba.User.FineAmount = Math.Abs((DateTime.UtcNow - bba.ReturnDate).Days) * 1;
+                bba.User.FineAmount = Math.Abs((DateTime.UtcNow - bba.ReturnDate).Days) * SettingsHelper.FinePerDay;
                 await _msgRepo.CreateMessageAsync(new Message
                 {
                     ReceiverId = bba.UserId,

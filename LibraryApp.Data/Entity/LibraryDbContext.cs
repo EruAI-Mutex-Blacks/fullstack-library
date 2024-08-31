@@ -12,6 +12,7 @@ namespace LibraryApp.Data.Entity
         public DbSet<User> Users => Set<User>();
         public DbSet<Message> Messages => Set<Message>();
         public DbSet<BookPublishRequest> BookPublishRequests => Set<BookPublishRequest>();
+        public DbSet<Setting> Settings => Set<Setting>();
 
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
@@ -163,7 +164,7 @@ namespace LibraryApp.Data.Entity
                 new User { Id = 10, Name = "Jack", Surname = "Anderson", Username = "jack1", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
 
                 new User { Id = 11, Name = "NameOfManager", Surname = "Anderson", Username = "manager", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 5 },
-                new User { Id = 12, Name = "NameOfStaff", Surname = "Anderson", Username = "staff", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4 },
+                new User { Id = 12, Name = "NameOfStaff", Surname = "Anderson", Username = "staff", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 4, IsStaffOfPreviousMonth = true },
                 new User { Id = 13, Name = "NameOfAuthor", Surname = "Anderson", Username = "author", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 3 },
                 new User { Id = 14, Name = "NameOfMember", Surname = "Anderson", Username = "member", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 2 },
                 new User { Id = 15, Name = "NameOfPending", Surname = "Anderson", Username = "pending", Password = BCrypt.Net.BCrypt.HashPassword("123"), BirthDate = new DateTime(1991, 10, 10), Gender = 'M', IsPunished = false, FineAmount = 0, RoleId = 1 }
@@ -196,6 +197,35 @@ namespace LibraryApp.Data.Entity
         new Message { Id = 24, SenderId = 4, ReceiverId = 1, Title = "Task Assigned", Details = "A new task has been assigned to you.", IsReceiverRead = true },
         new Message { Id = 25, SenderId = 5, ReceiverId = 2, Title = "Review Request", Details = "Please review the attached document and provide feedback.", IsReceiverRead = false }
             );
+
+            modelBuilder.Entity<Setting>().HasData(
+                new Setting()
+                {
+                    Id = 1,
+                    Name = "fine-per-day",
+                    Value = "2",
+                },
+                new Setting()
+                {
+                    Id = 2,
+                    Name = "allowed-delay-for-responses",
+                    Value = "1",
+                },
+                new Setting()
+                {
+                    Id = 3,
+                    Name = "default-borrow-duration",
+                    Value = "14",
+                },
+                new Setting()
+                {
+                    Id = 4,
+                    Name = "extra-duration-for-returning-fast",
+                    Value = "14",
+                }
+            );
+
+            
         }
     }
 }
