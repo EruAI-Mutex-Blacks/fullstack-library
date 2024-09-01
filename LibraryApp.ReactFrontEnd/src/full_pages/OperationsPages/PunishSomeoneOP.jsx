@@ -10,8 +10,6 @@ function PunishSomeoneOP() {
     const [lowerRoleUsers, setLowerRoleUsers] = useState([]);
     const { user } = useUser();
     const [selectedUser, setSelectedUser] = useState();
-    const [delayedDays, setDelayedDays] = useState(0);
-    const [finePerDay, setFinePerDay] = useState(0);
     const [details, setDetails] = useState("");
     const [totalFine, setTotalFine] = useState(0);
     const { fetchData } = useFetch();
@@ -26,20 +24,15 @@ function PunishSomeoneOP() {
     }, []);
 
     const handleSelectionChange = function (e) {
-        setDelayedDays(0);
-        setFinePerDay(0);
         setTotalFine(0);
-        setSelectedUser(lowerRoleUsers.find(lru => lru.id == e.target.value));
+        const us = lowerRoleUsers.find(lru => lru.id == e.target.value);
+        setSelectedUser(us);
+        setTotalFine(us.fineAmount);
     }
 
     const handleInputChange = function (e, callback) {
         callback(prev => prev = e.target.value);
     }
-
-    //FIXME for example 4 is the fine at first then i make it 6 directly then i changed delayeddays calculation it is 0.4. it is making total fine 4.4 instead of 6.4
-    useEffect(() => {
-        setTotalFine((selectedUser?.fineAmount ?? 0) + Math.round(delayedDays * finePerDay * 10) / 10);
-    }, [delayedDays, finePerDay, selectedUser])
 
     const handleUpdateClick = async function (e) {
         e.preventDefault();
@@ -64,8 +57,6 @@ function PunishSomeoneOP() {
 
         fetchData("/api/User/SetPunishment", "PUT", punishUserDTO)
             .then(() => {
-                setDelayedDays(0);
-                setFinePerDay(0);
                 setTotalFine(0);
                 setLowerRoleUsers([]);
                 setDetails("");
@@ -89,24 +80,16 @@ function PunishSomeoneOP() {
                 <div className="flex flex-col grow">
                     <h5 className="border-b pb-1 text-white font-bold">Punishment of {selectedUser?.name}</h5>
                     <form className="flex flex-col grow">
-                        <div className="flex mb-3">
-                            <div className="my-3 mb-2 grow flex">
-                                <label htmlFor="isPunished" className="text-white font-medium mb-1 me-2">Is user already punished?</label>
-                                <input type="checkbox" id="isPunished" name="isPunished" className="mt-1 w-4 h-4 text-blue-600  focus:ring-blue-700 ring-offset-gray-800 focus:ring-2" checked={selectedUser?.isPunished ?? false} onChange={e => selectedUser?.isPunished} />
+                        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mb-3 lg:grow">
+                            <div className="flex mb-3">
+                                <div className="my-3 mt-12 mb-2 grow flex">
+                                    <label htmlFor="isPunished" className="text-white font-medium mb-1 me-5">Is user punished?</label>
+                                    <input type="checkbox" id="isPunished" name="isPunished" className="mt-1 w-4 h-4 text-blue-600  focus:ring-blue-700 ring-offset-gray-800 focus:ring-2" checked={selectedUser?.isPunished ?? false} readOnly />
+                                </div>
                             </div>
-                        </div>
-                        <div className="mb-3 flex space-x-5 justify-between">
-                            <div className="self-center text-start">
-                                <label className="text-white font-medium mb-1" htmlFor="delayedDays">Delayed days</label>
-                                <input id="delayedDays" value={delayedDays} className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" min={0} step={1} onChange={e => handleInputChange(e, setDelayedDays)} />
-                            </div>
-                            <div className="text-center self-center">
-                                <label className="text-white font-medium mb-1" htmlFor="finePerDay">Fine amount per day ($)</label>
-                                <input id="finePerDay" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" min={0} step={0.1} value={finePerDay} onChange={e => handleInputChange(e, setFinePerDay)} />
-                            </div>
-                            <div className="self-center text-end">
-                                <label htmlFor="fineAmount" className="text-white mb-1 font-bold">User's final total fine</label>
-                                <input id="finePerDay" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" value={totalFine} onChange={e => setTotalFine(e.target.value)} min={0} step={0.1} />
+                            <div className="self-center text-center lg:text-end lg:grow lg:ms-6">
+                                <label htmlFor="fineAmount" className="text-white mb-1 font-bold">User's current Fine</label>
+                                <input id="fineAmount" className="px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="number" value={totalFine} onChange={e => setTotalFine(e.target.value)} min={0} step={0.1} />
                             </div>
                         </div>
                         <div className="mb-3 grow flex flex-col">

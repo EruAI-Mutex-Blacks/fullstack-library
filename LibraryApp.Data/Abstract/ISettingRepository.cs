@@ -6,7 +6,8 @@ public interface ISettingRepository
 {
     IQueryable<Setting> Settings { get; }
 
-    Task<string> GetValueByNameAsync(string name);
+    Task<Setting?> GetSettingByIdAsync(int id);
+    Task<Setting?> GetSettingByNameAsync(string name);
     Task CreateSettingAsync(Setting settings);
     Task UpdateSettingAsync(Setting settings);
     Task DeleteSettingAsync(Setting settings);

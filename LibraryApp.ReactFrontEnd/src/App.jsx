@@ -1,7 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter,  Route, Routes } from 'react-router-dom'
 import Home from './full_pages/Home.jsx'
 import Navbar from './Components/Navbar.jsx'
 import Footer from './Components/Footer.jsx'
@@ -23,11 +20,11 @@ import PublicRoute from './AccountOperations/PublicRoute.jsx'
 import MyBooks from './full_pages/MyBooks.jsx'
 import WritePage from './full_pages/WritePage.jsx'
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { FetchProvider } from './Context/FetchContext.jsx'
 
-import bgImg from "./assets/background.jpg";
+import Settings from './full_pages/Settings.jsx'
 
 function App() {
   return (
@@ -53,73 +50,78 @@ function App() {
               </header>
               <main className="flex grow bg-gray-600">
                 <Routes>
-                  <Route exact path="/" element={<Home />}></Route>
-                  <Route exact path="/Login" element={
+                  <Route path="/" element={<Home />}></Route>
+                  <Route path="/Login" element={
                     <PublicRoute ><Login /></PublicRoute>
                   }></Route>
-                  <Route exact path="/Register" element={
+                  <Route path="/Register" element={
                     <PublicRoute ><Register /></PublicRoute>
                   }></Route>
-                  <Route exact path='/MyBooks' element={
+                  <Route path='/MyBooks' element={
                     <ProtectedRoute roles={["author"]}>
                       <MyBooks />
                     </ProtectedRoute>
                   }></Route>
-                  <Route exact path='/WriteBook' element={
+                  <Route path='/WriteBook' element={
                     <ProtectedRoute roles={["author"]}>
                       <WritePage />
                     </ProtectedRoute>
                   }></Route>
-                  <Route exact path="/SearchBook" element={
+                  <Route path="/SearchBook" element={
                     <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                       <SearchBookOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/BorrowedBooks" element={
+                  <Route path="/BorrowedBooks" element={
                     <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                       <BorrowedBooksOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/SendMessage" element={
+                  <Route path="/SendMessage" element={
                     <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                       <SendMessageOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/ViewInbox" element={
+                  <Route path="/ViewInbox" element={
                     <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                       <ViewInboxOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/ReadBook" element={
+                  <Route path="/ReadBook" element={
                     <ProtectedRoute roles={["author", "member", "staff", "manager"]}>
                       < BookReadingPage />
                     </ProtectedRoute>}>
                   </Route>
 
-                  <Route exact path="/BorrowRequests" element={
+                  <Route path="/BorrowRequests" element={
                     <ProtectedRoute roles={["staff", "manager"]}>
                       < BorrowRequestsOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/MemberRegistirations" element={
+                  <Route path="/MemberRegistirations" element={
                     <ProtectedRoute roles={["staff", "manager"]}>
                       < MemberRegistirationsOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/PunishSomeone" element={
+                  <Route path="/PunishSomeone" element={
                     <ProtectedRoute roles={["staff", "manager"]}>
                       < PunishSomeoneOP />
                     </ProtectedRoute>}>
                   </Route>
 
-                  <Route exact path="/ChangeRole" element={
+                  <Route path="/ChangeRole" element={
                     <ProtectedRoute roles={["manager"]}>
                       < ChangeRoleOP />
                     </ProtectedRoute>}>
                   </Route>
-                  <Route exact path="/BookCreateRequests" element={
+                  <Route path="/BookCreateRequests" element={
                     <ProtectedRoute roles={["manager"]}>
                       < BookCreateReqOP />
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path="/Settings" element={
+                    <ProtectedRoute roles={["manager"]}>
+                      <Settings/>
                     </ProtectedRoute>}>
                   </Route>
                 </Routes>

@@ -26,9 +26,9 @@ function Navbar() {
                 <li className=''>
                     <Link className='cursor-default py-3 lg:p-3 xl:p-3 text-xs lg:text-base xl:text-base' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
                 </li>
-                <li className=''>
-                    <Link className='py-3 lg:p-3 xl:p-3 text-xs lg:text-base xl:text-base' to="/Settings" aria-current="page">{user?.roleName === "manager" ? "Settings" : ""}</Link>
-                </li>
+                {(user?.roleName === "manager") && (<li className=''>
+                    <Link className='py-3 lg:p-3 xl:p-3 lg:text-base xl:text-base' to="/Settings" aria-current="page">S</Link>
+                </li>)}
                 <li className=''>
                     <Link className=' hover:bg-gray-400/10 rounded py-3 lg:p-3 xl:p-3 transition-all duration-100' aria-current="page" to="/" onClick={handleLogoutClick}>Logout</Link>
                 </li>

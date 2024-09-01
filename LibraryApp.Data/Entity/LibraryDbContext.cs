@@ -203,25 +203,25 @@ namespace LibraryApp.Data.Entity
                 {
                     Id = 1,
                     Name = "fine-per-day",
-                    Value = "2",
+                    Value = 2,
                 },
                 new Setting()
                 {
                     Id = 2,
                     Name = "allowed-delay-for-responses",
-                    Value = "1",
+                    Value = 1,
                 },
                 new Setting()
                 {
                     Id = 3,
                     Name = "default-borrow-duration",
-                    Value = "14",
+                    Value = 14,
                 },
                 new Setting()
                 {
                     Id = 4,
                     Name = "extra-duration-for-returning-fast",
-                    Value = "14",
+                    Value = 14,
                 }
             );
 

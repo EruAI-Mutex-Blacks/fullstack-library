@@ -53,7 +53,7 @@ namespace fullstack_library.Migrations
                             Id = 1,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2023, 7, 28, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(23),
+                            PublishDate = new DateTime(2023, 7, 29, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(311),
                             Title = "To Kill a Mockingbird"
                         },
                         new
@@ -61,7 +61,7 @@ namespace fullstack_library.Migrations
                             Id = 2,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2023, 9, 16, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(32),
+                            PublishDate = new DateTime(2023, 9, 17, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(319),
                             Title = "1984"
                         },
                         new
@@ -69,7 +69,7 @@ namespace fullstack_library.Migrations
                             Id = 3,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2023, 11, 5, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(34),
+                            PublishDate = new DateTime(2023, 11, 6, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(321),
                             Title = "The Great Gatsby"
                         },
                         new
@@ -77,7 +77,7 @@ namespace fullstack_library.Migrations
                             Id = 4,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2023, 12, 25, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(35),
+                            PublishDate = new DateTime(2023, 12, 26, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(322),
                             Title = "The Catcher in the Rye"
                         },
                         new
@@ -85,7 +85,7 @@ namespace fullstack_library.Migrations
                             Id = 5,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 2, 13, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(37),
+                            PublishDate = new DateTime(2024, 2, 14, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(324),
                             Title = "Moby-Dick"
                         },
                         new
@@ -93,7 +93,7 @@ namespace fullstack_library.Migrations
                             Id = 6,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 4, 3, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(38),
+                            PublishDate = new DateTime(2024, 4, 4, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(325),
                             Title = "Pride and Prejudice"
                         },
                         new
@@ -101,7 +101,7 @@ namespace fullstack_library.Migrations
                             Id = 7,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 5, 23, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(39),
+                            PublishDate = new DateTime(2024, 5, 24, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(327),
                             Title = "The Lord of the Rings"
                         },
                         new
@@ -109,7 +109,7 @@ namespace fullstack_library.Migrations
                             Id = 8,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 6, 2, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(41),
+                            PublishDate = new DateTime(2024, 6, 3, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(328),
                             Title = "Jane Eyre"
                         },
                         new
@@ -117,7 +117,7 @@ namespace fullstack_library.Migrations
                             Id = 9,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 6, 12, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(43),
+                            PublishDate = new DateTime(2024, 6, 13, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(368),
                             Title = "Brave New World"
                         },
                         new
@@ -125,7 +125,7 @@ namespace fullstack_library.Migrations
                             Id = 10,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 6, 22, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(44),
+                            PublishDate = new DateTime(2024, 6, 23, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(370),
                             Title = "The Hobbit"
                         },
                         new
@@ -133,7 +133,7 @@ namespace fullstack_library.Migrations
                             Id = 11,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 7, 2, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(45),
+                            PublishDate = new DateTime(2024, 7, 3, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(372),
                             Title = "Wuthering Heights"
                         },
                         new
@@ -141,7 +141,7 @@ namespace fullstack_library.Migrations
                             Id = 12,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 7, 12, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(46),
+                            PublishDate = new DateTime(2024, 7, 13, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(373),
                             Title = "Fahrenheit 451"
                         },
                         new
@@ -149,7 +149,7 @@ namespace fullstack_library.Migrations
                             Id = 13,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 7, 22, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(48),
+                            PublishDate = new DateTime(2024, 7, 23, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(375),
                             Title = "The Chronicles of Narnia"
                         },
                         new
@@ -157,7 +157,7 @@ namespace fullstack_library.Migrations
                             Id = 14,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 8, 1, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(49),
+                            PublishDate = new DateTime(2024, 8, 2, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(376),
                             Title = "Little Women"
                         },
                         new
@@ -165,7 +165,7 @@ namespace fullstack_library.Migrations
                             Id = 15,
                             IsBorrowed = false,
                             IsPublished = true,
-                            PublishDate = new DateTime(2024, 8, 11, 22, 4, 19, 986, DateTimeKind.Utc).AddTicks(50),
+                            PublishDate = new DateTime(2024, 8, 12, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(377),
                             Title = "The Picture of Dorian Gray"
                         });
                 });
@@ -1108,9 +1108,8 @@ namespace fullstack_library.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -1121,25 +1120,25 @@ namespace fullstack_library.Migrations
                         {
                             Id = 1,
                             Name = "fine-per-day",
-                            Value = "2"
+                            Value = 2f
                         },
                         new
                         {
                             Id = 2,
                             Name = "allowed-delay-for-responses",
-                            Value = "1"
+                            Value = 1f
                         },
                         new
                         {
                             Id = 3,
                             Name = "default-borrow-duration",
-                            Value = "14"
+                            Value = 14f
                         },
                         new
                         {
                             Id = 4,
                             Name = "extra-duration-for-returning-fast",
-                            Value = "14"
+                            Value = 14f
                         });
                 });
 
@@ -1215,7 +1214,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Alice",
-                            Password = "$2a$11$POzhSO0AgSFtCBbt.XAv0u3bedp5vfAzLzER0aVCRwXmGaw/Zs55q",
+                            Password = "$2a$11$70W3tWkPEGU0rbMA3TQPeedkd6oVMHiUq4K6iLq0VSG2Gh21/GlSK",
                             RoleId = 1,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Smith",
@@ -1232,7 +1231,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Bob",
-                            Password = "$2a$11$jgwmiMZLvujnuR6mQtZBkevOl..Q91YkXKs6gSNJjzibZ/ULA2HGK",
+                            Password = "$2a$11$i8wBY3bJ3K.YAM1SJIu0x.U6EP5bAHeR/i6HhY6EKY8NWQbz77Fg6",
                             RoleId = 2,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Johnson",
@@ -1249,7 +1248,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Carol",
-                            Password = "$2a$11$lNnlU40m/2VND6y9w.qZc.mlQlnsP7e8nWRvPSaKHjL6inMM0LMrq",
+                            Password = "$2a$11$6zO15o/XcQERc50m9.3CmOZAvm8o81Q9oixweWTYwLhbq.cF1PIdC",
                             RoleId = 3,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Williams",
@@ -1266,7 +1265,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Dave",
-                            Password = "$2a$11$qwPaiZ00jHDco2xR3XyoA.ofJ3ERK1VCKmHT4r3YmZ1IhFAofParC",
+                            Password = "$2a$11$mmgj03vfxjkyI1.w7J.jKOZFhLLh2ufDoSTasrAAG5TCJvZ8RNw/W",
                             RoleId = 4,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Brown",
@@ -1283,7 +1282,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Eve",
-                            Password = "$2a$11$e1ESynkw5MvplfQQXoeQ0u8eRRGR1wed7aGPEj3mePHRwQxfEgXGS",
+                            Password = "$2a$11$BwKdo7AZI8xY6tJzJb5iHueSAnth8TBsaCNM3dErOkb2PoZ5sKUU2",
                             RoleId = 5,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Jones",
@@ -1300,7 +1299,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Frank",
-                            Password = "$2a$11$cz6ESl4fX7GVViwwBXzO0.ZHELRdibnZBj0OTITjQUEWIsHae0UXC",
+                            Password = "$2a$11$j.wuV0bjK4z9DwjCyzg3n./uPwUt5Ae9LT3l7gABZVU9mq1sYF3Oa",
                             RoleId = 1,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Miller",
@@ -1317,7 +1316,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Grace",
-                            Password = "$2a$11$Mb2BiYLu445eSqEXu7SiOelyVVtwviiGtuBGnOyL7BKTzyrmCo70i",
+                            Password = "$2a$11$/oIEIDjVkrztQlaStdxVOegXQhRAptAIl0TZcLq1lE/4c1K5INEkS",
                             RoleId = 2,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Wilson",
@@ -1334,7 +1333,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Henry",
-                            Password = "$2a$11$aZFrwNEhbm76.BJVfs/VZuP/SxBHKLF3vYxRLDcTZaReBNLvTGsOG",
+                            Password = "$2a$11$R9SF9iyzKQz8nYGh8ZEMpuOAsDA1tFzpZvuMr/PoREMFKzDKsw37u",
                             RoleId = 3,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Moore",
@@ -1351,7 +1350,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Ivy",
-                            Password = "$2a$11$FpitcU2H.2OSA855FCW0SOX0e/1PZo4cssv.nfOldXY.KtXbBs.Ki",
+                            Password = "$2a$11$/ftBLyrJP7di0UdoJ1xeDOD4J0UmdoGErnY/IQeLPyCVnHyiarXW.",
                             RoleId = 4,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Taylor",
@@ -1368,7 +1367,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "Jack",
-                            Password = "$2a$11$Ziltp6vJKqWdqOlhOX/U9u.skiKqv.c5wbJD93FTRV4wqqK7vHmwq",
+                            Password = "$2a$11$2evswFyzWro2fNqNnoLDc.WSaoCYBI6zqNMRawUxGQvaGwE64mY6G",
                             RoleId = 5,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",
@@ -1385,7 +1384,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "NameOfManager",
-                            Password = "$2a$11$iSGSosCGOJojtG4ylTLiWefdqoRXH9f2K7tS3CBOznLqODrui/IX6",
+                            Password = "$2a$11$/pPEDaPDRYBpNgmGfLuRM.GltVMGm8ljqqoqGbsocIOeoH9WIxOjm",
                             RoleId = 5,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",
@@ -1402,7 +1401,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = true,
                             MonthlyScore = 0,
                             Name = "NameOfStaff",
-                            Password = "$2a$11$Nt1kHZ1xCabyXcvzjcMoEuSPTURNoTjlURXw2CKn3RyE68X17DADa",
+                            Password = "$2a$11$4OawpG9mkQAm5ciZ7Y5Z1OT1ADfM9Rcyj895wnrbRrQftnZUFhuHK",
                             RoleId = 4,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",
@@ -1419,7 +1418,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "NameOfAuthor",
-                            Password = "$2a$11$oFMwkbVoJPDEVGNrhljvE./soKno4KZIRr7UnfGvNcywBa/YDvFOG",
+                            Password = "$2a$11$XBaIAcQ8R1rjI77fgWoy/.zxMoVGcLFwtKjSzHEMdZWPhLlqEHiX6",
                             RoleId = 3,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",
@@ -1436,7 +1435,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "NameOfMember",
-                            Password = "$2a$11$eJ0ji96aao2muRisUazi9uPZ0/F90q8rcKb.AJU.MSN8mbyaMHNsa",
+                            Password = "$2a$11$BoAdKeQaLJea83k5bspFc.cabpq87G2TtMIOVdwG6V1A6J3TyXXme",
                             RoleId = 2,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",
@@ -1453,7 +1452,7 @@ namespace fullstack_library.Migrations
                             IsStaffOfPreviousMonth = false,
                             MonthlyScore = 0,
                             Name = "NameOfPending",
-                            Password = "$2a$11$xXokV3xaf0NripmKY/lL3.ny7vh3FEBLqkjq7SE9mh2r3htg0K/8S",
+                            Password = "$2a$11$3llC7hlnvZ55DkToxnm1XeNWqQdsnt4vt5plzluuCvHBTcOF8gAIa",
                             RoleId = 1,
                             ScoreLastResetDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Surname = "Anderson",

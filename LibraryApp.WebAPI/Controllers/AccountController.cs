@@ -23,7 +23,7 @@ namespace fullstack_library.Controllers
     {
         private readonly IUserRepository _userRepo;
         private readonly ISettingRepository _settingRepo;
-        
+
         readonly IConfiguration _config;
 
         public AccountController(IUserRepository userRepo, IConfiguration config, ISettingRepository settingRepository)
@@ -57,7 +57,8 @@ namespace fullstack_library.Controllers
 
             string token = GenerateJWT(user);
 
-            SettingsHelper.InitSettingsFromDb(_settingRepo);
+            if (user.RoleId > 3)
+                await SettingsHelper.InitSettingsFromDb(_settingRepo);
 
             return Ok(new
             {

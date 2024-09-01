@@ -44,6 +44,20 @@ namespace fullstack_library.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BookPublishRequests",
                 columns: table => new
                 {
@@ -206,21 +220,21 @@ namespace fullstack_library.Migrations
                 columns: new[] { "Id", "IsBorrowed", "IsPublished", "PublishDate", "Title" },
                 values: new object[,]
                 {
-                    { 1, false, true, new DateTime(2023, 7, 28, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6665), "To Kill a Mockingbird" },
-                    { 2, false, true, new DateTime(2023, 9, 16, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6673), "1984" },
-                    { 3, false, true, new DateTime(2023, 11, 5, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6675), "The Great Gatsby" },
-                    { 4, false, true, new DateTime(2023, 12, 25, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6676), "The Catcher in the Rye" },
-                    { 5, false, true, new DateTime(2024, 2, 13, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6678), "Moby-Dick" },
-                    { 6, false, true, new DateTime(2024, 4, 3, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6679), "Pride and Prejudice" },
-                    { 7, false, true, new DateTime(2024, 5, 23, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6681), "The Lord of the Rings" },
-                    { 8, false, true, new DateTime(2024, 6, 2, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6682), "Jane Eyre" },
-                    { 9, false, true, new DateTime(2024, 6, 12, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6683), "Brave New World" },
-                    { 10, false, true, new DateTime(2024, 6, 22, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6685), "The Hobbit" },
-                    { 11, false, true, new DateTime(2024, 7, 2, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6686), "Wuthering Heights" },
-                    { 12, false, true, new DateTime(2024, 7, 12, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6687), "Fahrenheit 451" },
-                    { 13, false, true, new DateTime(2024, 7, 22, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6689), "The Chronicles of Narnia" },
-                    { 14, false, true, new DateTime(2024, 8, 1, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6690), "Little Women" },
-                    { 15, false, true, new DateTime(2024, 8, 11, 15, 14, 3, 714, DateTimeKind.Utc).AddTicks(6691), "The Picture of Dorian Gray" }
+                    { 1, false, true, new DateTime(2023, 7, 29, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(311), "To Kill a Mockingbird" },
+                    { 2, false, true, new DateTime(2023, 9, 17, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(319), "1984" },
+                    { 3, false, true, new DateTime(2023, 11, 6, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(321), "The Great Gatsby" },
+                    { 4, false, true, new DateTime(2023, 12, 26, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(322), "The Catcher in the Rye" },
+                    { 5, false, true, new DateTime(2024, 2, 14, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(324), "Moby-Dick" },
+                    { 6, false, true, new DateTime(2024, 4, 4, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(325), "Pride and Prejudice" },
+                    { 7, false, true, new DateTime(2024, 5, 24, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(327), "The Lord of the Rings" },
+                    { 8, false, true, new DateTime(2024, 6, 3, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(328), "Jane Eyre" },
+                    { 9, false, true, new DateTime(2024, 6, 13, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(368), "Brave New World" },
+                    { 10, false, true, new DateTime(2024, 6, 23, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(370), "The Hobbit" },
+                    { 11, false, true, new DateTime(2024, 7, 3, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(372), "Wuthering Heights" },
+                    { 12, false, true, new DateTime(2024, 7, 13, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(373), "Fahrenheit 451" },
+                    { 13, false, true, new DateTime(2024, 7, 23, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(375), "The Chronicles of Narnia" },
+                    { 14, false, true, new DateTime(2024, 8, 2, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(376), "Little Women" },
+                    { 15, false, true, new DateTime(2024, 8, 12, 16, 12, 44, 836, DateTimeKind.Utc).AddTicks(377), "The Picture of Dorian Gray" }
                 });
 
             migrationBuilder.InsertData(
@@ -233,6 +247,17 @@ namespace fullstack_library.Migrations
                     { 3, "author" },
                     { 4, "staff" },
                     { 5, "manager" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Settings",
+                columns: new[] { "Id", "Name", "Value" },
+                values: new object[,]
+                {
+                    { 1, "fine-per-day", 2f },
+                    { 2, "allowed-delay-for-responses", 1f },
+                    { 3, "default-borrow-duration", 14f },
+                    { 4, "extra-duration-for-returning-fast", 14f }
                 });
 
             migrationBuilder.InsertData(
@@ -307,21 +332,21 @@ namespace fullstack_library.Migrations
                 columns: new[] { "Id", "AccountCreationDate", "BirthDate", "FineAmount", "Gender", "IsPunished", "IsStaffOfPreviousMonth", "MonthlyScore", "Name", "Password", "RoleId", "ScoreLastResetDate", "Surname", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Alice", "$2a$11$zyUI2mEO4DKs138whbkQQOHUgLbfFB14I8zMss2h1l13FFOKWbshO", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", "alice" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1985, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Bob", "$2a$11$.JHsk79AdQjRxUttj60UIOHXkzmr7LB40m76Je1Z6dSqNOXvmBgVa", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Johnson", "bobby" },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1992, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Carol", "$2a$11$V5D1NVr5WPC4IiMtPXso/.sqWCjsRCYT9j1QaOWlVSE7DgFwCagRi", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Williams", "carol" },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1980, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Dave", "$2a$11$kn3fRUXJXCt3F7jaHwo3Ae3QZH1tOcnlJPiHKdGUbytO/6JCb4eJC", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brown", "dave1" },
-                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1995, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Eve", "$2a$11$2.6fX1hs11WAAuLSChjP8.iOINV/SCZhIaCh.AKCDK7Jsx543/mZS", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jones", "eve01" },
-                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1987, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Frank", "$2a$11$pVNAlT1ATXxSfel5DBglf.f52N1OPNlc9kRThw0oS6gRIiHMJ5FVG", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Miller", "frank" },
-                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1993, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Grace", "$2a$11$u8vwpqOZq79cO6HfFboS/.Jg2W/G4rr6wK53piCFFJNHUgNz6Qxi2", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wilson", "grace" },
-                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1988, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Henry", "$2a$11$cMH0fjVagApgWjQBs6tkDuO8i9MQseRDf4Kh1HXb0Hyyy.Yc7oUCC", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Moore", "henry" },
-                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1994, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Ivy", "$2a$11$yrjnGFgepaPD1FL4Jeq52OHsNqCAXYyHO/vHwx..K.FdN1A2pPkai", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taylor", "ivy99" },
-                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Jack", "$2a$11$Mb87IYyHRNA23k5jeO6ZQ.ie25FCgspTnfAWVkH3wtN0WasH7bxfO", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "jack1" },
-                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfManager", "$2a$11$2CZ7TT20QiqQCVNXjWFiHOOCpUsKPDZn0oi8nYZcb3YLECRW1r3o2", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "manager" },
-                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfStaff", "$2a$11$1lPys8ILI4LWJ26L.0ghDuYUQ2B6Lpz2BJHeglVuDJfH5TzRIgTBq", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "staff" },
-                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfAuthor", "$2a$11$cUPRRlA4gTt94N0abVW3QubJfj2byzBcXmnKKPeArRvOcSgIvRRRe", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "author" },
-                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfMember", "$2a$11$NNnGu4V1FGgyd0Wq9kKeo.yhmsc3W.GhyY4UnD7kGpZLNh8OQmMAK", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "member" },
-                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfPending", "$2a$11$vOETkr/9ghc56QsXKty5WegS3slOtNQRv5gNJGMqZjrwvLe1Nxrs6", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "pending" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Alice", "$2a$11$70W3tWkPEGU0rbMA3TQPeedkd6oVMHiUq4K6iLq0VSG2Gh21/GlSK", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", "alice" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1985, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Bob", "$2a$11$i8wBY3bJ3K.YAM1SJIu0x.U6EP5bAHeR/i6HhY6EKY8NWQbz77Fg6", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Johnson", "bobby" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1992, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Carol", "$2a$11$6zO15o/XcQERc50m9.3CmOZAvm8o81Q9oixweWTYwLhbq.cF1PIdC", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Williams", "carol" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1980, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Dave", "$2a$11$mmgj03vfxjkyI1.w7J.jKOZFhLLh2ufDoSTasrAAG5TCJvZ8RNw/W", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brown", "dave1" },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1995, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Eve", "$2a$11$BwKdo7AZI8xY6tJzJb5iHueSAnth8TBsaCNM3dErOkb2PoZ5sKUU2", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jones", "eve01" },
+                    { 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1987, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Frank", "$2a$11$j.wuV0bjK4z9DwjCyzg3n./uPwUt5Ae9LT3l7gABZVU9mq1sYF3Oa", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Miller", "frank" },
+                    { 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1993, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Grace", "$2a$11$/oIEIDjVkrztQlaStdxVOegXQhRAptAIl0TZcLq1lE/4c1K5INEkS", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wilson", "grace" },
+                    { 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1988, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Henry", "$2a$11$R9SF9iyzKQz8nYGh8ZEMpuOAsDA1tFzpZvuMr/PoREMFKzDKsw37u", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Moore", "henry" },
+                    { 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1994, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'F', false, false, 0, "Ivy", "$2a$11$/ftBLyrJP7di0UdoJ1xeDOD4J0UmdoGErnY/IQeLPyCVnHyiarXW.", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Taylor", "ivy99" },
+                    { 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "Jack", "$2a$11$2evswFyzWro2fNqNnoLDc.WSaoCYBI6zqNMRawUxGQvaGwE64mY6G", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "jack1" },
+                    { 11, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfManager", "$2a$11$/pPEDaPDRYBpNgmGfLuRM.GltVMGm8ljqqoqGbsocIOeoH9WIxOjm", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "manager" },
+                    { 12, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, true, 0, "NameOfStaff", "$2a$11$4OawpG9mkQAm5ciZ7Y5Z1OT1ADfM9Rcyj895wnrbRrQftnZUFhuHK", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "staff" },
+                    { 13, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfAuthor", "$2a$11$XBaIAcQ8R1rjI77fgWoy/.zxMoVGcLFwtKjSzHEMdZWPhLlqEHiX6", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "author" },
+                    { 14, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfMember", "$2a$11$BoAdKeQaLJea83k5bspFc.cabpq87G2TtMIOVdwG6V1A6J3TyXXme", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "member" },
+                    { 15, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1991, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0f, 'M', false, false, 0, "NameOfPending", "$2a$11$3llC7hlnvZ55DkToxnm1XeNWqQdsnt4vt5plzluuCvHBTcOF8gAIa", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anderson", "pending" }
                 });
 
             migrationBuilder.InsertData(
@@ -447,6 +472,9 @@ namespace fullstack_library.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pages");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Users");

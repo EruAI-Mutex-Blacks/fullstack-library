@@ -19,12 +19,14 @@ namespace fullstack_library.Controllers
         private readonly IUserRepository _userRepo;
         private readonly IMessageRepository _msgRepo;
         private readonly IRoleRepository _roleRepo;
+        private readonly ISettingRepository _settingRepo;
 
-        public UserController(IUserRepository userRepo, IMessageRepository msgRepo, IRoleRepository roleRepo)
+        public UserController(IUserRepository userRepo, IMessageRepository msgRepo, IRoleRepository roleRepo, ISettingRepository settingRepository)
         {
             _userRepo = userRepo;
             _msgRepo = msgRepo;
             _roleRepo = roleRepo;
+            _settingRepo = settingRepository;
         }
 
         [HttpPut("SetRegistirationRequest")]
@@ -254,5 +256,27 @@ namespace fullstack_library.Controllers
                 }).ToList(),
             });
         }
+
+        [HttpGet("GetSettings")]
+        [Authorize(Policy = "ManagerPolicy")]
+        public async Task<IActionResult> GetSettings()
+        {
+            var settings = await _settingRepo.Settings.OrderBy(s => s.Id).ToListAsync();
+            return Ok(settings);
+        }
+
+        [HttpPut("UpdateSetting")]
+        [Authorize(Policy = "ManagerPolicy")]
+        public async Task<IActionResult> UpdateSetting(Setting setting)
+        {
+            var stg = await _settingRepo.Settings.FirstOrDefaultAsync(s => s.Id == setting.Id);
+            if (stg == null) return NotFound(new { Message = "Setting not found." });
+            stg.Value = setting.Value;
+            await _settingRepo.UpdateSettingAsync(stg);
+            await SettingsHelper.InitSettingsFromDb(_settingRepo);
+            return Ok(new { Message = "Setting Updated." });
+        }
     }
+
+    //FIXME Author ile cannot login index out of range
 }

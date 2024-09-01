@@ -9,11 +9,11 @@ public static class SettingsHelper
     public static int DefaultBorrowDuration { get; private set; }
     public static int ExtraDurationForReturningFast { get; private set; }
 
-    public static async void InitSettingsFromDb(ISettingRepository settingRepository)
+    public static async Task InitSettingsFromDb(ISettingRepository settingRepository)
     {
-        AllowedDelayForResponses = int.Parse(await settingRepository.GetValueByNameAsync("allowed-delay-for-responses"));
-        FinePerDay = float.Parse(await settingRepository.GetValueByNameAsync("fine-per-day"));
-        DefaultBorrowDuration = int.Parse(await settingRepository.GetValueByNameAsync("default-borrow-duration"));
-        ExtraDurationForReturningFast = int.Parse(await settingRepository.GetValueByNameAsync("extra-duration-for-returning-fast"));
+        AllowedDelayForResponses = (int)((await settingRepository.GetSettingByNameAsync("allowed-delay-for-responses"))?.Value ?? 1);
+        FinePerDay = (await settingRepository.GetSettingByNameAsync("fine-per-day"))?.Value ?? 1;
+        DefaultBorrowDuration = (int)((await settingRepository.GetSettingByNameAsync("default-borrow-duration"))?.Value ?? 1);
+        ExtraDurationForReturningFast = (int)((await settingRepository.GetSettingByNameAsync("extra-duration-for-returning-fast"))?.Value ?? 1);
     }
 }
