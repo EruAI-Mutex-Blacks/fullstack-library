@@ -105,7 +105,7 @@ namespace fullstack_library.Controllers
         public async Task<IActionResult> GetInbox([FromQuery] int userId)
         {
             var msgs = await _msgRepo.GetMessagesByReceiverIdAsync(userId);
-            msgs.Reverse();
+            msgs = msgs.OrderBy(m => m.IsReceiverRead).ToList();
             return Ok(msgs.Select(m =>
             new MessageDTO
             {
@@ -128,7 +128,7 @@ namespace fullstack_library.Controllers
             //1-pending 2-member 3-author 4-staff 5-manager
             int[] rolesToMessage = roleId == 2 ? [4] : roleId == 3 ? [4, 5] : roleId == 4 ? [2, 3, 5] : roleId == 5 ? [3, 4] : [0];
 
-            var users = await _userRepo.Users.Where(u => u.RoleId != 1 && u.Id != userId && rolesToMessage.Contains(u.RoleId)).Include(u => u.Role).ToListAsync();
+            var users = await _userRepo.Users.Where(u => u.RoleId != 1 && u.Id != userId && rolesToMessage.Contains(u.RoleId)).Include(u => u.Role).OrderBy(u => u.RoleId).ToListAsync();
 
             return Ok(users.Select(u => new
             {
@@ -146,7 +146,7 @@ namespace fullstack_library.Controllers
             //FOR PUNISHING
             //designed like the higher the role the greater it's id
             //return lower roles
-            var users = await _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).ToListAsync();
+            var users = await _userRepo.Users.Where(u => u.RoleId < roleId && u.RoleId != 1 && u.Id != userId).Include(u => u.Role).OrderBy(u => u.RoleId).ToListAsync();
 
             return Ok(users.Select(u => new
             {
@@ -164,7 +164,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "StaffOrManagerPolicy")]
         public async Task<IActionResult> GetPendingRegistirations()
         {
-            var pendingUsers = await _userRepo.Users.Where(u => u.RoleId == 1).ToListAsync();
+            var pendingUsers = await _userRepo.Users.Where(u => u.RoleId == 1).OrderBy(u => u.AccountCreationDate).ToListAsync();
 
             return Ok(pendingUsers.Select(pu => new UserDTO
             {
@@ -183,7 +183,7 @@ namespace fullstack_library.Controllers
         {
             //designed like the higher the role the greater it's id
             //return lower roles
-            var roles = await _roleRepo.Roles.Where(r => r.Id != roleId && r.Id != 1).ToListAsync();
+            var roles = await _roleRepo.Roles.Where(r => r.Id != roleId && r.Id != 1).OrderBy(r => r.Id).ToListAsync();
 
             return Ok(roles.Select(r => new
             {

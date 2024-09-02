@@ -74,7 +74,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "ManagerPolicy")]
         public async Task<IActionResult> BookPublishRequests()
         {
-            var BookPublishRequests = await _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User).ToListAsync();
+            var BookPublishRequests = await _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User).OrderBy(bpr => bpr.RequestDate).ToListAsync();
             return Ok(BookPublishRequests.Select(bpr => new BookPublishReqDTO
             {
                 Authors = bpr.Book.BookAuthors.Select(ba => ba.User.Name).ToList(),
@@ -108,7 +108,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> SearchBook([FromQuery] string? bookName)
         {
-            var books = await _bookRepo.Books.Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).Take(20).Select(b => new BookDTO
+            var books = await _bookRepo.Books.Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).OrderBy(b => b.Title).Take(20).Select(b => new BookDTO
             {
                 Id = b.Id,
                 Title = b.Title,
@@ -123,7 +123,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> BorrowedBooks([FromQuery] int userId)
         {
-            var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved && !bba.IsReturned).Include(bba => bba.Book).Select(bba => new BookBorrowActivityDTO
+            var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved && !bba.IsReturned).Include(bba => bba.Book).OrderBy(b => b.Book.Title).Select(bba => new BookBorrowActivityDTO
             {
                 BorrowDate = bba.BorrowDate,
                 ReturnDate = bba.ReturnDate,
@@ -144,7 +144,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "StaffOrManagerPolicy")]
         public async Task<IActionResult> BorrowRequests()
         {
-            var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).Select(bba => new BookBorrowActivityDTO
+            var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).OrderBy(bba => bba.BorrowDate).Select(bba => new BookBorrowActivityDTO
             {
                 Id = bba.Id,
                 RequestorName = bba.User.Name + " " + bba.User.Surname,
@@ -253,6 +253,7 @@ namespace fullstack_library.Controllers
             var books = await _bookRepo.Books
             .AsNoTracking()
             .Where(b => b.BookAuthors.Any(ba => ba.UserId == userId))
+            .OrderBy(b => b.PublishDate)
             .ToListAsync();
 
             var MyBookDTOS = books.Select(b => new MyBooksDTO
