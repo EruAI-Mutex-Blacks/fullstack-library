@@ -37,7 +37,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "ManagerPolicy")]
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
-            var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
+            var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
             if (request == null) return NotFound(new { Message = "Request not found." });
 
             var manager = await _userRepo.GetUserByIdAsync(publishBookDTO.ManagerId);
@@ -50,6 +50,18 @@ namespace fullstack_library.Controllers
                 request.Book.IsPublished = true;
                 request.Book.PublishDate = DateTime.UtcNow;
                 await _bookRepo.UpdateBookAsync(request.Book);
+            }
+
+            string msgToSend = !String.IsNullOrEmpty(publishBookDTO.Details) ? publishBookDTO.Details : publishBookDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
+            foreach (var ba in request.Book.BookAuthors)
+            {
+                await _msgRepo.CreateMessageAsync(new Message
+                {
+                    Title = "About your book publishment request",
+                    Details = msgToSend,
+                    ReceiverId = ba.UserId,
+                    SenderId = publishBookDTO.ManagerId
+                });
             }
 
             request.IsPending = false;
@@ -175,6 +187,15 @@ namespace fullstack_library.Controllers
             else
                 await _bookBorrowRepo.DeleteBookBorrowActivityAsync(bookBorrowActivity);
 
+            string msgToSend = !String.IsNullOrEmpty(setBorrowRequestDTO.Details) ? setBorrowRequestDTO.Details : setBorrowRequestDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
+            await _msgRepo.CreateMessageAsync(new Message
+            {
+                Title = "About your book borrow request",
+                Details = msgToSend,
+                ReceiverId = bookBorrowActivity.UserId,
+                SenderId = setBorrowRequestDTO.StaffId
+            });
+
             return Ok(new { Message = setBorrowRequestDTO.IsApproved ? "Request approved." : "Request rejected" });
         }
 
@@ -221,6 +242,7 @@ namespace fullstack_library.Controllers
             });
         }
 
+        //TODO sort all get requests to prevent changing of order every update. sort messages as unreads comes first
         //TODO cover of book & photo of staff etc. change from profile page
         //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]

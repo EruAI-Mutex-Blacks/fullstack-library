@@ -10,5 +10,6 @@ namespace fullstack_library.DTO
         public int Id { get; set; }
         public int StaffId { get; set; }
         public bool IsApproved { get; set; }
+        public string Details { get; set; } = string.Empty;
     }
 }
