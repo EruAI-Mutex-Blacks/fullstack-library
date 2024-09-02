@@ -35,11 +35,12 @@ namespace fullstack_library.Controllers
 
         [HttpPut("SetPublishing")]
         [Authorize(Policy = "ManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
             var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
             if (request == null) return NotFound(new { Message = "Request not found." });
-
+            if (!request.IsPending) return BadRequest(new { Message = "You already did operations with this request." });
             var manager = await _userRepo.GetUserByIdAsync(publishBookDTO.ManagerId);
             if (manager == null) return NotFound(new { Message = "Manager not found" });
 
@@ -52,7 +53,7 @@ namespace fullstack_library.Controllers
                 await _bookRepo.UpdateBookAsync(request.Book);
             }
 
-            string msgToSend = !String.IsNullOrEmpty(publishBookDTO.Details) ? publishBookDTO.Details : publishBookDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
+            string msgToSend = !string.IsNullOrEmpty(publishBookDTO.Details) ? publishBookDTO.Details : publishBookDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
             foreach (var ba in request.Book.BookAuthors)
             {
                 await _msgRepo.CreateMessageAsync(new Message
@@ -72,6 +73,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("BookPublishRequests")]
         [Authorize(Policy = "ManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BookPublishRequests()
         {
             var BookPublishRequests = await _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User).OrderBy(bpr => bpr.RequestDate).ToListAsync();
@@ -87,6 +89,7 @@ namespace fullstack_library.Controllers
 
         [HttpPost("RequestPublishment")]
         [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> RequestPublishment([FromBody] int bookId)
         {
             var book = await _bookRepo.GetBookByIdAsync(bookId);
@@ -106,6 +109,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("SearchBook")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SearchBook([FromQuery] string? bookName)
         {
             var books = await _bookRepo.Books.Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).OrderBy(b => b.Title).Take(20).Select(b => new BookDTO
@@ -121,6 +125,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("BorrowedBooks")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowedBooks([FromQuery] int userId)
         {
             var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved && !bba.IsReturned).Include(bba => bba.Book).OrderBy(b => b.Book.Title).Select(bba => new BookBorrowActivityDTO
@@ -142,6 +147,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("BorrowRequests")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowRequests()
         {
             var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).OrderBy(bba => bba.BorrowDate).Select(bba => new BookBorrowActivityDTO
@@ -161,10 +167,12 @@ namespace fullstack_library.Controllers
 
         [HttpPost("SetBorrowRequest")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetBorrowRequest(SetBorrowRequestDTO setBorrowRequestDTO)
         {
             var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
             if (bookBorrowActivity == null) return NotFound(new { Message = "Borrow request not found." });
+            if (bookBorrowActivity.IsApproved) return BadRequest(new { Message = "You already did operations with this request." });
 
             var staff = await _userRepo.GetUserByIdAsync(setBorrowRequestDTO.StaffId);
             if (staff == null) return NotFound(new { Message = "Staff not found" });
@@ -201,6 +209,7 @@ namespace fullstack_library.Controllers
 
         [HttpPost("BorrowBook")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowBook(BorrowBookDTO borrowBookDTO)
         {
             var user = await _userRepo.GetUserByIdAsync(borrowBookDTO.UserId);
@@ -225,6 +234,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetBook")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetBook([FromQuery] int bookId)
         {
             var book = await _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).Include(b => b.BookAuthors).FirstOrDefaultAsync(b => b.Id == bookId);
@@ -242,11 +252,11 @@ namespace fullstack_library.Controllers
             });
         }
 
-        //TODO sort all get requests to prevent changing of order every update. sort messages as unreads comes first
         //TODO cover of book & photo of staff etc. change from profile page
         //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]
         [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetBooksByAuthor([FromQuery] int userId)
         {
             if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound(new { Message = "User not found." });
@@ -269,6 +279,7 @@ namespace fullstack_library.Controllers
 
         [HttpPost("WritePage")]
         [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> WritePage([FromBody] PageDTO pageDTO)
         {
             var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == pageDTO.BookId);
@@ -288,9 +299,10 @@ namespace fullstack_library.Controllers
 
         [HttpPost("CreateBook")]
         [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> CreateBook([FromBody] int authorId)
         {
-            if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound(new { Message = "User not found." });
+            if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound(new { Message = "Author not found." });
             await _bookRepo.CreateBookAsync(new Book
             {
                 IsBorrowed = false,
@@ -308,10 +320,12 @@ namespace fullstack_library.Controllers
 
         [HttpPut("UpdateBookName")]
         [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> UpdateBookName(MyBooksDTO myBooksDTO)
         {
             var book = _bookRepo.Books.FirstOrDefault(b => b.Id == myBooksDTO.BookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
+            if (book.IsPublished) return BadRequest(new { Message = "Cannot change name of published books." });
 
             book.Title = myBooksDTO.BookName;
             await _bookRepo.UpdateBookAsync(book);
@@ -320,12 +334,13 @@ namespace fullstack_library.Controllers
 
         [HttpPut("ReturnBook")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> ReturnBook([FromBody] int bookId)
         {
             var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).ThenInclude(bba => bba.User).FirstOrDefault(b => b.Id == bookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
 
-            var bba = book.BookBorrowActivities.FirstOrDefault(bba => !bba.IsReturned);
+            var bba = book.BookBorrowActivities.FirstOrDefault(bba => bba.IsApproved && !bba.IsReturned);
             if (bba == null) return BadRequest(new { Message = "Borrow activity not found." });
 
             book.IsBorrowed = false;

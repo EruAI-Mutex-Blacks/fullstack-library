@@ -31,13 +31,14 @@ namespace fullstack_library.Controllers
 
         [HttpPut("SetRegistirationRequest")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetRegistirationRequest(UserRegistirationDTO userRegistirationDTO)
         {
             var user = await _userRepo.GetUserByIdAsync(userRegistirationDTO.UserId);
-            if (user == null) return NotFound(new { message = "User not found" });
+            if (user == null || user.RoleId != 1) return NotFound(new { message = "User not found" });
 
             var staff = await _userRepo.GetUserByIdAsync(userRegistirationDTO.StaffId);
-            if (staff == null) return NotFound(new { message = "Staff not found" });
+            if (staff == null || staff.RoleId < 4) return NotFound(new { message = "Staff not found" });
 
             staff.MonthlyScore += user.AccountCreationDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
@@ -55,11 +56,12 @@ namespace fullstack_library.Controllers
 
         [HttpPut("SetPunishment")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetPunishment(PunishUserDTO punishUserDTO)
         {
             var user = await _userRepo.GetUserByIdAsync(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
-            if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId)) return NotFound(new { message = "Punisher not found" });
+            if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId && u.RoleId > 3)) return NotFound(new { message = "Punisher not found" });
 
             user.FineAmount = punishUserDTO.FineAmount;
             user.IsPunished = punishUserDTO.IsPunished;
@@ -81,12 +83,17 @@ namespace fullstack_library.Controllers
 
         [HttpPost("SendMessage")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SendMessage(MessageDTO msg)
         {
             var sender = await _userRepo.GetUserByIdAsync(msg.SenderId);
             if (sender == null) return NotFound(new { message = "Sender user not found" });
             var receiver = await _userRepo.GetUserByIdAsync(msg.ReceiverId);
             if (receiver == null) return NotFound(new { message = "Receiver user not found" });
+
+            int roleId = sender.RoleId;
+            int[] rolesToMessage = roleId == 2 ? [4] : roleId == 3 ? [4, 5] : roleId == 4 ? [2, 3, 5] : roleId == 5 ? [3, 4] : [0];
+            if (!rolesToMessage.Contains(receiver.RoleId)) return BadRequest(new { Message = "You cannot send message to this user." });
 
             var entity = new Message
             {
@@ -121,6 +128,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetUsersOfLowerUpperRole")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetUsersOfLowerUpperRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //FOR MESSAGING
@@ -141,6 +149,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetUsersOfLowerRole")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetUsersOfLowerRole([FromQuery] int roleId, [FromQuery] int userId)
         {
             //FOR PUNISHING
@@ -162,6 +171,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("MemberRegistirations")]
         [Authorize(Policy = "StaffOrManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetPendingRegistirations()
         {
             var pendingUsers = await _userRepo.Users.Where(u => u.RoleId == 1).OrderBy(u => u.AccountCreationDate).ToListAsync();
@@ -179,6 +189,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetAllRoles")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetAllRoles([FromQuery] int roleId)
         {
             //designed like the higher the role the greater it's id
@@ -195,9 +206,9 @@ namespace fullstack_library.Controllers
 
         [HttpPut("UpdateMessageReadState")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
-        public async Task<IActionResult> UpdateMessageReadState(MessageDTO readMsg)
+        public async Task<IActionResult> UpdateMessageReadState([FromBody] int msgId)
         {
-            var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == readMsg.Id);
+            var msg = _msgRepo.Messages.FirstOrDefault(m => m.Id == msgId);
             if (msg == null) return NotFound(new { Message = "Message could not found" });
             msg.IsReceiverRead = true;
 
@@ -208,10 +219,12 @@ namespace fullstack_library.Controllers
 
         [HttpPut("ChangeRole")]
         [Authorize(Policy = "ManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> ChangeRole(UpdateRoleDTO updateRoleDTO)
         {
             var user = await _userRepo.GetUserByIdAsync(updateRoleDTO.UserId);
             if (user == null) return NotFound(new { Message = "User could not found" });
+            if (user.RoleId == 5) return BadRequest(new { Message = "You cannot change the role of this user." });
             if (!_roleRepo.Roles.Any(r => r.Id == updateRoleDTO.NewRoleId)) return NotFound(new { Message = "Role could not found" });
 
             user.RoleId = updateRoleDTO.NewRoleId;
@@ -221,6 +234,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetStaffOfMonth")]
         [Authorize(Policy = "MemberOrHigherPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetStaffOfMonth()
         {
             var currentTop3Staff = await _userRepo.Users.Where(u => u.RoleId == 4).OrderByDescending(u => u.MonthlyScore).Take(3).ToListAsync();
@@ -259,6 +273,7 @@ namespace fullstack_library.Controllers
 
         [HttpGet("GetSettings")]
         [Authorize(Policy = "ManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetSettings()
         {
             var settings = await _settingRepo.Settings.OrderBy(s => s.Id).ToListAsync();
@@ -267,6 +282,7 @@ namespace fullstack_library.Controllers
 
         [HttpPut("UpdateSetting")]
         [Authorize(Policy = "ManagerPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> UpdateSetting(Setting setting)
         {
             var stg = await _settingRepo.Settings.FirstOrDefaultAsync(s => s.Id == setting.Id);
@@ -277,6 +293,4 @@ namespace fullstack_library.Controllers
             return Ok(new { Message = "Setting Updated." });
         }
     }
-
-    //FIXME Author ile cannot login index out of range
 }

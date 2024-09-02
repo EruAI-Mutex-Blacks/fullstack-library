@@ -49,7 +49,6 @@ function SendMessageOP() {
             });
     }
 
-    //TODO consider adding security bc people can change value of option and we can send random person a msg
     const rightPanel = (
         <form className="grow flex flex-col px-14 py-6">
             <div className="mb-3">

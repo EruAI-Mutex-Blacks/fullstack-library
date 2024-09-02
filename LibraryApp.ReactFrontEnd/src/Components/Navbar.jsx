@@ -48,7 +48,7 @@ function Navbar() {
                             </li>
                             <li className="">
                                 {
-                                    (user?.roleName === "author") && (<Link className="hover:bg-gray-400/10 rounded py-3 lg:p-3 xl:p-3 transition-all duration-100 inline-block" to="/MyBooks">My books</Link>)
+                                    (user?.roleName === "author" && !user?.isPunished) && (<Link className="hover:bg-gray-400/10 rounded py-3 lg:p-3 xl:p-3 transition-all duration-100 inline-block" to="/MyBooks">My books</Link>)
                                 }
                             </li>
                         </ul>

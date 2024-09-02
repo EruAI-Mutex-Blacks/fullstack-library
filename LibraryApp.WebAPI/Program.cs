@@ -64,6 +64,7 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddAuthorization(opt =>
 {
+    opt.AddPolicy("NotPunishedPolicy", policy => policy.RequireClaim("isPunished", "False"));
     opt.AddPolicy("ManagerPolicy", policy => policy.RequireRole("manager"));
     opt.AddPolicy("AuthorPolicy", policy => policy.RequireRole("author"));
     opt.AddPolicy("StaffOrManagerPolicy", policy => policy.RequireRole("staff", "manager"));

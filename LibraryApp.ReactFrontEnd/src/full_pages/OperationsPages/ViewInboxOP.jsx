@@ -17,8 +17,8 @@ function ViewInboxOP() {
         setMessages(data ?? []);
     }
 
-    const updateReadMsg = async function (msg) {
-        const data = await fetchData("/api/User/UpdateMessageReadState", "PUT", msg);
+    const updateReadMsg = async function (msgId) {
+        await fetchData("/api/User/UpdateMessageReadState", "PUT", msgId);
     }
 
     useEffect(() => {
@@ -31,7 +31,7 @@ function ViewInboxOP() {
         setMsgTitle(message.title);
 
         if (!message.isReceiverRead) {
-            updateReadMsg(message);
+            updateReadMsg(message.id);
 
             message.isReceiverRead = true;
 
@@ -80,4 +80,5 @@ function ViewInboxOP() {
 
 export default ViewInboxOP
 
-//FIXME read message update ederken garip bi hata veriyor ve tasarımı bozuk.
+//FIXME read message tasarımı bozuk.
+//FIXME mesajlar olduğu kadar büyüyor. overflow y yap

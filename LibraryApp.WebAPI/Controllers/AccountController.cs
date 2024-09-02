@@ -71,6 +71,8 @@ namespace fullstack_library.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
+            if (_userRepo.Users.Any(u => u.Username == registerDTO.Username)) return BadRequest("Username already exits.");
+
             await _userRepo.CreateUserAsync(new User
             {
                 Name = registerDTO.Name,
@@ -91,18 +93,10 @@ namespace fullstack_library.Controllers
             var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Secret").Value ?? "");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]{
-                    new Claim("userId", user.Id.ToString()),
-                    new Claim("roleId", user.RoleId.ToString()),
+                Subject = new ClaimsIdentity([
                     new Claim("roleName", user.Role.Name.ToString()),
-                    new Claim("name", user.Name.ToString()),
-                    new Claim("surname", user.Surname.ToString()),
-                    new Claim("gender", user.Gender.ToString()),
-                    new Claim("birthdate", user.BirthDate.ToString()),
-                    new Claim("fineAmount", user.FineAmount.ToString()),
                     new Claim("isPunished", user.IsPunished.ToString()),
-                    new Claim("username", user.Username.ToString()),
-                }),
+                ]),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
