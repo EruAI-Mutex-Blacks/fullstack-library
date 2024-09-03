@@ -57,9 +57,6 @@ namespace fullstack_library.Controllers
 
             string token = GenerateJWT(user);
 
-            if (user.RoleId > 3)
-                await SettingsHelper.InitSettingsFromDb(_settingRepo);
-
             return Ok(new
             {
                 userDTO = userDTO,
