@@ -12,6 +12,7 @@ function Home() {
 
     //TODO homepage with search bar and latest books. people who did not log in can do some operations like searching.
     //better color palette
+    //FIXME localized datetime at frontend
 
     let mainContent = "";
 
@@ -26,7 +27,7 @@ function Home() {
         mainContent = (<div className='grow  p-10 self-center text-center text-gray-300'>
             <div>
                 <h1 className='text-4xl mb-4'>Welcome to the library</h1>
-                <p className='mb-4'>You are <b>punished</b> from library. Please contact with the staffs for further operations.</p>
+                <p className='mb-4'>You are <b className='text-red-400'>punished</b> from library. <b className='text-red-400'>Your current fine is: {user.fineAmount}$</b>. Please contact with the staffs for further operations.</p>
                 <CardLink url="/ViewInbox" text="View inbox to see details" />
             </div>
         </div>)
