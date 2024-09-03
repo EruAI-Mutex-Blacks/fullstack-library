@@ -243,11 +243,13 @@ namespace fullstack_library.Controllers
             {
                 BorrowedById = book.BookBorrowActivities.FirstOrDefault(bba => bba.IsApproved && !bba.IsReturned)?.UserId ?? 0,
                 Title = book.Title,
+                IsPublished = book.IsPublished,
                 AuthorIds = book.BookAuthors.Select(ba => ba.UserId).ToList(),
                 Pages = book.Pages.Select(p => new PageDTO
                 {
                     Content = p.Content,
                     PageNumber = p.PageNumber,
+                    PageId = p.Id,
                 }).ToList(),
             });
         }
@@ -295,6 +297,23 @@ namespace fullstack_library.Controllers
             });
 
             return Ok(new { Message = "Page saved." });
+        }
+
+        
+        [HttpPut("EditPage")]
+        [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
+        public async Task<IActionResult> EditPage([FromBody] PageDTO pageDTO)
+        {
+            var book = await _bookRepo.GetBookByIdAsync(pageDTO.BookId);
+            if(book == null) return NotFound(new { Message = "Book not found." });
+            var page = await _pageRepo.GetPageByIdAsync(pageDTO.PageId);
+            if (page == null) return NotFound(new { Message = "Page not found." });
+            if (book.IsPublished) return BadRequest(new { Message = "Cannot edit page of published book" });
+            
+            page.Content = pageDTO.Content;
+            await _pageRepo.UpdatePageAsync(page);
+            return Ok(new { Message = "Page updated." });
         }
 
         [HttpPost("CreateBook")]

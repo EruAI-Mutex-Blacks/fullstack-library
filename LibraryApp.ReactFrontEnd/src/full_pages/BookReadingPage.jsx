@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useUser } from "../AccountOperations/UserContext";
 import { useFetch } from "../Context/FetchContext";
 
@@ -10,11 +10,14 @@ function BookReadingPage() {
     const bookId = new URLSearchParams(location.search).get("bookId");
     const [pageNum, setPageNum] = useState();
     const [pageContent, setPageContent] = useState("");
+    const [newPageContent, setNewPageContent] = useState("");
+    const [selectedPageId, setSelectedPageId] = useState();
     const { user } = useUser();
     const { fetchData } = useFetch();
+    const [isEditing, setIsEditing] = useState(false);
 
     const fetchBook = async function () {
-        fetchData("/api/Book/GetBook?bookId=" + bookId, "GET")
+        await fetchData("/api/Book/GetBook?bookId=" + bookId, "GET")
             .then((book) => {
                 book.pages.sort((a, b) => a.pageNumber - b.pageNumber);
 
@@ -27,6 +30,7 @@ function BookReadingPage() {
                 setBook(book);
                 setPageContent(book.pages[0].content);
                 setPageNum(book.pages[0].pageNumber);
+                setSelectedPageId(book.pages[0].pageId);
             });
     }
 
@@ -37,18 +41,42 @@ function BookReadingPage() {
     const handlePageClick = function (p) {
         setPageContent(p.content);
         setPageNum(p.pageNumber);
+        setSelectedPageId(p.pageId);
+        console.log(p.pageId);
+        setIsEditing(isEditing ? !isEditing : false);
+    }
+
+    const handleEditPageClick = async function () {
+        if (isEditing && newPageContent !== pageContent) {
+            const pageDTO = {
+                bookId: bookId,
+                pageId: selectedPageId,
+                content: newPageContent,
+            };
+            fetchData("/api/Book/EditPage", "PUT", pageDTO)
+                .then(() => {
+                    setPageContent(newPageContent);
+                    const page = book?.pages?.find(p => p.pageId == selectedPageId);
+                    page.content = newPageContent;
+                });
+        }
+        setIsEditing(!isEditing);
+        setNewPageContent(pageContent);
     }
 
     return (
         <div className=" lg:px-16 xl:px-16 flex flex-col grow items-center space-y-4 text-gray-200">
             <h2 className="mb-0 mt-4 p-0 text-3xl">{book.title}</h2>
             <div className="container space-x-2 mb-5 mt-4 p-2 bg-gray-500 rounded flex text-center grow">
-                <div className="w-5/6">
-                    <div className="flex justify-center text-xl bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-1 rounded mb-2">
-                        <h5>Page {pageNum}</h5>
+                <div className="w-5/6 flex flex-col">
+                    <div className="flex justify-end text-xl bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-1 rounded mb-2">
+                        <h5 className="mx-auto">Page {pageNum}</h5>
+                        {(user?.roleName === "author" && !book.isPublished && book.pages?.length > 0) && (<button className="border border-transparent rounded px-3 py-1 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 active:bg-green-900 text-lg -mt-2 -me-2" onClick={handleEditPageClick}>{isEditing ? "Save" : "Edit page"}</button>)}
                     </div>
-                    <div className="p-3 bg-gray-600 rounded">
-                        <p>{pageContent}</p>
+                    <div className="p-3 bg-gray-600 rounded grow flex">
+                        {(isEditing) && (<textarea className="grow outline-none rounded bg-gray-700 hover:ring-1 hover:ring-blue-600 focus:ring-2 focus:ring-blue-500 p-4" style={{ resize: "none" }} defaultValue={newPageContent} onChange={e => setNewPageContent(e.target.value)}></textarea>)}
+                        {(!isEditing) && (<p className="text-start">{pageContent}</p>)}
+
                     </div>
                 </div>
                 <div className="w-1/6">
@@ -62,7 +90,7 @@ function BookReadingPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

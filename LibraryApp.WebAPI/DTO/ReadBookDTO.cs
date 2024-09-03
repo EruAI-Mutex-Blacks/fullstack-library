@@ -10,6 +10,7 @@ namespace fullstack_library.DTO
     {
         public int BorrowedById { get; set; }
         public string Title { get; set; } = string.Empty;
+        public bool IsPublished { get; set; }
         public List<int> AuthorIds { get; set; } = new();
         public List<PageDTO> Pages { get; set; } = new();
     }

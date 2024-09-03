@@ -75,7 +75,7 @@ function WriteBook() {
                     </div>
                     <div className="flex justify-center flex-col items-end lg:flex-row lg:justify-end">
                         <label className="lg:self-center lg:me-2 hover:cursor-pointer" htmlFor="fileUpload">Import text from .txt file:</label>
-                        <input class="p-1 bg-gray-600 rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-gray-700 lg:self-center lg:me-2" id="fileUpload" type="file" onChange={e => handleFileSelection(e)} accept=".txt" />
+                        <input className="p-1 bg-gray-600 rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-gray-700 lg:self-center lg:me-2" id="fileUpload" type="file" onChange={e => handleFileSelection(e)} accept=".txt" />
                         <button className="mt-2 lg:mt-0 border border-transparent inline-block rounded px-6 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 self-end" onClick={handleSaveClick}>Save</button>
                     </div>
                 </div>
