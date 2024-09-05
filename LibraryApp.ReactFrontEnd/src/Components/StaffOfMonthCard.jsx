@@ -39,7 +39,7 @@ function StaffOfMonthCard() {
                     {(staffOfMonthDTO?.currentTop3Staff?.length === 3) && (
                         <>
                             <h6 className="text-md border-b pb-1 pt-10 mb-2 text-gray-300">Current Month's Top 3</h6>
-                            <ul className="flex flex-col items-start">
+                            <ul className="flex flex-col">
                                 <li className="text-sm text-gray-300">1-) {staffOfMonthDTO?.currentTop3Staff[0]?.name + " " + staffOfMonthDTO?.currentTop3Staff[0]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[0]?.monthlyScore}</li>
                                 <li className="text-sm text-gray-300">2-) {staffOfMonthDTO?.currentTop3Staff[1]?.name + " " + staffOfMonthDTO?.currentTop3Staff[1]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[1]?.monthlyScore}</li>
                                 <li className="text-sm text-gray-300">3-) {staffOfMonthDTO?.currentTop3Staff[2]?.name + " " + staffOfMonthDTO?.currentTop3Staff[2]?.surname + " - " + staffOfMonthDTO?.currentTop3Staff[2]?.monthlyScore}</li>
