@@ -27,6 +27,7 @@ function Navbar() {
                     <Link className='cursor-default py-3 lg:p-3 xl:p-3 text-xs lg:text-base xl:text-base' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
                 </li>
                 {(user?.roleName === "manager") && (<li className=''>
+                    <Link className='py-3 lg:p-3 xl:p-3 lg:text-base xl:text-base' to="/Reports" aria-current="page">R</Link>
                     <Link className='py-3 lg:p-3 xl:p-3 lg:text-base xl:text-base' to="/Settings" aria-current="page">S</Link>
                 </li>)}
                 <li className=''>

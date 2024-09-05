@@ -31,23 +31,34 @@ namespace fullstack_library.Controllers
         [HttpGet("GetReports")]
         [Authorize(Policy = "ManagerPolicy")]
         [Authorize(Policy = "NotPunishedPolicy")]
-        public async Task<IActionResult> GetReports([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        public async Task<IActionResult> GetReports([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             IQueryable<User> usersBetweenDates = _userRepo.Users
             .AsNoTracking()
-            .Where(u => u.AccountCreationDate > startDate && u.AccountCreationDate < endDate);
+            .Where(u => u.RoleId != 1);
             IQueryable<BookBorrowActivity> bookBorrowActivities = _borrowActRepo.BookBorrowActivities
+            .AsNoTracking();
+            IQueryable<Book> books = _bookRepo.Books
             .AsNoTracking()
-            .Where(bba => bba.BorrowDate > startDate && bba.BorrowDate < endDate);
+            .Where(b => b.IsPublished);
+
+            if (startDate != null && endDate != null)
+            {
+                usersBetweenDates = usersBetweenDates
+                            .Where(u => u.AccountCreationDate > startDate && u.AccountCreationDate < endDate);
+
+                bookBorrowActivities = bookBorrowActivities
+                .Where(bba => bba.BorrowDate > startDate && bba.BorrowDate < endDate);
+
+                books = books.Where(b => b.PublishDate > startDate && b.PublishDate < endDate);
+            }
 
             int totalUserCount = await usersBetweenDates.CountAsync();
-            int totalBookCount = await _bookRepo.Books
-            .AsNoTracking()
-            .Where(b => b.PublishDate > startDate && b.PublishDate < endDate)
-            .CountAsync();
+            int totalBookCount = await books.CountAsync();
 
             var usersPerRole = await _roleRepo.Roles
             .AsNoTracking()
+            .Where(r => r.Id != 1)
             .Select(r => new KeyValuePair<string, int>(
                 r.Name,
                 usersBetweenDates.Count(u => u.RoleId == r.Id)
@@ -86,11 +97,12 @@ namespace fullstack_library.Controllers
             ))
             .ToListAsync();
 
-            return Ok(new ReportDTO{
+            return Ok(new ReportDTO
+            {
                 MostBorrowedBooks = mostBorrowedBooks,
                 MostBorrowers = mostBorrowers,
                 MostScoredMembers = mostScoredMembers,
-                totalBookCount = totalBookCount,
+                TotalBookCount = totalBookCount,
                 TotalUserCount = totalUserCount,
                 UsersPerRole = usersPerRole,
             });

@@ -25,6 +25,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { FetchProvider } from './Context/FetchContext.jsx'
 
 import Settings from './full_pages/Settings.jsx'
+import Reports from './full_pages/Reports.jsx'
 
 function App() {
   return (
@@ -122,6 +123,11 @@ function App() {
                   <Route path="/Settings" element={
                     <ProtectedRoute roles={["manager"]}>
                       <Settings/>
+                    </ProtectedRoute>}>
+                  </Route>
+                  <Route path="/Reports" element={
+                    <ProtectedRoute roles={["manager"]}>
+                      <Reports/>
                     </ProtectedRoute>}>
                   </Route>
                 </Routes>
