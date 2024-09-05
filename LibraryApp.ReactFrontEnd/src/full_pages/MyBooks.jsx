@@ -65,8 +65,7 @@ function MyBooksOP() {
         book.newBookName = e.target.value;
     }
 
-    //FIXME Author ile giriş yapınca ekran küçülüyor navbardaki elementlerden kaynaklanıyor p-3 yapınca artıyor çünkü
-    //TODO logged out navbar
+    //TODO logged out navbar küçülüyor pysi veya mysi
 
     const headersArray = ["Book name", "Status", "Publish date", "Actions"];
     const datasArray = myBooks.map(mb => [

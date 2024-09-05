@@ -79,6 +79,3 @@ function ViewInboxOP() {
 }
 
 export default ViewInboxOP
-
-//FIXME read message tasarımı bozuk.
-//FIXME mesajlar olduğu kadar büyüyor. overflow y yap

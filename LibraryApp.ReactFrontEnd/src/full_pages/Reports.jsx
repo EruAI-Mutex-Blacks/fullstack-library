@@ -47,5 +47,4 @@ function Reports() {
         </div >
     )
 }
-//FIXME typo in borrower??
 export default Reports;
