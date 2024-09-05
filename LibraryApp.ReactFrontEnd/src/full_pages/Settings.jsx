@@ -64,3 +64,6 @@ function Settings() {
 }
 
 export default Settings;
+
+//TODO backendte automapper dene uygula.
+//TODO en basit mimariyi sor chatgptye ve backend mimarisini ona at. önerilerine göre değişiklik yap
