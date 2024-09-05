@@ -50,9 +50,9 @@ function ViewInboxOP() {
                     {messages.map((m, index) =>
                     (
                         <div key={index} onClick={() => { handleMsgCardClick(m) }} className="hover:cursor-pointer hover:bg-gray-600 hover:ring-1 hover:ring-gray-400 mb-2 flex flex-col rounded p-2 bg-gray-500 transition-all duration-100">
-                            <div className="flex mb-2 justify-between border-b border-gray-300">
+                             <div className="flex mb-2 justify-center lg:justify-between border-b border-gray-300">
                                 <p className="mb-1 pe-1 text-start text-sm hidden lg:block xl:block">{m.title.slice(0, 10) + "..."}</p>
-                                <p className="mb-1 ps-1 text-sm text-center lg:text-end xl:text-end"><b>{m.senderName}</b></p>
+                                <p className="mb-1 lg:ps-1 text-xs text-center lg:text-end xl:text-end"><b>{m.senderName.slice(0,8)}</b></p>
                             </div>
                             <div className="flex justify-center lg:justify-between xl:justify-between">
                                 <p className="pt-1 text-md mb-2 text-start hidden lg:block xl:block">{m.details.slice(0, 20) + "..."}</p>
