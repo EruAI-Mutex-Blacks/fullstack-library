@@ -50,12 +50,14 @@ function Home() {
                 )}
                 {
                     (["staff", "manager"].includes(user.roleName)) && (
-                        <MemberOperationsCard />
+                        <>
+                            <GeneralOperationsCard />
+                            <MemberOperationsCard />
+                        </>
                     )}
                 {
                     (user.roleName === "manager") && (
                         <>
-                            <GeneralOperationsCard />
                             <AuthorOperationsCard />
                         </>
                     )}

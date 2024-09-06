@@ -386,5 +386,3 @@ namespace fullstack_library.Controllers
         }
     }
 }
-
-//FIXME staff cannot  punish members 
