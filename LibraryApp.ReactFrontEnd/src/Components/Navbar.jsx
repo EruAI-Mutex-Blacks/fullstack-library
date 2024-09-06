@@ -24,7 +24,21 @@ function Navbar() {
             </>);
     } else {
         topRightLinks = (
-                <div className="relative">
+            <>
+                <div className='hidden lg:flex lg:flex-row'>
+                    <div className=''>
+                        <Link className='cursor-default py-3 lg:p-3 xl:p-3 text-xs lg:text-base xl:text-base' aria-current="page">{user.roleName + " - " + user.name + " " + user.surname}</Link>
+                    </div>
+                    {(user?.roleName === "manager") && (
+                        <div className=''>
+                            <Link className='py-3 lg:p-3 xl:p-3 lg:text-base xl:text-base hover:bg-gray-400/10 transition-all duration-100 rounded' to="/Reports" aria-current="page">Reports</Link>
+                            <Link className='py-3 lg:p-3 xl:p-3 lg:text-base xl:text-base hover:bg-gray-400/10 transition-all duration-100 rounded' to="/Settings" aria-current="page">Settings</Link>
+                        </div>)}
+                    <div className=''>
+                        <Link className=' hover:bg-gray-400/10 rounded py-3 lg:p-3 xl:p-3 transition-all duration-100' aria-current="page" to="/" onClick={handleLogoutClick}>Logout</Link>
+                    </div>
+                </div>
+                <div className="relative lg:hidden block">
                     <button id="dropdownButton" className="text-white px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={() => setIsDropdownSelected(!isDropdownSelected)}>
                         Options
                     </button>
@@ -46,6 +60,7 @@ function Navbar() {
                         </li>
                     </ul>
                 </div>
+            </>
         )
     }
 
@@ -67,9 +82,9 @@ function Navbar() {
                         </ul>
                     </li>
                     <li>
-                        <ul className='flex items-center flex-row space-x-3 lg:space-x-0 xl:space-x-0'>
+                        <div className='flex items-center flex-row space-x-3 lg:space-x-0 xl:space-x-0'>
                             {topRightLinks}
-                        </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -79,5 +94,4 @@ function Navbar() {
 
 export default Navbar;
 
-//TODO maybe remove dropdown at large screens 
 //FIXME dropdown açık geliyor loginde
