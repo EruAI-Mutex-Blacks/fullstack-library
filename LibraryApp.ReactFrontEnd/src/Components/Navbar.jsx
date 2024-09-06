@@ -7,6 +7,7 @@ function Navbar() {
     const [isDropdownSelected, setIsDropdownSelected] = useState(false);
 
     const handleLogoutClick = function () {
+        setIsDropdownSelected(false);
         logout();
     }
 
@@ -93,5 +94,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-//FIXME dropdown açık geliyor loginde
