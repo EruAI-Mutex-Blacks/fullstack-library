@@ -88,6 +88,7 @@ namespace fullstack_library.Controllers
 
             var mostBorrowers = await bookBorrowActivities
             .Include(bba => bba.User)
+            .Where(bba => bba.User.RoleId < 4)
             .GroupBy(bba => bba.User)
             .OrderByDescending(g => g.Count())
             .Take(10)
