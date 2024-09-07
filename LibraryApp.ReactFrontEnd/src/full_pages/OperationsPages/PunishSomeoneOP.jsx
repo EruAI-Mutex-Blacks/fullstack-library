@@ -106,5 +106,3 @@ function PunishSomeoneOP() {
 }
 
 export default PunishSomeoneOP
-
-//FIXME manager's settings tab breaks navbar in mobile

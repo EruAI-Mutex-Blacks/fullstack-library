@@ -28,17 +28,23 @@ export const FetchProvider = ({ children }) => {
                 });
             }
 
-            const data = await response.json();
-            
+
             if (!response.ok) {
-                toast.error(data.message || "An error occured.");
-                console.log(data);
+                let data = {};
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    toast.error(data?.message || "An error occured.");
+                }
                 return;
             }
 
-            if(data.message) toast.success(data.message);
+            const data = await response.json();
+            if (data.message) toast.success(data.message);
             console.log(data);
-            
+
             return data;
         } catch (error) {
             toast.error(error || "Something bad happened.")
