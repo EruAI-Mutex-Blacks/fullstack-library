@@ -1,10 +1,16 @@
 
 import React, { createContext, useContext } from 'react'
 import { toast } from 'react-toastify';
+import { useUser } from '../AccountOperations/UserContext';
 
 const FetchContext = createContext();
 
 export const FetchProvider = ({ children }) => {
+
+    const { logout } = useUser();
+
+    
+    
 
     const fetchData = async (endpoint, method, dto) => {
         try {
@@ -30,7 +36,11 @@ export const FetchProvider = ({ children }) => {
 
 
             if (!response.ok) {
-                let data = {};
+
+                if(response.status === 401)
+                    logout();
+
+                    let data = {};
                 try {
                     data = await response.json();
                 } catch (e) {

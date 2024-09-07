@@ -1,4 +1,4 @@
-import { BrowserRouter,  Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './full_pages/Home.jsx'
 import Navbar from './Components/Navbar.jsx'
 import Footer from './Components/Footer.jsx'
@@ -43,8 +43,8 @@ function App() {
           pauseOnHover
           theme="light"
           transition:Bounce />
-        <FetchProvider>
-          <UserProvider>
+        <UserProvider>
+          <FetchProvider>
             <div className="flex flex-col min-h-screen">
               <header className=''>
                 <Navbar />
@@ -122,12 +122,12 @@ function App() {
                   </Route>
                   <Route path="/Settings" element={
                     <ProtectedRoute roles={["manager"]}>
-                      <Settings/>
+                      <Settings />
                     </ProtectedRoute>}>
                   </Route>
                   <Route path="/Reports" element={
                     <ProtectedRoute roles={["manager"]}>
-                      <Reports/>
+                      <Reports />
                     </ProtectedRoute>}>
                   </Route>
                 </Routes>
@@ -136,8 +136,8 @@ function App() {
                 <Footer />
               </footer>
             </div>
-          </UserProvider>
-        </FetchProvider>
+          </FetchProvider>
+        </UserProvider>
       </div>
     </BrowserRouter >
   )

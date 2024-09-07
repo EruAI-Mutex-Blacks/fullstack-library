@@ -94,7 +94,7 @@ namespace fullstack_library.Controllers
                     new Claim("roleName", user.Role.Name.ToString()),
                     new Claim("isPunished", user.IsPunished.ToString()),
                 ]),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
 
