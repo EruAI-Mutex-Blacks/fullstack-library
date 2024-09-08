@@ -32,16 +32,16 @@ function Reports() {
                 <button type="submit" className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 self-end my-4" onClick={handleGetReportClick}>{startDate === "" || endDate === "" ? "Get report of all time" : "Get report in that range"}</button>
             </div>
             {(reportDTO !== null) && (<div className="flex flex-col lg:flex-none lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-5 lg:grid-rows-3">
-                <ReportCard title="Total books published" items={
+                <ReportCard title="Books published" items={
                     [{ "key": "", "value": reportDTO?.totalBookCount }]
                 } />
                 <ReportCard title="Most borrowed books" items={reportDTO?.mostBorrowedBooks} />
-                <ReportCard title="Total users registered" items={
+                <ReportCard title="Users registered" items={
                     [{ "key": "", "value": reportDTO?.totalUserCount }]
                 } />
                 <ReportCard title="Users per role" items={reportDTO?.usersPerRole} />
-                <ReportCard title="Top members/authors that borrows more" items={reportDTO?.mostBorrowers} />
-                <ReportCard title="Top members/authors that returns book fast" items={reportDTO?.mostScoredMembers} />
+                <ReportCard title="Top borrower users" items={reportDTO?.mostBorrowers} />
+                <ReportCard title="Top members/authors that return book in time" items={reportDTO?.mostScoredMembers} />
             </div >
             )}
         </div >

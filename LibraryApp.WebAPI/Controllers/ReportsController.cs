@@ -77,7 +77,7 @@ namespace fullstack_library.Controllers
             .ToListAsync();
 
             var mostScoredMembers = await usersBetweenDates
-            .Where(u => u.RoleId < 4)
+            .Where(u => u.RoleId < 4 && u.MonthlyScore > -1)
             .OrderByDescending(u => u.MonthlyScore)
             .Take(10)
             .Select(u => new KeyValuePair<string, int>(
@@ -88,7 +88,6 @@ namespace fullstack_library.Controllers
 
             var mostBorrowers = await bookBorrowActivities
             .Include(bba => bba.User)
-            .Where(bba => bba.User.RoleId < 4)
             .GroupBy(bba => bba.User)
             .OrderByDescending(g => g.Count())
             .Take(10)

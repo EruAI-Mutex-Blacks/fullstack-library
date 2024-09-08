@@ -13,7 +13,6 @@ function Home() {
     //TODO homepage with search bar and latest books. people who did not log in can do some operations like searching.
     //better color palette
     //FIXME localized datetimes at frontend
-    //TODO jwtnin geçerlilik süresi bitince uygulamadan çıkış yapsın frontendte
     //TODO graphical version of reports page
     
     let mainContent = "";
