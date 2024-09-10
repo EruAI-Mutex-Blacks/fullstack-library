@@ -38,7 +38,7 @@ function SearchBookOP() {
                 <DefaultLink url={`/ReadBook?bookId=` + b.id} text={"Preview the book"} /> 
             </li>
             <li className="me-2">
-                <button onClick={() => { handleBorrowClick(b) }} className="border border-transparent inline-block rounded px-4 py-2 bg-success hover:bg-success-dark hover:ring-2 hover:ring-success transition-all duration-100 text-text disabled:bg-success-dark/40 disabled:ring-0 active:bg-success-dark/60" disabled={b.isBorrowed}>Borrow</button>
+                <button onClick={() => { handleBorrowClick(b) }} className="border border-transparent inline-block rounded px-4 py-2 bg-success hover:bg-success-dark hover:ring-2 hover:ring-success transition-all duration-100 text-text disabled:bg-success-dark/40 disabled:ring-0 disabled:outline-none active:bg-success-dark/60 font-medium focus:outline-none focus:ring-2 focus:ring-success-dark  hover:outline-none active:outline-none" disabled={b.isBorrowed}>Borrow</button>
             </li>
         </ul>)
     ]);

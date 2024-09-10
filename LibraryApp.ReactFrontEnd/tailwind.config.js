@@ -20,8 +20,8 @@ export default {
           card: '#2D3748',    // Dark card color for sections like book listings
         },
         accent: {
-          DEFAULT: '#A78BFA', // Soft violet (use for interactive elements like links or buttons)
-          dark: '#7C3AED',    // Deeper violet (for hover effects)
+          DEFAULT: '#433d8b', // Soft violet (use for interactive elements like links or buttons)
+          dark: '#2e236c',    // Deeper violet (for hover effects)
         },
         text: {
           light: '#D1D5DB',   // Light gray for subtle text
@@ -33,8 +33,8 @@ export default {
           dark: '#B91C1C',    // Dark red for more severe errors
         },
         success: {
-          DEFAULT: '#10B981', // Green for success messages
-          dark: '#047857',    // Dark green for subtle success indicators
+          DEFAULT: '#508d4e', // Green for success messages
+          dark: '#1a5319',    // Dark green for subtle success indicators
         },
       },
     },
@@ -42,3 +42,4 @@ export default {
   plugins: [],
 }
 
+//TODO change color palette

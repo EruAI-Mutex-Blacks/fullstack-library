@@ -1,8 +1,8 @@
 
 function ReportCard({ title, items }) {
     return (
-        <div className="bg-primary-light grow mt-4 rounded flex flex-col">
-            <h4 className="border-b rounded text-center text-2xl py-2 text-text font-medium">{title}</h4>
+        <div className="bg-transparent border border-text grow mt-4 rounded flex flex-col">
+            <h4 className="border-b border-secondary rounded text-center text-2xl py-2 text-text font-medium">{title}</h4>
             <ul className="flex flex-col p-4 self-center grow">
                 {(items.length < 1) && (<p className="text-3xl text-center font-bold text-text">N/A</p>)}
                 {items?.map((i, index) => (
