@@ -28,7 +28,7 @@ export default {
           DEFAULT: '#F3F4F6', // Lighter text for main content on dark backgrounds
           dark: '#E5E7EB',    // Slightly darker text for contrast
         },
-        error: {
+        danger: {
           DEFAULT: '#EF4444', // Red for error messages or warnings
           dark: '#B91C1C',    // Dark red for more severe errors
         },

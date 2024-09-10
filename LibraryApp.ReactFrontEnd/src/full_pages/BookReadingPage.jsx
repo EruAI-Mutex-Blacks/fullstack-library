@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useUser } from "../AccountOperations/UserContext";
 import { useFetch } from "../Context/FetchContext";
+import SuccessButton from "../Components/SuccessButton";
 
 function BookReadingPage() {
 
@@ -65,27 +66,26 @@ function BookReadingPage() {
     }
 
     return (
-        <div className=" lg:px-16 xl:px-16 flex flex-col grow items-center space-y-4 text-gray-200">
+        <div className=" lg:px-16 xl:px-16 flex flex-col grow items-center space-y-4 text-text">
             <h2 className="mb-0 mt-4 p-0 text-3xl">{book.title}</h2>
-            <div className="container space-x-2 mb-5 mt-4 p-2 bg-gray-500 rounded flex text-center grow">
+            <div className="container space-x-2 mb-5 mt-4 p-2 bg-primary-light rounded flex text-center grow">
                 <div className="w-5/6 flex flex-col">
-                    <div className="flex justify-end text-xl bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-1 rounded mb-2">
+                    <div className="flex justify-end text-xl bg-secondary-light border-b border-text px-3 pt-3 pb-1 rounded mb-2">
                         <h5 className="mx-auto">Page {pageNum}</h5>
-                        {(user?.roleName === "author" && !book.isPublished && book.pages?.length > 0) && (<button className="border border-transparent rounded px-3 py-1 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 active:bg-green-900 text-lg -mt-2 -me-2" onClick={handleEditPageClick}>{isEditing ? "Save" : "Edit page"}</button>)}
-                    </div>
-                    <div className="p-3 bg-gray-600 rounded grow flex">
-                        {(isEditing) && (<textarea className="grow outline-none rounded bg-gray-700 hover:ring-1 hover:ring-blue-600 focus:ring-2 focus:ring-blue-500 p-4" style={{ resize: "none" }} defaultValue={newPageContent} onChange={e => setNewPageContent(e.target.value)}></textarea>)}
-                        {(!isEditing) && (<p className="text-start">{pageContent}</p>)}
 
+                        {(user?.roleName === "author" && !book.isPublished && book.pages?.length > 0) && (<SuccessButton callback={handleEditPageClick} text={isEditing ? "Save" : "Edit page"} />)}
+                    </div>
+                    <div className="p-3 bg-secondary-light rounded grow flex">
+                        {(isEditing) ? (<textarea className="grow bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100 rounded p-4" style={{ resize: "none" }} defaultValue={newPageContent} onChange={e => setNewPageContent(e.target.value)}></textarea>) : (<p className="text-start">{pageContent}</p>)}
                     </div>
                 </div>
                 <div className="w-1/6">
-                    <div className="flex justify-center bg-gray-600 border-b border-gray-300 px-3 pt-3 pb-2 rounded mb-2">
+                    <div className="flex justify-center bg-secondary-light border-b border-text px-3 pt-3 pb-2 rounded mb-2">
                         <h4>Pages</h4>
                     </div>
-                    <div className="flex items-center justify-center ps-6 p-3 flex-wrap bg-gray-600 rounded">
+                    <div className="flex items-center justify-center p-3 flex-wrap bg-secondary-light rounded gap-2">
                         {book?.pages?.map((p, index) => (
-                            <button key={index} className="border border-transparent rounded px-3 py-1 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 active:bg-green-900 me-2 mb-2" onClick={() => handlePageClick(p)}>{p.pageNumber}</button>
+                            <SuccessButton key={index} callback={() => handlePageClick(p)} text={p.pageNumber}/>
                         ))}
                     </div>
                 </div>
@@ -95,5 +95,3 @@ function BookReadingPage() {
 }
 
 export default BookReadingPage;
-
-//FIXME even the token is expired we are still shown as logged in but cannot do anything. 

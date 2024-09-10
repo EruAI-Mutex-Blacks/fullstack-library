@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom"
 import AuthorOperationsCard from "../../Components/OperationsCards/AuthorOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react"
 import { useFetch } from "../../Context/FetchContext";
 import DefaultTableTemplate from "../../Components/DefaultTableTemplate";
 import { useUser } from "../../AccountOperations/UserContext";
+import DefaultLink from "../../Components/DefaultLink";
+import SuccessButton from "../../Components/SuccessButton";
+import DangerButton from "../../Components/DangerButton";
 
 function BookCreateReqOP() {
 
@@ -42,10 +44,16 @@ function BookCreateReqOP() {
         r.authors.join(", "),
         new Date(r.requestDate).toLocaleDateString("en-us"),
         (<ul key={index} className="flex justify-start flex-wrap">
-            <li className="me-2"><Link to={`/ReadBook?bookId=` + r.bookId} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Read the book</Link></li>
-            <li className="me-2"><button onClick={() => { handleApproveRejectClick(r.id, true) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</button></li>
-            <li className="me-2"><button onClick={() => { handleApproveRejectClick(r.id, false) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</button></li>
-            <li className="me-2 grow"><input onChange={e => setDetails(e.target.value)} placeholder="Details" type="text" className="mt-3 lg:mt-0 px-4 py-2 w-full bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" /></li>
+            <li className="me-2">
+                <DefaultLink url={`/ReadBook?bookId=` + r.bookId} text="Read the book" />
+            </li>
+            <li className="me-2">
+                <SuccessButton callback={() => handleApproveRejectClick(r.id, true)} text={"Approve"} />
+            </li>
+            <li className="me-2">
+                <DangerButton callback={() => { handleApproveRejectClick(r.id, false) }} text={"Reject"}/>
+            </li>
+            <li className="me-2 grow"><input onChange={e => setDetails(e.target.value)} placeholder="Details" type="text" className="rounded mt-3 lg:mt-0 px-4 py-2 w-full bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100" /></li>
         </ul>),
     ]);
 

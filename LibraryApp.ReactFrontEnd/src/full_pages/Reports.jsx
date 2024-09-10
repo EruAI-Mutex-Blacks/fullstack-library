@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReportCard from "../Components/ReportCard";
 import { useFetch } from "../Context/FetchContext";
+import SuccessButton from "../Components/SuccessButton";
 
 function Reports() {
 
@@ -21,15 +22,17 @@ function Reports() {
             <div className="flex flex-col">
                 <div className="lg:flex lg:space-x-4 lg:space-y-0 space-y-2 grow">
                     <div className="grow">
-                        <label className="text-gray-200 block font-medium mb-1" htmlFor="startDate">Start date</label>
-                        <input id="startDate" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" onChange={e => setStartDate(e.target.value)} type="date" />
+                        <label className="text-text block font-medium mb-1" htmlFor="startDate">Start date</label>
+                        <input id="startDate" className="px-4 py-2 w-full  bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100 rounded" onChange={e => setStartDate(e.target.value)} type="date" />
                     </div>
                     <div className="grow">
-                        <label className="text-gray-200 block font-medium mb-1" htmlFor="endDate">End date</label>
-                        <input id="endDate" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" type="date" onChange={e => setEndDate(e.target.value)} />
+                        <label className="text-text block font-medium mb-1" htmlFor="endDate">End date</label>
+                        <input id="endDate" className="px-4 py-2 w-full  bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100 rounded" type="date" onChange={e => setEndDate(e.target.value)} />
                     </div>
                 </div>
-                <button type="submit" className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 self-end my-4" onClick={handleGetReportClick}>{startDate === "" || endDate === "" ? "Get report of all time" : "Get report in that range"}</button>
+                <div className="self-end my-4">
+                <SuccessButton callback={handleGetReportClick} text={startDate === "" || endDate === "" ? "Get report of all time" : "Get report in that range"} />
+                </div>
             </div>
             {(reportDTO !== null) && (<div className="flex flex-col lg:flex-none lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-5 lg:grid-rows-3">
                 <ReportCard title="Books published" items={

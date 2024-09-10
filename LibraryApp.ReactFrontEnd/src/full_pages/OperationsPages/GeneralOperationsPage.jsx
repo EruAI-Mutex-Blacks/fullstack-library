@@ -1,6 +1,3 @@
-import HomeGeneralOperationsCard from "../../Components/OperationsCards/HomeGeneralOperationsCard"
-
-
 function GeneralOperationsPage(props) {
     return (
         <div className="flex grow">

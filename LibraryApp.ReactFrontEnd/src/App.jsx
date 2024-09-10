@@ -51,7 +51,7 @@ function App() {
               <header className='sticky top-0'>
                 <Navbar />
               </header>
-              <main className="flex grow bg-gray-600">
+              <main className="flex grow bg-background-light">
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
                   <Route path="/Login" element={

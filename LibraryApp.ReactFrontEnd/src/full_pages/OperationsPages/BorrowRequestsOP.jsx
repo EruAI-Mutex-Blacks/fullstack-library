@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import MemberOperationsCard from "../../Components/OperationsCards/MemberOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useFetch } from "../../Context/FetchContext";
 import DefaultTableTemplate from "../../Components/DefaultTableTemplate";
 import { useUser } from "../../AccountOperations/UserContext";
-
+import SuccessButton from "../../Components/SuccessButton";
+import DangerButton from "../../Components/DangerButton";
 
 function BorrowRequestsOP() {
 
@@ -45,9 +45,15 @@ function BorrowRequestsOP() {
         new Date(b.borrowDate).toLocaleDateString("en-US"),
         new Date(b.returnDate).toLocaleDateString("en-US"),
         (<ul key={index} className="flex justify-start ">
-            <li className="me-2"><Link onClick={() => { handleApproveRejectClick(true, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Approve</Link></li>
-            <li className="me-2"><Link onClick={() => { handleApproveRejectClick(false, b.id) }} className="border border-transparent inline-block rounded px-4 py-2 bg-red-800 hover:bg-red-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-red-950">Reject</Link></li>
-            <li className="me-2 grow"><input onChange={e => setDetails(e.target.value)} placeholder="Details" type="text" className="px-4 py-2 bg-gray-700 text-white rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" /></li>
+            <li className="me-2">
+                <SuccessButton callback={() => { handleApproveRejectClick(true, b.id) }} text="Approve" />
+            </li>
+            <li className="me-2">
+                <DangerButton callback={() => { handleApproveRejectClick(false, b.id) }} text="Reject" />
+            </li>
+            <li className="me-2 grow">
+                <input onChange={e => setDetails(e.target.value)} placeholder="Details" type="text" className="px-4 py-2 rounded bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100" />
+            </li>
         </ul>),
     ]);
 
@@ -59,3 +65,5 @@ function BorrowRequestsOP() {
 }
 
 export default BorrowRequestsOP
+
+//FIXME bazı sayfalar tablet ekranında bozuk white space 

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useFetch } from "../Context/FetchContext";
 import DefaultTableTemplate from "../Components/DefaultTableTemplate";
+import SuccessButton from "../Components/SuccessButton";
+import DefaultLink from "../Components/DefaultLink";
 
 function MyBooksOP() {
 
@@ -68,29 +70,29 @@ function MyBooksOP() {
     //TODO logged out navbar küçülüyor pysi veya mysi
 
     const headersArray = ["Book name", "Status", "Publish date", "Actions"];
-    const datasArray = myBooks.map(mb => [
+    const datasArray = myBooks.map((mb,index) => [
         mb.oldBookName,
         mb.status,
         new Date(mb.publishDate).toLocaleDateString("en-us"),
-        (<>
+        (<div key={index} className="gap-2 flex-wrap flex w-full">
             {(mb.status !== "Published") && <>
-                <div className="flex mb-2">
-                    <input type="text" className="px-4 py-2 w-full bg-gray-700 text-gray-200 rounded border border-gray-600 focus:ring-blue-500 focus:ring-2 focus:border-blue-400 focus:outline-none hover:ring-2" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
-                    <button className="border border-transparent inline-block rounded-e px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2" onClick={() => handleChangeClick(mb)}>Change</button>
+                <div className="flex mb-2 w-full">
+                    <input type="text" className="px-4 py-2 w-full bg-primary-light focus:ring-2 focus:bg-primary-light/90 focus:ring-accent-dark outline-none hover:ring-accent hover:ring-2 text-text transition-all duration-100 rounded-s" placeholder="Enter new name" onChange={(e) => handleTitleChange(mb, e)} />
+                    <SuccessButton callback={() => handleChangeClick(mb)} text={"Change"} />
                 </div>
-                <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" to={"/WriteBook?bookId=" + mb.bookId}>Write</Link>
-                <button className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" onClick={e => handleRequestClick(mb.bookId)}>Request publishment</button>
+                <DefaultLink url={"/WriteBook?bookId=" + mb.bookId} text={"Write"} />
+                <SuccessButton callback={e => handleRequestClick(mb.bookId)} text={"Request publishment"} />
             </>}
-            <Link className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900 me-2 mb-2" to={"/ReadBook?bookId=" + mb.bookId}>Read</Link>
-        </>),
+            <DefaultLink url={"/ReadBook?bookId=" + mb.bookId} text={"Read"} />
+        </div>),
     ]);
 
 
     return (
-        <div className="container lg:px-16 mx-auto grow w-full flex flex-col text-white">
-            <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-gray-300 items-end">
+        <div className="container lg:px-16 mx-auto grow w-full flex flex-col text-text">
+            <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-text items-end">
                 <h1 className="text-3xl ms-2">My Books</h1>
-                <button onClick={handleCreateClick} className="border border-transparent inline-block rounded px-4 py-2 bg-green-700 hover:bg-green-800 hover:ring-green-500 hover:ring-2 transition-all duration-100 text-white active:bg-green-900">Create a book</button>
+                <SuccessButton callback={handleCreateClick} text={"Create a book"} />
             </div>
             <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray} />
         </div>

@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
 import BookOperationsCard from "../../Components/OperationsCards/BookOperationsCard"
 import GeneralOperationsPage from "./GeneralOperationsPage"
 import { useEffect, useState } from "react";
 import { useUser } from "../../AccountOperations/UserContext";
-import { toast } from "react-toastify";
 import { useFetch } from "../../Context/FetchContext";
 import DefaultTableTemplate from "../../Components/DefaultTableTemplate";
+import DefaultLink from "../../Components/DefaultLink";
+import SuccessButton from "../../Components/SuccessButton";
 
 
 function BorrowedBooksOP() {
@@ -24,20 +24,26 @@ function BorrowedBooksOP() {
     }, []);
 
     const handleReturnClick = async (book) => {
-        const data = fetchData("/api/Book/ReturnBook", "PUT", book.id);
-        fetchBorrowedBooks();
+        fetchData("/api/Book/ReturnBook", "PUT", book.id)
+            .then(() => {
+                fetchBorrowedBooks();
+            });
     }
 
     const headersArray = ["Title", "Authors", "Publish Date", "Borrowed Date", "Return Date", "Actions"];
-    const datasArray = books.map(b => [
+    const datasArray = books.map((b, index) => [
         b.bookDTO.title,
         b.bookDTO.authors.join(", "),
         new Date(b.bookDTO.publishDate).toLocaleDateString("en-us"),
         new Date(b.borrowDate).toLocaleDateString("en-us"),
         new Date(b.returnDate).toLocaleDateString("en-us"),
-        (<ul className="flex justify-start">
-            <li className="me-2"><Link to={`/ReadBook?bookId=` + b.bookDTO.id} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Read</Link></li>
-            <li className="me-2"><Link onClick={() => { handleReturnClick(b.bookDTO) }} className="border border-transparent inline-block rounded px-4 py-2 bg-green-800 hover:bg-green-900 hover:border-gray-400 transition-all duration-100 text-gray-300 active:bg-green-950">Return</Link></li>
+        (<ul key={index} className="flex justify-start">
+            <li className="me-2">
+                <DefaultLink url={`/ReadBook?bookId=` + b.bookDTO.id} text={"Read"} />
+            </li>
+            <li className="me-2">
+                <SuccessButton callback={() => { handleReturnClick(b.bookDTO) }} text={"Return"} />
+            </li>
         </ul>),
     ]);
 

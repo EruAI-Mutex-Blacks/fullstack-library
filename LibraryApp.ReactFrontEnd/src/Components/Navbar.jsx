@@ -16,12 +16,12 @@ function Navbar() {
     if (!user) {
         topRightLinks = (
             <>
-                <li>
+                <div>
                     <Link className=" hover:bg-primary-light/50 rounded p-3 transition-all duration-100" aria-current="page" to="/Login">Login</Link>
-                </li>
-                <li>
+                </div>
+                <div>
                     <Link className=" hover:bg-primary-light/50 rounded p-3 transition-all duration-100" aria-current="page" to="/Register">Register</Link>
-                </li>
+                </div>
             </>);
     } else {
         topRightLinks = (
