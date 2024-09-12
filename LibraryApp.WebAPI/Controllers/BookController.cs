@@ -195,7 +195,7 @@ namespace fullstack_library.Controllers
             else
                 await _bookBorrowRepo.DeleteBookBorrowActivityAsync(bookBorrowActivity);
 
-            string msgToSend = !String.IsNullOrEmpty(setBorrowRequestDTO.Details) ? setBorrowRequestDTO.Details : setBorrowRequestDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
+            string msgToSend = !String.IsNullOrEmpty(setBorrowRequestDTO.Details) ? setBorrowRequestDTO.Details : setBorrowRequestDTO.IsApproved ? "Your book borrow request is approved." : "Your book borrow request is rejected.";
             await _msgRepo.CreateMessageAsync(new Message
             {
                 Title = "About your book borrow request",

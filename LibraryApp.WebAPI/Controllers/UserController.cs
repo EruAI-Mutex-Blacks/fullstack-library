@@ -73,7 +73,7 @@ namespace fullstack_library.Controllers
             await _msgRepo.CreateMessageAsync(new Message
             {
                 ReceiverId = user.Id,
-                Details = punishUserDTO.IsPunished ? punishUserDTO.Details : "Your punishment removed. Thanks for being good boy.",
+                Details = punishUserDTO.IsPunished ? punishUserDTO.Details : "Your punishment removed. Thanks for being good person.",
                 SenderId = punishUserDTO.PunisherId,
                 Title = punishUserDTO.IsPunished ? "You are punished from library at " + DateTime.UtcNow : "Your punishment removed.",
             });
