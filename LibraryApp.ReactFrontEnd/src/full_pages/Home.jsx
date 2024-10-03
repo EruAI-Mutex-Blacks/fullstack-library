@@ -11,7 +11,6 @@ function Home() {
     const { user } = useUser();
 
     //TODO homepage with search bar and latest books. people who did not log in can do some operations like searching.
-    //better color palette
     //FIXME localized datetimes at frontend
     //TODO graphical version of reports page
     

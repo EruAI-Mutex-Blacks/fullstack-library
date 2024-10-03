@@ -80,5 +80,4 @@ function ViewInboxOP() {
 
 export default ViewInboxOP
 
-//FIXME oto mesajlar yanlış şu an title doğru content yanlış
 //FIXME change naming of text color

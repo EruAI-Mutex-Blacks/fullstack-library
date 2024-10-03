@@ -38,14 +38,17 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetPublishing(PublishBookDTO publishBookDTO)
         {
+            //get request and manager
             var request = _bookPublishReqsRepo.Requests.Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).FirstOrDefault(bpr => bpr.Id == publishBookDTO.RequestId);
             if (request == null) return NotFound(new { Message = "Request not found." });
             if (!request.IsPending) return BadRequest(new { Message = "You already did operations with this request." });
             var manager = await _userRepo.GetUserByIdAsync(publishBookDTO.ManagerId);
             if (manager == null) return NotFound(new { Message = "Manager not found" });
 
+            //update manager's score depends on response delay
             manager.MonthlyScore += request.RequestDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
+            //update book
             if (publishBookDTO.IsApproved)
             {
                 request.Book.IsPublished = true;
@@ -53,6 +56,7 @@ namespace fullstack_library.Controllers
                 await _bookRepo.UpdateBookAsync(request.Book);
             }
 
+            //send automatic message to all authors of the book about response
             string msgToSend = !string.IsNullOrEmpty(publishBookDTO.Details) ? publishBookDTO.Details : publishBookDTO.IsApproved ? "Your book publishment request is approved." : "Your book publishment request is rejected.";
             foreach (var ba in request.Book.BookAuthors)
             {
@@ -65,6 +69,7 @@ namespace fullstack_library.Controllers
                 });
             }
 
+            //set request as handled
             request.IsPending = false;
             await _bookPublishReqsRepo.UpdateRequestAsync(request);
 
@@ -76,6 +81,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BookPublishRequests()
         {
+            //get publishing requests
             var BookPublishRequests = await _bookPublishReqsRepo.Requests.Where(bpr => bpr.IsPending).Include(bpr => bpr.Book).ThenInclude(b => b.BookAuthors).ThenInclude(ba => ba.User).OrderBy(bpr => bpr.RequestDate).ToListAsync();
             return Ok(BookPublishRequests.Select(bpr => new BookPublishReqDTO
             {
@@ -92,12 +98,14 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> RequestPublishment([FromBody] int bookId)
         {
+            //get book
             var book = await _bookRepo.GetBookByIdAsync(bookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Your book is already published." });
             if (_bookPublishReqsRepo.Requests.Any(bpr => bpr.IsPending && bpr.BookId == bookId))
                 return BadRequest(new { Message = "Your request is still active." });
 
+            //create request
             await _bookPublishReqsRepo.CreateRequestAsync(new BookPublishRequest()
             {
                 BookId = bookId,
@@ -112,6 +120,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SearchBook([FromQuery] string? bookName)
         {
+            //get filtered books
             var books = await _bookRepo.Books.Where(b => b.Title.Contains(bookName ?? "") && b.IsPublished).OrderBy(b => b.Title).Take(20).Select(b => new BookDTO
             {
                 Id = b.Id,
@@ -128,6 +137,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowedBooks([FromQuery] int userId)
         {
+            //get user's borrowed books
             var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => bba.UserId == userId && bba.IsApproved && !bba.IsReturned).Include(bba => bba.Book).OrderBy(b => b.Book.Title).Select(bba => new BookBorrowActivityDTO
             {
                 BorrowDate = bba.BorrowDate,
@@ -150,6 +160,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowRequests()
         {
+            //get borrow requests
             var borrowedBookDTOS = await _bookBorrowRepo.BookBorrowActivities.Where(bba => !bba.IsApproved).Include(bba => bba.Book).Include(bba => bba.User).OrderBy(bba => bba.BorrowDate).Select(bba => new BookBorrowActivityDTO
             {
                 Id = bba.Id,
@@ -170,19 +181,25 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetBorrowRequest(SetBorrowRequestDTO setBorrowRequestDTO)
         {
+            //get borrow request
             var bookBorrowActivity = _bookBorrowRepo.BookBorrowActivities.Include(bba => bba.Book).FirstOrDefault(bba => bba.Id == setBorrowRequestDTO.Id);
             if (bookBorrowActivity == null) return NotFound(new { Message = "Borrow request not found." });
             if (bookBorrowActivity.IsApproved) return BadRequest(new { Message = "You already did operations with this request." });
 
+            //get staff
             var staff = await _userRepo.GetUserByIdAsync(setBorrowRequestDTO.StaffId);
             if (staff == null) return NotFound(new { Message = "Staff not found" });
 
+            //update staffs score depending on response delay
             staff.MonthlyScore += bookBorrowActivity.BorrowDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
+            //update request
             if (setBorrowRequestDTO.IsApproved)
             {
                 bookBorrowActivity.IsApproved = true;
                 bookBorrowActivity.Book.IsBorrowed = true;
+
+                //add more days to return date if staff responded late
                 TimeSpan responseDelay = DateTime.UtcNow - bookBorrowActivity.BorrowDate;
                 bookBorrowActivity.BorrowDate = DateTime.UtcNow;
                 bookBorrowActivity.ReturnDate = bookBorrowActivity.ReturnDate.AddDays(Math.Abs(responseDelay.Days));
@@ -195,6 +212,7 @@ namespace fullstack_library.Controllers
             else
                 await _bookBorrowRepo.DeleteBookBorrowActivityAsync(bookBorrowActivity);
 
+            //send automatic message to borrower about the situation
             string msgToSend = !String.IsNullOrEmpty(setBorrowRequestDTO.Details) ? setBorrowRequestDTO.Details : setBorrowRequestDTO.IsApproved ? "Your book borrow request is approved." : "Your book borrow request is rejected.";
             await _msgRepo.CreateMessageAsync(new Message
             {
@@ -212,6 +230,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> BorrowBook(BorrowBookDTO borrowBookDTO)
         {
+            //get user and book
             var user = await _userRepo.GetUserByIdAsync(borrowBookDTO.UserId);
             if (user == null) return NotFound(new { Message = "User could not found" });
             var book = await _bookRepo.GetBookByIdAsync(borrowBookDTO.BookId);
@@ -220,6 +239,7 @@ namespace fullstack_library.Controllers
 
             if (_bookBorrowRepo.BookBorrowActivities.Any(bba => !bba.IsApproved && bba.BookId == borrowBookDTO.BookId && bba.UserId == borrowBookDTO.UserId)) return BadRequest(new { Message = "You already requested that book. Please wait for approval." });
 
+            //create a request
             BookBorrowActivity bba = new()
             {
                 BookId = borrowBookDTO.BookId,
@@ -237,6 +257,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetBook([FromQuery] int bookId)
         {
+            //to read book get by id
             var book = await _bookRepo.Books.Include(b => b.Pages).Include(b => b.BookBorrowActivities).Include(b => b.BookAuthors).FirstOrDefaultAsync(b => b.Id == bookId);
             if (book == null) return NotFound(new { Message = "Book not found" });
             return Ok(new ReadBookDTO
@@ -261,6 +282,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetBooksByAuthor([FromQuery] int userId)
         {
+            //to see author's book
             if (!_userRepo.Users.Any(u => u.Id == userId)) return NotFound(new { Message = "User not found." });
             var books = await _bookRepo.Books
             .AsNoTracking()
@@ -284,11 +306,13 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> WritePage([FromBody] PageDTO pageDTO)
         {
+            //get book
             var book = _bookRepo.Books.Include(b => b.Pages).FirstOrDefault(b => b.Id == pageDTO.BookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Cannot add page to published book" });
             if (book.Pages.Any(p => p.PageNumber == pageDTO.PageNumber)) return BadRequest(new { Message = "There is a page with that number." });
 
+            //write page
             await _pageRepo.CreatePageAsync(new Page
             {
                 BookId = pageDTO.BookId,
@@ -305,12 +329,14 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> EditPage([FromBody] PageDTO pageDTO)
         {
+            //get book
             var book = await _bookRepo.GetBookByIdAsync(pageDTO.BookId);
             if(book == null) return NotFound(new { Message = "Book not found." });
             var page = await _pageRepo.GetPageByIdAsync(pageDTO.PageId);
             if (page == null) return NotFound(new { Message = "Page not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Cannot edit page of published book" });
             
+            //edit page
             page.Content = pageDTO.Content;
             await _pageRepo.UpdatePageAsync(page);
             return Ok(new { Message = "Page updated." });
@@ -321,6 +347,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> CreateBook([FromBody] int authorId)
         {
+            //get author & create book
             if (!_userRepo.Users.Any(u => u.Id == authorId)) return NotFound(new { Message = "Author not found." });
             await _bookRepo.CreateBookAsync(new Book
             {
@@ -342,6 +369,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> UpdateBookName(MyBooksDTO myBooksDTO)
         {
+            //get book and update title
             var book = _bookRepo.Books.FirstOrDefault(b => b.Id == myBooksDTO.BookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Cannot change name of published books." });
@@ -356,19 +384,24 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> ReturnBook([FromBody] int bookId)
         {
+            //get book
             var book = _bookRepo.Books.Include(b => b.BookBorrowActivities).ThenInclude(bba => bba.User).FirstOrDefault(b => b.Id == bookId);
             if (book == null) return NotFound(new { Message = "Book not found." });
 
+            //get borrow request
             var bba = book.BookBorrowActivities.FirstOrDefault(bba => bba.IsApproved && !bba.IsReturned);
             if (bba == null) return BadRequest(new { Message = "Borrow activity not found." });
 
+            //update
             book.IsBorrowed = false;
             bba.IsReturned = true;
 
+            //update user's score depending on if he returned early or not
             bba.User.MonthlyScore += bba.ReturnDate >= DateTime.UtcNow ? 1 : -bba.User.MonthlyScore;
 
             if (DateTime.UtcNow > bba.ReturnDate)
             {
+                //if user returned late then punish it by giving fine and send automessage about it
                 bba.User.IsPunished = true;
                 bba.User.FineAmount = Math.Abs((DateTime.UtcNow - bba.ReturnDate).Days) * SettingsHelper.FinePerDay;
                 await _msgRepo.CreateMessageAsync(new Message

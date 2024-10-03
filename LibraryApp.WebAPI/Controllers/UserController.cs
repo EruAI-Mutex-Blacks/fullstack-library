@@ -40,10 +40,12 @@ namespace fullstack_library.Controllers
             var staff = await _userRepo.GetUserByIdAsync(userRegistirationDTO.StaffId);
             if (staff == null || staff.RoleId < 4) return NotFound(new { message = "Staff not found" });
 
+            //update staff's or manager's score depending on response delay
             staff.MonthlyScore += user.AccountCreationDate.AddDays(SettingsHelper.AllowedDelayForResponses) >= DateTime.UtcNow ? 1 : -1;
 
             if (userRegistirationDTO.IsApproved)
             {
+                //user's default role is 1 and it is pending. if it is approved then make it 2 which is normal member.
                 user.RoleId++;
                 user.AccountCreationDate = DateTime.UtcNow;
                 await _userRepo.UpdateUserAsync(user);
@@ -59,6 +61,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> SetPunishment(PunishUserDTO punishUserDTO)
         {
+            //for manual punishments
             var user = await _userRepo.GetUserByIdAsync(punishUserDTO.UserId);
             if (user == null) return NotFound(new { message = "User not found" });
             if (!_userRepo.Users.Any(u => u.Id == punishUserDTO.PunisherId && u.RoleId > 3)) return NotFound(new { message = "Punisher not found" });
@@ -66,10 +69,12 @@ namespace fullstack_library.Controllers
             user.FineAmount = punishUserDTO.FineAmount;
             user.IsPunished = punishUserDTO.IsPunished;
 
+            //reset user's score
             if (punishUserDTO.IsPunished) user.MonthlyScore = 0;
 
             await _userRepo.UpdateUserAsync(user);
 
+            //send auto message about the situation
             await _msgRepo.CreateMessageAsync(new Message
             {
                 ReceiverId = user.Id,
@@ -92,6 +97,8 @@ namespace fullstack_library.Controllers
             if (receiver == null) return NotFound(new { message = "Receiver user not found" });
 
             int roleId = sender.RoleId;
+            //these roles can only send to certain roles. 
+            //roleid 1 is pending, roleid 2 is member, roleid 3 is author, roleid 4 is staff, roleid 5 is manager
             int[] rolesToMessage = roleId == 2 ? [4] : roleId == 3 ? [4, 5] : roleId == 4 ? [2, 3, 5] : roleId == 5 ? [3, 4] : [0];
             if (!rolesToMessage.Contains(receiver.RoleId)) return BadRequest(new { Message = "You cannot send message to this user." });
 
@@ -111,6 +118,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "MemberOrHigherPolicy")]
         public async Task<IActionResult> GetInbox([FromQuery] int userId)
         {
+            //gets messages
             var msgs = await _msgRepo.GetMessagesByReceiverIdAsync(userId);
             msgs = msgs.OrderBy(m => m.IsReceiverRead).ToList();
             return Ok(msgs.Select(m =>

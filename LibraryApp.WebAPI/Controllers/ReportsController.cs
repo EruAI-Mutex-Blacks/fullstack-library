@@ -33,6 +33,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetReports([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
+            //gets all user accounts but pending ones
             IQueryable<User> usersBetweenDates = _userRepo.Users
             .AsNoTracking()
             .Where(u => u.RoleId != 1);
@@ -42,6 +43,7 @@ namespace fullstack_library.Controllers
             .AsNoTracking()
             .Where(b => b.IsPublished);
 
+            //if both dates are filled, filter datas with the dates
             if (startDate != null && endDate != null)
             {
                 usersBetweenDates = usersBetweenDates

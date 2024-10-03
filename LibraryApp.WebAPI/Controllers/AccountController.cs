@@ -37,6 +37,7 @@ namespace fullstack_library.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
+            //checks if user found with the surname and if found checks password
             var user = await _userRepo.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Username == loginDTO.Username);
             if (user == null) return NotFound(new { message = "Username not found" });
             if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password)) return StatusCode(401, new { message = "Password is incorrect" });
@@ -57,6 +58,7 @@ namespace fullstack_library.Controllers
 
             string token = GenerateJWT(user);
 
+            //returns userdata with generated jwt
             return Ok(new
             {
                 userDTO = userDTO,
@@ -68,7 +70,7 @@ namespace fullstack_library.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
-            if (_userRepo.Users.Any(u => u.Username == registerDTO.Username)) return BadRequest("Username already exits.");
+            if (_userRepo.Users.Any(u => u.Username == registerDTO.Username)) return BadRequest(new {Message="Username already exits"});
 
             await _userRepo.CreateUserAsync(new User
             {
