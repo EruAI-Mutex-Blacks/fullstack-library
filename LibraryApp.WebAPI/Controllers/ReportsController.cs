@@ -33,7 +33,7 @@ namespace fullstack_library.Controllers
         [Authorize(Policy = "NotPunishedPolicy")]
         public async Task<IActionResult> GetReports([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
-            //gets all user accounts but pending ones
+            //gets all user accounts except for pending ones
             IQueryable<User> usersBetweenDates = _userRepo.Users
             .AsNoTracking()
             .Where(u => u.RoleId != 1);
@@ -68,6 +68,7 @@ namespace fullstack_library.Controllers
             .ToListAsync();
 
             var mostBorrowedBooks = await bookBorrowActivities
+            .Where(bba => bba.IsApproved)
             .Include(bba => bba.Book)
             .GroupBy(bba => bba.Book)
             .OrderByDescending(g => g.Count())
