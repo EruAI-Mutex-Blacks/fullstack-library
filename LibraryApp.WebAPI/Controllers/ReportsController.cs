@@ -38,7 +38,8 @@ namespace fullstack_library.Controllers
             .AsNoTracking()
             .Where(u => u.RoleId != 1);
             IQueryable<BookBorrowActivity> bookBorrowActivities = _borrowActRepo.BookBorrowActivities
-            .AsNoTracking();
+            .AsNoTracking()
+            .Where(bba => bba.IsApproved);
             IQueryable<Book> books = _bookRepo.Books
             .AsNoTracking()
             .Where(b => b.IsPublished);
@@ -68,7 +69,6 @@ namespace fullstack_library.Controllers
             .ToListAsync();
 
             var mostBorrowedBooks = await bookBorrowActivities
-            .Where(bba => bba.IsApproved)
             .Include(bba => bba.Book)
             .GroupBy(bba => bba.Book)
             .OrderByDescending(g => g.Count())
