@@ -27,8 +27,6 @@ import { FetchProvider } from './Context/FetchContext.jsx'
 import Settings from './full_pages/Settings.jsx'
 import Reports from './full_pages/Reports.jsx'
 
-//FIXME reports show borrowed books by users incorrectly. dont add requests show only accepted ones
-
 function App() {
   return (
     <BrowserRouter>
