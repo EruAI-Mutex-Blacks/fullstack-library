@@ -79,5 +79,3 @@ function ViewInboxOP() {
 }
 
 export default ViewInboxOP
-
-//FIXME change naming of text color

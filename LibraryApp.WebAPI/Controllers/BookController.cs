@@ -275,8 +275,6 @@ namespace fullstack_library.Controllers
             });
         }
 
-        //TODO cover of book & photo of staff etc. change from profile page
-        //FIXME very slow after some use of updating name of book etc.
         [HttpGet("GetBooksByAuthor")]
         [Authorize(Policy = "AuthorPolicy")]
         [Authorize(Policy = "NotPunishedPolicy")]
@@ -323,7 +321,7 @@ namespace fullstack_library.Controllers
             return Ok(new { Message = "Page saved." });
         }
 
-        
+
         [HttpPut("EditPage")]
         [Authorize(Policy = "AuthorPolicy")]
         [Authorize(Policy = "NotPunishedPolicy")]
@@ -331,11 +329,11 @@ namespace fullstack_library.Controllers
         {
             //get book
             var book = await _bookRepo.GetBookByIdAsync(pageDTO.BookId);
-            if(book == null) return NotFound(new { Message = "Book not found." });
+            if (book == null) return NotFound(new { Message = "Book not found." });
             var page = await _pageRepo.GetPageByIdAsync(pageDTO.PageId);
             if (page == null) return NotFound(new { Message = "Page not found." });
             if (book.IsPublished) return BadRequest(new { Message = "Cannot edit page of published book" });
-            
+
             //edit page
             page.Content = pageDTO.Content;
             await _pageRepo.UpdatePageAsync(page);
@@ -362,6 +360,30 @@ namespace fullstack_library.Controllers
                 ]
             });
             return Ok(new { Message = "Book created" });
+        }
+
+        [HttpPost("CreateBookWithDetails")]
+        [Authorize(Policy = "AuthorPolicy")]
+        [Authorize(Policy = "NotPunishedPolicy")]
+        public async Task<IActionResult> CreateBookWithDetails([FromBody] CreateDetailedBookDTO detailedBookDTO)
+        {
+            if (!_userRepo.Users.Any(u => u.Id == detailedBookDTO.AuthorId)) return NotFound(new { Message = "Author not found." });
+            await _bookRepo.CreateBookAsync(new Book
+            {
+                IsBorrowed = false,
+                IsPublished = false,
+                PublishDate = new DateTime(1000, 1, 1),
+                Title = "New Book",
+                BookAuthors = [
+                    new BookAuthor{
+                        UserId = detailedBookDTO.AuthorId,
+                    }
+                    ],
+
+                    //replacing null chars with empty because npgsql does not allow these chars for utf8
+                Pages = detailedBookDTO.Pages.Select(p => new Page { Content = p.Content.Replace("\0", ""), PageNumber = p.PageNumber }).ToList(),
+            });
+            return Ok(new { Message = "Detailed book created" });
         }
 
         [HttpPut("UpdateBookName")]

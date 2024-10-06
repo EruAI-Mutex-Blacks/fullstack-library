@@ -22,9 +22,6 @@ function BookOperationsCard({ onSearch }) {
             nav(searchBookLink);
     }
 
-    //TODO profile page 
-    //TODO Book covers
- 
     const items = (
         <>
             <li className="mb-4">

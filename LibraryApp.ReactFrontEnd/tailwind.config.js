@@ -41,5 +41,3 @@ export default {
   },
   plugins: [],
 }
-
-//TODO change color palette

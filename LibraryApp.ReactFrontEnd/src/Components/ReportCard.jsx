@@ -17,5 +17,3 @@ function ReportCard({ title, items }) {
 export default ReportCard;
 
 //TODO pdften kitap yükleme
-//TODO rapor ve benzeri şeyler
-//TODO animasyonlar

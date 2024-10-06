@@ -66,4 +66,4 @@ function BorrowRequestsOP() {
 
 export default BorrowRequestsOP
 
-//FIXME bazı sayfalar tablet ekranında bozuk white space 
+//FIXME bazı sayfaların tasarımı küçük ekranlarda bozuluyor.

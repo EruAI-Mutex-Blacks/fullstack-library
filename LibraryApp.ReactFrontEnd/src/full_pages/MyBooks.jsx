@@ -6,12 +6,16 @@ import { useFetch } from "../Context/FetchContext";
 import DefaultTableTemplate from "../Components/DefaultTableTemplate";
 import SuccessButton from "../Components/SuccessButton";
 import DefaultLink from "../Components/DefaultLink";
+import * as pdfjs from "pdfjs-dist";
+import "pdfjs-dist/build/pdf.worker.min.mjs"
+
 
 function MyBooksOP() {
 
     const { user } = useUser();
     const [myBooks, setMyBooks] = useState([]);
     const { fetchData } = useFetch();
+    const [importedPages, setImportedPages] = useState([]);
 
     const fetchBooks = async function () {
         const data = await fetchData("/api/Book/GetBooksByAuthor?userId=" + user.id, "GET");
@@ -67,10 +71,70 @@ function MyBooksOP() {
         book.newBookName = e.target.value;
     }
 
-    //TODO logged out navbar küçülüyor pysi veya mysi
+    const handleImportPdfClick = (e) => {
+        //get selected file from user
+        const file = e.target.files[0];
+        console.log(file);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                //on reader load convert our file name into uint8array to give pdfjs library's getdocument method a valid parameter
+                const uint8array = new Uint8Array(event.target.result);
+                pdfjs.getDocument(uint8array).promise.then((pdf) => {
+                    //for each pdf page get text content and add it to array.
+                    const pages = [];
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        pdf.getPage(i).then((page) => {
+                            page.getTextContent().then((pageText) => {
+                                const string = "Page " + i + ": " + pageText.items.map(i => i.str).join(" ");
+                                pages.push(string);
+                                console.log(string);
+                            });
+                        });
+                    }
+
+                    setImportedPages(pages);
+                });
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+        else {
+            setImportedPages([]);
+        }
+    };
+
+    useEffect(() => {
+        //being unsorted, sort pages depending on first page numbers that i added above
+        importedPages.sort((a, b) => parseInt(a.match(/Page (\d+):/)[1]) - parseInt(b.match(/Page (\d+):/)[1]));
+        console.log(importedPages);
+    }, [importedPages]);
+
+    const handleSaveImportedBookClick = () => {
+        //first replace page numbers that i added from actual content
+        //then filter empty pages
+        //then create book to db
+        const bookDTO = {
+            authorId: user.id,
+            pages: importedPages
+                .map(ip => ip.replace(/Page (\d+):/, "").trim())
+                .filter(ip => ip.length > 0 && ip !== undefined)
+                .map((ip, index) => {
+                    return {
+                        pageNumber: index + 1,
+                        content: ip,
+                    };
+                })
+        };
+        fetchData("/api/Book/CreateBookWithDetails", "POST", bookDTO)
+            .then(() => {
+                fetchBooks();
+            });
+    };
 
     const headersArray = ["Book name", "Status", "Publish date", "Actions"];
-    const datasArray = myBooks.map((mb,index) => [
+    const datasArray = myBooks.map((mb, index) => [
         mb.oldBookName,
         mb.status,
         new Date(mb.publishDate).toLocaleDateString("en-us"),
@@ -92,7 +156,8 @@ function MyBooksOP() {
         <div className="container lg:px-16 mx-auto grow w-full flex flex-col text-text">
             <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-text items-end">
                 <h1 className="text-3xl ms-2">My Books</h1>
-                <SuccessButton callback={handleCreateClick} text={"Create a book"} />
+                {(importedPages.length === 0 || importedPages === undefined || importedPages === null) ? (<SuccessButton callback={handleCreateClick} text={"Create another book"} />) : (<SuccessButton callback={handleSaveImportedBookClick} text={"Save imported book"} />)}
+                <input className="p-1 bg-secondary-light rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-primary-light lg:self-center lg:me-2" id="fileUpload" type="file" onChange={e => handleImportPdfClick(e)} accept=".pdf" />
             </div>
             <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray} />
         </div>

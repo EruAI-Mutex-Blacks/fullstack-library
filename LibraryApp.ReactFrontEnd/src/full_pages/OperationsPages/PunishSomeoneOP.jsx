@@ -109,5 +109,3 @@ function PunishSomeoneOP() {
 }
 
 export default PunishSomeoneOP
-
-//FIXME inputlarda açıktan seçilince koyuya gitmesin de koyudan açığa gitsin
