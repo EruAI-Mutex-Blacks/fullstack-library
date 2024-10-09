@@ -115,6 +115,7 @@ Welcome to the Library Management Web App! This project is a full-stack applicat
 - **GET /api/Book/GetBooksByAuthor**: Retrieve books by a specific author.
 - **POST /api/Book/WritePage**: Write a page for a book.
 - **POST /api/Book/CreateBook**: Create a new book.
+- **POST /api/Book/CreateBookWithDetails**: Create a new book with pages.
 - **PUT /api/Book/UpdateBookName**: Update the name of an existing book.
 - **PUT /api/Book/ReturnBook**: Return a borrowed book.
 
@@ -129,24 +130,24 @@ Welcome to the Library Management Web App! This project is a full-stack applicat
 - **GET /api/User/GetAllRoles**: Retrieve all roles.
 - **POST /api/User/UpdateMessageReadState**: Update the read state of a message.
 - **PUT /api/User/ChangeRole**: Change a user's role.
-
+- **PUT /api/User/GetStaffOfMonth**: Retrieve the staff of the month.
+- **PUT /api/User/GetSetting**: Retrieve the settings to manager to let manager view settings like fine per day etc.
+- **PUT /api/User/UpdateSetting**: Update the settings.
+  
+### Reports
+- **GET /api/Reports/GetReports**: Get all statistics for given dates.
 
 To try endpoints, refer to the your **swagger**.
 
 ## 📷 Screenshots
 
 ### Manager home page
-![Manager home page](ReadmeFiles/1.png)
 
 ### Author home page
-![Author home page](ReadmeFiles/2.png)
 
 ### Searching books page
-![Searching books page](ReadmeFiles/3.png)
 
 ### Author's books page
-![Author's books page](ReadmeFiles/4.png)
-
 ### Inbox page
 ![Inbox page](ReadmeFiles/5.png)
 
