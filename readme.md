@@ -148,9 +148,8 @@ To try endpoints, refer to the your **swagger**.
 ### Searching books page
 
 ### Author's books page
+
 ### Inbox page
-![Inbox page](ReadmeFiles/5.png)
 
 ## 📷 Additional guide with some codes
 
-![Guide](ReadmeFiles/Guide.svg)
