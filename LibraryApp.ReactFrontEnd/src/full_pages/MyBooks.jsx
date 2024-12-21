@@ -151,13 +151,15 @@ function MyBooksOP() {
         </div>),
     ]);
 
-
     return (
         <div className="container lg:px-16 mx-auto grow w-full flex flex-col text-text">
             <div className="flex flex-row justify-between px-1 pt-4 pb-2 border-text items-end">
                 <h1 className="text-3xl ms-2">My Books</h1>
-                {(importedPages.length === 0 || importedPages === undefined || importedPages === null) ? (<SuccessButton callback={handleCreateClick} text={"Create another book"} />) : (<SuccessButton callback={handleSaveImportedBookClick} text={"Save imported book"} />)}
-                <input className="p-1 bg-secondary-light rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-primary-light lg:self-center lg:me-2" id="fileUpload" type="file" onChange={e => handleImportPdfClick(e)} accept=".pdf" />
+                <div className="flex flex-row gap-2 items-center">
+                    {(importedPages.length === 0 || importedPages === undefined || importedPages === null) ? (<SuccessButton callback={handleCreateClick} text={"Create another book"} />) : (<SuccessButton callback={handleSaveImportedBookClick} text={"Save imported book"} />)}
+                    <p className="">Or import a pdf</p>
+                    <input className="p-1 bg-secondary-light rounded hover:ring-2 hover:cursor-pointer transition-all duration-100 active:bg-primary-light lg:self-center lg:me-2" id="fileUpload" type="file" onChange={e => handleImportPdfClick(e)} accept=".pdf" />
+                </div>
             </div>
             <DefaultTableTemplate headersArray={headersArray} datasArray={datasArray} />
         </div>
